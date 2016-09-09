@@ -1,0 +1,317 @@
+fmod ARBBIN is
+***> parcurgerile arborilor binari
+
+   protecting NAT .
+
+   sorts Lista Arbbin .
+   subsort Nat < Lista .
+***> Lista e sortul pentru liste de numere naturale
+***> Arbbin e sortul pentru arbori binari
+
+   op nil : -> Lista . ***> lista de numere naturale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Nat Arbbin Arbbin -> Arbbin .
+***> operatiile care construiesc sortul Arbbin
+***( arborii binari nevizi sunt arborii binari care au radacina,
+adica arborii binari de forma X{A,B}, cu X de sort Nat, reprezentand
+informatia din radacina, si A si B de sort Arbbin, reprezentand
+subarborele stang si, respectiv, subarborele drept )
+
+   ops pre ino post : Arbbin -> Lista .
+***> parcurgerile in preordine, inordine, respectiv postordine
+
+   ops ex1 ex2 : -> Arbbin ***> exemple de arbori binari (vezi mai jos)
+
+   var X : Nat .
+   vars A B : Arbbin .
+
+   eq pre(null) = nil .
+   eq pre(X{A,B}) = X pre(A) pre(B) .
+
+   eq ino(null) = nil .
+   eq ino(X{A,B}) = ino(A) X ino(B) .
+
+   eq post(null) = nil .
+   eq post(X{A,B}) = post(A) post(B) X .
+
+   eq ex1 = 1{2{null,null},3{null,4{null,null}}} .
+   eq ex2 = 1{2{4{null,null},5{6{null,null},null}},3{null,7{8{null,null},9{10{null,null},null}}}} .
+
+***( putem da: red pre(ex1) . red ino(ex1) . red post(ex1) .
+red pre(ex2) . red ino(ex2) . red post(ex2) . )
+
+endfm
+
+
+fmod ARBBIN-LF is
+***> exercitiu cu arbori binari: lista frunzelor
+
+   protecting ARBBIN .
+
+   op lf : Arbbin -> Lista .
+***> lista frunzelor unui arbore binar
+
+***( Frunzele sunt arborii (sau subarborii) binari de forma
+X{null,null}, cu X de sort Nat. )
+
+   var X : Nat .
+   vars A B : Arbbin .
+
+   eq lf(null) = nil .
+   eq lf(X{null,null}) = X .
+   ceq lf(X{A,B}) = lf(A) lf(B) if A =/= null or B =/= null .
+
+***> putem da: red lf(ex1) . red lf(ex2) .
+
+endfm
+
+
+fmod ARBBINCAUT is
+***> arbori binari de cautare
+
+***( Arborii binari de cautare sunt arborii binari cu proprietatea
+ca informatia din fiecare nod N este mai mare sau egala cu informatia
+din fiecare nod din subarborele stang al lui N si mai mica decat
+informatia din fiecare nod din subarborele drept al lui N (de fapt,
+egalitatea poate fi considerata pentru oricare dintre subarbori, iar
+inegalitatea stricta pentru celalalt subarbore, dar aceasta regula
+trebuie sa fie respectata pentru toate nodurile arborelui). Parcurgand
+in inordine un arbore binar de cautare, obtinem lista sortata a
+valorilor din nodurile acelui arbore. )
+
+***( Vom face sortare cu arbori binari de cautare. Am putea retine
+in nodurile unui astfel de arbore si numarul nodului si informatia
+din noduri, dar vom retine numai informatia, adica valorile din
+lista pe care o vom sorta. )
+
+   extending ARBBIN .
+
+   op insert : Nat Arbbin -> Arbbin .
+***( insereaza un numar natural intr-un arbore binar de cautare,
+astfel incat arborele obtinut prin inserare sa fie tot un arbore
+binar de cautare )
+
+   op insertlist : Lista Arbbin -> Arbbin .
+***( insereaza o lista de numere naturale intr-un arbore binar de
+cautare, astfel incat arborele obtinut prin inserare sa fie tot
+un arbore binar de cautare )
+
+   op sortare : Lista -> Lista .
+***( sorteaza o lista de numere naturale, folosind
+un arbore binar de cautare )
+
+   vars X Y : Nat .
+   var L : Lista .
+   vars A B : Arbbin .
+
+   eq insert(Y,null) = Y{null,null} .
+   eq insert(Y,X{A,B}) = if Y <= X then X{insert(Y,A),B} else X{A,insert(Y,B)} fi .
+
+   eq insertlist(nil,A) = A .
+   eq insertlist(X L,A) = insert(X,insertlist(L,A)) . 
+
+   eq sortare(L) = ino(insertlist(L,null)) .
+
+***( putem vedea si arborele de cautare creat pentru sortarea
+unei liste L, cu: red insertlist(L,null) . )
+
+endfm
+
+
+fmod ARBORE is
+***> arbori oarecare 
+
+   protecting NAT .
+
+   sorts Lista Arbore ListArb .
+   subsort Nat < Lista .
+   subsort Arbore < ListArb .
+***> Lista e sortul pentru liste de numere naturale
+***> Arbore e sortul pentru arbori oarecare
+***> ListArb e sortul pentru liste de arbori oarecare 
+
+   op nil : -> Lista . ***> lista de numere naturale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbore . ***> arborele vid
+   op _{_} : Nat ListArb -> Arbore [prec 20] .
+***> operatiile care construiesc sortul Arbore
+***( arborii nevizi sunt arborii care au radacina, adica arborii de
+forma X{LA}, cu X informatia din radacina si lista subarborilor LA )
+
+   op frunza : -> ListArb . ***> lista de arbori vida
+***> nu este acelasi lucru cu arborele vid, null
+***( null, fiind arbore, este lista de arbori, datorita ordonarii pe
+sorturi, dar este lista de arbori cu 1 element, nu lista vida de arbori )
+   op _;_ : ListArb ListArb -> ListArb [assoc id: frunza prec 30] .
+***> concatenarea de liste de arbori
+
+   op ex : -> Arbore .   ***> un exemplu de arbore oarecare
+
+   eq ex = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}} ; 7{frunza}} .
+
+endfm
+
+
+fmod ARBORE-LF is
+***> un exercitiu cu arbori oarecare: lista frunzelor
+
+   protecting ARBORE .
+
+   op lf : Arbore -> Lista .
+***> lista frunzelor unui arbore oarecare
+   op lflist : ListArb -> Lista .
+***> lista frunzelor unei liste de arbori oarecare
+
+***( Frunzele sunt arborii (sau subarborii) oarecare
+de forma X{frunza}, cu X de sort Nat. )
+
+   var X : Nat .
+   var A : Arbore .
+   var LA : ListArb .
+
+   eq lf(null) = nil .
+   eq lf(X{frunza}) = X .
+   eq lf(X{A ; LA}) = lf(A) lflist(LA) .
+
+   eq lflist(frunza) = nil .
+   eq lflist(A ; LA) = lf(A) lflist(LA) .
+
+***> putem da: red lf(ex) .
+
+endfm
+
+
+fmod ARBORE-DF is
+***> parcurgerea in adancime a arborilor oarecare
+
+   protecting ARBORE .
+
+   op df : Arbore -> Lista .
+***> parcurge in adancime un arbore oarecare
+   op dflist : ListArb -> Lista .
+***> parcurge in adancime o lista de arbori oarecare
+
+   var X : Nat .
+   var A : Arbore .
+   var LA : ListArb .
+
+   eq df(null) = nil .
+   eq df(X{LA}) = X dflist(LA) .
+
+   eq dflist(frunza) = nil .
+   eq dflist(A ; LA) = df(A) dflist(LA) .
+
+***> putem da: red df(ex) .
+
+endfm
+
+
+fmod ARBORE-BF is
+***> parcurgerea arborilor oarecare in latime, adica pe niveluri
+
+   protecting ARBORE .
+
+   op bf : Arbore -> Lista .
+***> parcurge in latime un arbore oarecare
+   op bflist : ListArb -> Lista .
+***> parcurge in latime o lista de arbori oarecare
+
+   var X : Nat .
+   var L : Lista .
+   var A : Arbore .
+   vars LA LA1 : ListArb .
+
+   eq bf(null) = nil .
+   eq bf(X{LA}) = X bflist(LA) .
+
+   eq bflist(frunza) = nil .
+   eq bflist(X{LA} ; LA1) = X bflist(LA1 ; LA) . 
+
+***( Dupa cum se vede, am folosit o coada, sau,
+mai exact, am simulat folosirea unei cozi. )
+
+***> putem da: red bf(ex) . 
+
+endfm
+
+
+fmod GRAF is
+***( parcurgerile grafurilor orientate sau neorientate
+(dupa cum dam listele de vecini ale fiecarui varf) )
+
+***( probleme fata de parcurgerile arborilor: posibila neconexitate,
+posibila neunicitate a drumurilor, datorata prezentei ciclurilor )
+
+   protecting NAT .
+
+   sorts Lista VarfVecini Graf .
+   subsort Nat < Lista .
+   subsort VarfVecini < Graf .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+
+   op _{_} : Nat Lista -> VarfVecini [prec 25] .
+
+   op null : -> Graf . ***> graful vid
+   op _;_ : Graf Graf -> Graf [assoc id: null prec 30] .
+***> un graf este o lista de varfuri urmate de listele vecinilor lor
+
+   op _in_ : Nat Lista -> Bool [prec 40] .
+***( operatia apartine; va fi folosita in locul unui vector in care
+sa fie marcate varfurile vizitate )
+
+   ops bf df : Graf -> Lista .
+***> parcurgerile in latime, respectiv in adancime
+***( parcurgerile vor incepe intotdeauna cu primul varf
+din lista care da graful )
+
+   ops bfaux dfaux : Graf Graf Lista -> Lista .
+   op transf : Lista Graf -> Graf .
+   op cauta : Nat Graf -> Graf .
+   op peniveluri : Lista Graf Lista -> Lista .
+   op cautavecini : Nat Graf -> Lista .
+***> operatii auxiliare pentru implementarea operatiilor de parcurgere
+
+   ops exno exo : -> Graf .
+***> un exemplu de graf neorientat si unul de graf orientat
+
+   vars G H : Graf .
+   vars X Y : Nat .
+   vars V L : Lista . 
+
+   eq X in nil = false .
+   eq X in Y L = if X == Y then true else X in L fi .
+
+   eq df(G) = dfaux(G,G,nil) .
+
+   eq dfaux(null,G,L) = L .
+   eq dfaux(X{V} ; H,G,L) = if X in L then dfaux(H,G,L) else dfaux(transf(V,G) ; H,G,L X) fi .
+
+   eq transf(nil,G) = null .
+   eq transf(X L,G) = cauta(X,G) ; transf(L,G) .
+
+   eq cauta(X,null) = null .
+   eq cauta(X,Y{V} ; G) = if X == Y then X{V} else cauta(X,G) fi .
+
+   eq bf(G) = bfaux(G,G,nil) .
+
+   eq bfaux(null,G,L) = L .
+   eq bfaux(X{V} ; H,G,L) = if X in L then bfaux(H,G,L) else bfaux(H,G,L X peniveluri(V,G,L X)) fi .
+
+   eq peniveluri(nil,G,L) = nil .
+   eq peniveluri(X V,G,L) = if X in L then peniveluri(V,G,L) else X peniveluri(V cautavecini(X,G),G,L X) fi . 
+
+   eq cautavecini(X,null) = nil .
+   eq cautavecini(X,Y{V} ; G) = if X == Y then V else cautavecini(X,G) fi .     
+
+   eq exno = 1{2 3} ; 2{1 3 6} ; 3{1 2 4 8 10} ; 4{3} ; 5{nil} ; 6{2 7} ; 7{6} ; 8{3 9} ; 9{8} ; 10{nil} .
+   eq exo = 1{2} ; 2{3} ; 3{1 4 8 10} ; 4{nil} ; 5{nil} ; 6{2} ; 7{6} ; 8{9} ; 9{nil} ; 10{nil} .
+
+endfm
+
+
+

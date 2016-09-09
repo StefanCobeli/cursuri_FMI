@@ -1,0 +1,81 @@
+10:33:25 AM GTB, or, 01/05/15
+
+1: .data
+2:  x:.word 2
+3:  y:.word 2
+4:  t:.word 1
+5:  z:.space 4
+6: .text
+7: main:
+8:  lw $t0,x
+9:  lw $t1,y
+10:  blt $t0,$t1,alt
+11:  lw $t1,t
+12:  blt $t0,$t1,et2
+13:   j et1
+14: alt:
+15: lw $t0,t
+16:  blt $t0,$t1,et2
+17:  
+18:  et1:
+19:  sw $t0,z
+20:  j sfarsit
+21:  
+22:  et2:
+23:  sw $t1,z
+24: sfarsit:
+25: li $v0,10
+26: syscall
+
+Text Segment:
+Address		Opcode	    Bare Instruction		    Original Text
+[0x00400000]	0x8fa40000  lw $4, 0($29)                   ; 102: lw $a0, 0($sp)
+[0x00400004]	0x27a50004  addiu $5, $29, 4                ; 103: addiu $a1, $sp, 4 # argv
+[0x00400008]	0x24a60004  addiu $6, $5, 4                 ; 104: addiu $a2, $a1, 4 # envp
+[0x0040000c]	0x00041080  sll $2, $4, 2                   ; 105: sll $v0, $a0, 2
+[0x00400010]	0x00c23021  addu $6, $6, $2                 ; 106: addu $a2, $a2, $v0
+[0x00400014]	0x0c100008  jal 0x00400020 [main]           ; 107: jal main
+[0x00400018]	0x3402000a  ori $2, $0, 10                  ; 108: li $v0 10
+[0x0040001c]	0x0000000c  syscall                         ; 109: syscall
+[0x00400020]	0x3c011001  lui $1, 4097                    ; 8: lw $t0,x
+[0x00400024]	0x8c280000  lw $8, 0($1)
+[0x00400028]	0x3c011001  lui $1, 4097                    ; 9: lw $t1,y
+[0x0040002c]	0x8c290004  lw $9, 4($1)
+[0x00400030]	0x0109082a  slt $1, $8, $9                  ; 10: blt $t0,$t1,alt
+[0x00400034]	0x14200006  bne $1, $0, 24 [alt-0x00400034]
+[0x00400038]	0x3c011001  lui $1, 4097                    ; 11: lw $t1,t
+[0x0040003c]	0x8c290008  lw $9, 8($1)
+[0x00400040]	0x0109082a  slt $1, $8, $9                  ; 12: blt $t0,$t1,et2
+[0x00400044]	0x14200009  bne $1, $0, 36 [et2-0x00400044]
+[0x00400048]	0x08100017  j 0x0040005c [et1]              ; 13: j et1
+[0x0040004c]	0x3c011001  lui $1, 4097                    ; 15: lw $t0,t
+[0x00400050]	0x8c280008  lw $8, 8($1)
+[0x00400054]	0x0109082a  slt $1, $8, $9                  ; 16: blt $t0,$t1,et2
+[0x00400058]	0x14200004  bne $1, $0, 16 [et2-0x00400058]
+[0x0040005c]	0x3c011001  lui $1, 4097                    ; 19: sw $t0,z
+[0x00400060]	0xac28000c  sw $8, 12($1)
+[0x00400064]	0x0810001c  j 0x00400070 [sfarsit]          ; 20: j sfarsit
+[0x00400068]	0x3c011001  lui $1, 4097                    ; 23: sw $t1,z
+[0x0040006c]	0xac29000c  sw $9, 12($1)
+[0x00400070]	0x3402000a  ori $2, $0, 10                  ; 25: li $v0,10
+[0x00400074]	0x0000000c  syscall                         ; 26: syscall
+
+Data Segment:
+Label		Address		First 4 bytes of value
+x	[0x10010000]	0x02000000
+y	[0x10010004]	0x02000000
+t	[0x10010008]	0x01000000
+z	[0x1001000c]	0x00000000
+
+Symbol Table:
+globl	text	__start at 0x00400000
+undef	main
+local	data	x at 0x10010000
+local	data	y at 0x10010004
+local	data	t at 0x10010008
+local	data	z at 0x1001000c
+local	text	main at 0x00400020
+local	text	alt at 0x0040004c
+local	text	et1 at 0x0040005c
+local	text	et2 at 0x00400068
+local	text	sfarsit at 0x00400070

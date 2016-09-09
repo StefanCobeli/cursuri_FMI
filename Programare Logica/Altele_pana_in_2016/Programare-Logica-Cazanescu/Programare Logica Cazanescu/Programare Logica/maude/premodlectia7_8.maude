@@ -1,0 +1,389 @@
+fmod QUICKSORT is
+
+***> sortarea rapida
+***( OBSERVATIE: calculele de complexitate pentru algoritmi
+din programarea imperativa nu sunt valabile aici. ) 
+
+   protecting NAT .
+
+   sorts Lista PerecheListe .
+
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+
+   op {_;_} : Lista Lista -> PerecheListe [prec 30] .
+***> operatia care construieste sortul PerecheListe 
+
+   op concat : PerecheListe PerecheListe -> PerecheListe .
+***> concatenarea pe componente
+
+   op per-lista : PerecheListe -> Lista .
+
+   op taie : Nat Lista -> PerecheListe .
+
+   op qsort : Lista -> Lista .
+   op qsortper : PerecheListe -> PerecheListe .
+
+   vars X Y : Nat .
+   vars L L1 T T1 : Lista .
+
+   eq concat({ L ; L1 },{ T ; T1 }) = { L T ; L1 T1 } .
+
+***> in cele ce urmeaza, X va fi pivotul
+
+   eq taie(X,nil) = { nil ; nil } .
+   ceq taie(X,Y L) = concat({ Y ; nil },taie(X,L)) if Y <= X .
+   ceq taie(X,Y L) = concat({ nil ; Y },taie(X,L)) if Y > X .
+
+   eq per-lista({ L ; L1 }) = L L1 .
+
+   eq qsort(nil) = nil .
+   eq qsort(X L) = per-lista(concat(qsortper(taie(X,L)),{ X ; nil })) .
+***( este esential sa nu includem pivotul in lista care trebuie taiata,
+pentru ca avem nevoie sa micsoram lungimea listei )
+
+   eq qsortper({ L ; L1 }) = { qsort(L) ; qsort(L1) } .
+
+endfm
+
+
+fmod OBSERVATII is
+
+***( Operatorul if_then_else_fi si atributul owise (= "otherwise"):
+owise este un atribut de ecuatie, nu unul de operatie, ca assoc, comm,
+id:, prec etc.: )
+
+
+***( In modulul urmator, este incomod de folosit operatia listnrap
+pentru implementarea operatiei nrapct, dar ar fi util daca, in ultimele
+doua ecuatii, am evita recalcularea lui nrap(X,L) si nrap(Y,L) (care se
+efectueaza daca prima dintre acele doua ecuatii pe care Maude-ul incearca
+sa o aplice nu este cea aplicabila in cazul curent). )
+
+***( Solutia 1: utilizarea operatorului if_then_else_fi, si scrierea
+acelor doua ecuatii in una singura, care va fi o ecuatie NECONDITIONATA:
+
+   eq auxiliara(L,X R,C Y) = if nrap(X,L) == nrap(Y,L) then auxiliara(L,R,C Y X) else C Y ; auxiliara(L,R,X) fi .
+ )
+
+***( Solutia 2: scrierea tot cu doua ecuatii, dintre care prima conditionata,
+iar a doua neconditionata si continand atributul owise, care ne permite sa
+nu mai scriem in aceasta a doua ecuatie negatia conditiei din prima ecuatie:
+
+   ceq auxiliara(L,X R,C Y) = auxiliara(L,R,C Y X) if nrap(X,L) == nrap(Y,L) .
+   eq auxiliara(L,X R,C Y) = C Y ; auxiliara(L,R,X) [owise] .
+)
+
+endfm
+
+
+fmod SUBIECTUL4 is
+
+   extending NAT .
+
+   sorts Lista ListLista .
+   subsorts Nat < Lista < ListLista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] . 
+
+   op null : -> ListLista .
+   op _;_ : ListLista ListLista -> ListLista [assoc id: null prec 30] . 
+
+   op nrparap : Lista -> Bool .
+***( 
+nrparap(L) = true, daca toate elementele listei L au numar par 
+de aparitii in lista L, si
+nrparap(L) = false, in caz contrar.
+ )
+   op maxmaxap : Lista -> Bool .
+***( 
+maxmaxap(L) = true daca maximul din lista L are cele mai multe 
+aparitii in lista L, comparativ cu celelalte elemente ale listei L, 
+si
+maxmaxap(L) = false, in caz contrar.
+ )
+   op nrapct : Lista -> ListLista .
+***( 
+nrapct(L) = lista sublistelor S ale lui L care satisfac urmatoarele 
+conditii: elementele lui S se afla pe pozitii consecutive in lista L 
+si au acelasi numar de aparitii in lista L, si sublista S nu poate fi 
+prelungita cu niciun element din lista L astfel incat sa se pastreze 
+proprietatile anterioare.
+ )
+
+***> Operatii auxiliare necesare (sau comod de folosit):
+
+   op maxlist : Lista -> Nat .
+***( determina maximul dintr-o lista nevida, folosind
+operatia max din modulul predefinit NAT, operatie care
+determina maximul a doua numere naturale )
+
+   op nrap : Nat Lista -> Nat .
+***> numara aparitiile unui element intr-o lista 
+
+   op listnrap : Lista -> Lista .
+***( inlocuieste, intr-o lista, fiecare element cu numarul aparitiilor
+sale in lista initiala, folosind operatia auxiliara aux, care retine si
+lista initiala, si restul de lista care mai trebuie parcurs )
+   op aux : Lista Lista -> Lista .
+
+   op toatepare : Lista -> Bool .
+***> testeaza daca o lista are toate elementele pare
+
+   op auxiliara : Lista Lista Lista -> ListLista .
+***> operatie auxiliara pentru scrierea lui nrapct
+***( retine lista initiala, restul de lista care mai trebuie parcurs,
+si sublista curenta )
+
+   op decide : ListLista -> ListLista .
+***> alta operatie auxiliara pentru scrierea lui nrapct
+***> a se vedea mai jos definitia ei
+
+   vars X Y : Nat .
+   vars L R C : Lista .
+   var LL : ListLista .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(X L) = max(X,maxlist(L)) .
+
+   eq nrap(X,nil) = 0 .
+   eq nrap(X,X L) = s nrap(X,L) .
+   ceq nrap(X,Y L) = nrap(X,L) if X =/= Y .
+
+   eq listnrap(L) = aux(L,L) .
+
+   eq aux(L,nil) = nil .
+   eq aux(L,X C) = nrap(X,L) aux(L,C) .
+
+   eq toatepare(nil) = true .
+   eq toatepare(X L) = 2 divides X and toatepare(L) .
+
+   eq nrparap(L) = toatepare(listnrap(L)) .
+
+   eq maxmaxap(L) = nrap(maxlist(L),L) == maxlist(listnrap(L)) .
+      
+   eq nrapct(L) = decide(auxiliara(L,L,nil)) .
+
+   eq decide(null) = nil .
+   eq decide(L ; LL) = L ; LL .
+
+   eq auxiliara(L,nil,nil) = null .
+   eq auxiliara(L,nil,C Y) = C Y .
+   eq auxiliara(L,X R,nil) = auxiliara(L,R,X) .
+   ceq auxiliara(L,X R,C Y) = auxiliara(L,R,C Y X) if nrap(X,L) == nrap(Y,L) .
+   ceq auxiliara(L,X R,C Y) = C Y ; auxiliara(L,R,X) if nrap(X,L) =/= nrap(Y,L) .
+
+endfm
+
+
+fmod SOLUTIA1 is
+
+   extending NAT .
+
+   sorts Lista ListLista .
+   subsorts Nat < Lista < ListLista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] . 
+
+   op null : -> ListLista .
+   op _;_ : ListLista ListLista -> ListLista [assoc id: null prec 30] . 
+
+   op nrparap : Lista -> Bool .
+***( 
+nrparap(L) = true, daca toate elementele listei L au numar par 
+de aparitii in lista L, si
+nrparap(L) = false, in caz contrar.
+ )
+   op maxmaxap : Lista -> Bool .
+***( 
+maxmaxap(L) = true daca maximul din lista L are cele mai multe 
+aparitii in lista L, comparativ cu celelalte elemente ale listei L, 
+si
+maxmaxap(L) = false, in caz contrar.
+ )
+   op nrapct : Lista -> ListLista .
+***( 
+nrapct(L) = lista sublistelor S ale lui L care satisfac urmatoarele 
+conditii: elementele lui S se afla pe pozitii consecutive in lista L 
+si au acelasi numar de aparitii in lista L, si sublista S nu poate fi 
+prelungita cu niciun element din lista L astfel incat sa se pastreze 
+proprietatile anterioare.
+ )
+
+***> Operatii auxiliare necesare (sau comod de folosit):
+
+   op maxlist : Lista -> Nat .
+***( determina maximul dintr-o lista nevida, folosind
+operatia max din modulul predefinit NAT, operatie care
+determina maximul a doua numere naturale )
+
+   op nrap : Nat Lista -> Nat .
+***> numara aparitiile unui element intr-o lista 
+
+   op listnrap : Lista -> Lista .
+***( inlocuieste, intr-o lista, fiecare element cu numarul aparitiilor
+sale in lista initiala, folosind operatia auxiliara aux, care retine si
+lista initiala, si restul de lista care mai trebuie parcurs )
+   op aux : Lista Lista -> Lista .
+
+   op toatepare : Lista -> Bool .
+***> testeaza daca o lista are toate elementele pare
+
+   op auxiliara : Lista Lista Lista -> ListLista .
+***> operatie auxiliara pentru scrierea lui nrapct
+***( retine lista initiala, restul de lista care mai trebuie parcurs,
+si sublista curenta )
+
+   op decide : ListLista -> ListLista .
+***> alta operatie auxiliara pentru scrierea lui nrapct
+***> a se vedea mai jos definitia ei
+
+   vars X Y : Nat .
+   vars L R C : Lista .
+   var LL : ListLista .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(X L) = max(X,maxlist(L)) .
+
+   eq nrap(X,nil) = 0 .
+   eq nrap(X,X L) = s nrap(X,L) .
+   ceq nrap(X,Y L) = nrap(X,L) if X =/= Y .
+
+   eq listnrap(L) = aux(L,L) .
+
+   eq aux(L,nil) = nil .
+   eq aux(L,X C) = nrap(X,L) aux(L,C) .
+
+   eq toatepare(nil) = true .
+   eq toatepare(X L) = 2 divides X and toatepare(L) .
+
+   eq nrparap(L) = toatepare(listnrap(L)) .
+
+   eq maxmaxap(L) = nrap(maxlist(L),L) == maxlist(listnrap(L)) .
+      
+   eq nrapct(L) = decide(auxiliara(L,L,nil)) .
+
+   eq decide(null) = nil .
+   eq decide(L ; LL) = L ; LL .
+
+   eq auxiliara(L,nil,nil) = null .
+   eq auxiliara(L,nil,C Y) = C Y .
+   eq auxiliara(L,X R,nil) = auxiliara(L,R,X) .
+   eq auxiliara(L,X R,C Y) = if nrap(X,L) == nrap(Y,L) then auxiliara(L,R,C Y X) else C Y ; auxiliara(L,R,X) fi .
+
+endfm
+
+
+fmod SOLUTIA2 is
+
+   extending NAT .
+
+   sorts Lista ListLista .
+   subsorts Nat < Lista < ListLista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] . 
+
+   op null : -> ListLista .
+   op _;_ : ListLista ListLista -> ListLista [assoc id: null prec 30] . 
+
+   op nrparap : Lista -> Bool .
+***( 
+nrparap(L) = true, daca toate elementele listei L au numar par 
+de aparitii in lista L, si
+nrparap(L) = false, in caz contrar.
+ )
+   op maxmaxap : Lista -> Bool .
+***( 
+maxmaxap(L) = true daca maximul din lista L are cele mai multe 
+aparitii in lista L, comparativ cu celelalte elemente ale listei L, 
+si
+maxmaxap(L) = false, in caz contrar.
+ )
+   op nrapct : Lista -> ListLista .
+***( 
+nrapct(L) = lista sublistelor S ale lui L care satisfac urmatoarele 
+conditii: elementele lui S se afla pe pozitii consecutive in lista L 
+si au acelasi numar de aparitii in lista L, si sublista S nu poate fi 
+prelungita cu niciun element din lista L astfel incat sa se pastreze 
+proprietatile anterioare.
+ )
+
+***> Operatii auxiliare necesare (sau comod de folosit):
+
+   op maxlist : Lista -> Nat .
+***( determina maximul dintr-o lista nevida, folosind
+operatia max din modulul predefinit NAT, operatie care
+determina maximul a doua numere naturale )
+
+   op nrap : Nat Lista -> Nat .
+***> numara aparitiile unui element intr-o lista 
+
+   op listnrap : Lista -> Lista .
+***( inlocuieste, intr-o lista, fiecare element cu numarul aparitiilor
+sale in lista initiala, folosind operatia auxiliara aux, care retine si
+lista initiala, si restul de lista care mai trebuie parcurs )
+   op aux : Lista Lista -> Lista .
+
+   op toatepare : Lista -> Bool .
+***> testeaza daca o lista are toate elementele pare
+
+   op auxiliara : Lista Lista Lista -> ListLista .
+***> operatie auxiliara pentru scrierea lui nrapct
+***( retine lista initiala, restul de lista care mai trebuie parcurs,
+si sublista curenta )
+
+   op decide : ListLista -> ListLista .
+***> alta operatie auxiliara pentru scrierea lui nrapct
+***> a se vedea mai jos definitia ei
+
+   vars X Y : Nat .
+   vars L R C : Lista .
+   var LL : ListLista .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(X L) = max(X,maxlist(L)) .
+
+   eq nrap(X,nil) = 0 .
+   eq nrap(X,X L) = s nrap(X,L) .
+   ceq nrap(X,Y L) = nrap(X,L) if X =/= Y .
+
+   eq listnrap(L) = aux(L,L) .
+
+   eq aux(L,nil) = nil .
+   eq aux(L,X C) = nrap(X,L) aux(L,C) .
+
+   eq toatepare(nil) = true .
+   eq toatepare(X L) = 2 divides X and toatepare(L) .
+
+   eq nrparap(L) = toatepare(listnrap(L)) .
+
+   eq maxmaxap(L) = nrap(maxlist(L),L) == maxlist(listnrap(L)) .
+      
+   eq nrapct(L) = decide(auxiliara(L,L,nil)) .
+
+   eq decide(null) = nil .
+   eq decide(L ; LL) = L ; LL .
+
+   eq auxiliara(L,nil,nil) = null .
+   eq auxiliara(L,nil,C Y) = C Y .
+   eq auxiliara(L,X R,nil) = auxiliara(L,R,X) .
+   ceq auxiliara(L,X R,C Y) = auxiliara(L,R,C Y X) if nrap(X,L) == nrap(Y,L) .
+   eq auxiliara(L,X R,C Y) = C Y ; auxiliara(L,R,X) [owise] .
+
+endfm
+
+
+fmod DIN-TEMA is
+
+***( Operatii cu siruri de biti: and, or, xor pe biti,
+si adunarea in binar, efectuata direct pe sirurile de biti. )
+
+***( Adunarea, scaderea si inmultirea polinoamelor cu
+coeficienti intregi, peste INT-ul predefinit. )
+
+endfm

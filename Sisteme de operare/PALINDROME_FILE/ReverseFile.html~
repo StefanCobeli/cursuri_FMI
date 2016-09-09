@@ -1,0 +1,267 @@
+<html lang="ro">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link href="../src/prettify.css" type="text/css" rel="stylesheet" />
+
+    <script src="../src/prettify.js" type="text/javascript"></script>
+
+<!-- <style type="text/css">
+      body { margin-left: .5in }
+</style> -->
+
+<style  type="text/css">
+ h2 {color:blue;}
+ h3 {color:red;} p {color:blue;} 
+	body{ margin-left: .5in;}
+</style>
+</head>
+
+<!-- BODY BODY BODY BODY BODY BODY BODY BODY BODY BODY  -->
+  <body onload="prettyPrint()" bgcolor="white">
+<H2>Lucru cu fișiere -- concatenare</H2>
+<strong>Problema de rezolvat:</strong>
+<strong>Problema 2:</strong><br />
+<strong>F12. (1.5 puncte) </strong> 
+Scrieti un program care inverseaza ordinea caracterelor
+ intr-un fisier al carui specificator este dat ca argument in linia de
+ comanda. Nu se vor folosi fisiere auxiliare.
+
+<hr align="center" />
+
+<hr align="center" />
+
+
+<strong><h4>Vezi sursa .html pentru a vedea ce biblioteci se includ în preambulul file.c, pentru că în .html 
+&lt; &gt; și ce e între ele devin invizibile!!!</h4></strong>
+
+<!-- File1 -->
+<h3 >Inversează conținutul unui fișier</h3>
+<strong>Exemplu:</strong><br />
+"catargul era prea alb ori nu era deloc" <==> "coled are un iro bla aerp are lugratac"<br />
+și invers.<br /><br />
+
+"la steaua care-a rasarit e-o cale atat de lunga" <==> "agnul ed tata elac o-e tirasar a-erac auaets al"<br />
+
+
+
+<!-- START CODE-CELL -->
+<pre class="prettyprint">
+/* invert.c
+ * ./invert file
+ * Action: reverses the order of characters of file 
+ * without using an auxilliary file.
+ * Se vede bine dacă file nu se termină cu "\n"
+ * Exemplu" abc 123456789 xyz <---> zyx 987654321 cba
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+	
+    int ch, nc=0, k; // nc = number of characters of the file
+    FILE *ifp;
+
+/* The number of parameters should be 2 and the only argument following */
+/* the name of the program is the name of the input file. */
+
+  if (argc != 2)
+    {
+      fprintf (stderr, "Usage: invert file\n");
+      exit (1);
+    }
+
+/* Open the input file. */
+  if ((ifp = fopen (argv[1], "r+")) == NULL)
+    {
+      fprintf (stderr, "Could not open file: %s\n", argv[1]);
+      exit (1);
+    }
+       
+    while ((ch=fgetc(ifp)) != EOF){
+		nc++;
+		printf("nc=%d, iar ch=%c\n",nc,ch);
+	}
+    
+    printf("\nThe file has %d characters.\n\n",nc);
+    
+    /////////////////////////////////////////
+    // nc obținut altfel:
+
+	fseek(ifp, 0L, SEEK_END);
+	size_t fileSize = ftell(ifp);
+	printf("\nAltfel:\nThe file has %d characters.\n\n",fileSize);
+	// "rewind" the file back to the beginning after you've learned the size:
+	fseek(ifp, 0L, SEEK_SET);
+   
+    /////////////////////////////////////////
+    // Inversarea ordinii caracterelor    
+    /* 
+     * testare
+    k=2;
+    fseek (ifp, k, SEEK_SET);	// Go to the character whose offset is k 
+    char *h;
+    h="abg";
+    fputs(h,ifp);
+    fputs("8",ifp);
+    */
+    
+    int c1,c2;
+    for (k=0; k&le nc/2; k++){
+		fseek (ifp, k, SEEK_SET);	// Go to the character whose offset is k
+		c1=fgetc(ifp);
+		fseek (ifp, -(k+1), SEEK_END);	// Go to the END character whose offset is k+1
+		c2=fgetc(ifp);
+		printf("c1=%c, iar c2=%c\n",c1,c2);
+		
+		char buffer[16]; // folosim un buffer pentru convertirea 
+		sprintf(buffer, "%c", c2);
+		// int sprintf(char *str, const char *format, ...) sends formatted output to a string pointed to by str.
+		fseek (ifp, k, SEEK_SET);	// Go to the character whose offset is k
+		//int fputs ( const char * str, FILE * stream ); definiția din manual 
+		fputs(buffer,ifp);
+		fseek (ifp, -(k+1), SEEK_END);	// Go to the END character whose offset is k+1
+		sprintf(buffer, "%c", c1);
+		fputs(buffer,ifp);
+	}
+    
+/* Close the input file. */
+    if (fclose (ifp) == EOF)
+    {
+      fprintf (stderr, "Could not close file: %s\n", argv[1]);
+    }
+  return 0;
+} 
+
+</pre>
+<!-- END CODE-CELL -->
+
+
+
+<!-- File2 -->
+<h3 >Working with a file -- Example</h3>
+<strong>CSI 402 – Systems Programming</strong><br />
+Illustrating the use of <var>fseek</var>, <var>ftell</var> and <var>rewind</var>
+
+<h4>Handout 2.1</h4>
+The following program uses the functions <var>fseek</var>, <var>ftell</var> and <var>rewind</var> to move around in an input
+ﬁle speciﬁed by the command line argument <code>argv[1]</code>.<br /><br />
+
+<strong>Input file:</strong> abcdefghijklmno\n <br />
+<strong>Output:</strong>
+<pre>a
+f
+6
+j
+10
+g
+7
+l
+12
+a
+1
+</pre>
+
+<!-- START CODE-CELL -->
+<pre class="prettyprint">
+/* workWith_fseek.c
+ * CSI 402 – Systems Programming
+ * Illustrating the use of fseek, ftell and rewind
+ * Handout 2.1
+ * The following program uses the functions 
+ * fseek, ftell and rewind to move around in an input
+ * ﬁle speciﬁed by the command line argument argv[1].
+ * Input: abcdefghijklmno\n
+Output:
+a
+f
+6
+j
+10
+g
+7
+l
+12
+a
+1
+*/
+
+/* To illustrate the use of fseek and ftell */
+#include <stdio.h>
+#include <stdlib.h>
+int main (int argc, char *argv[])
+{
+  FILE *ifp;		/* Input file pointer. */
+  long pos;			/* To obtain positions using ftell. */
+  int c;			/* To read characters from input file. */
+
+/* The number of parameters should be 2 and the only argument following */
+/* the name of the program is the name of the input file. */
+
+  if (argc != 2)
+    {
+      fprintf (stderr, "Usage: ftest file\n");
+      exit (1);
+    }
+/* Open the input file. */
+  if ((ifp = fopen (argv[1], "r")) == NULL)
+    {
+      fprintf (stderr, "Could not open file: %s\n", argv[1]);
+      exit (1);
+    }
+
+  c = fgetc (ifp);
+  printf ("%c\n", c);		/* Print the first character (offset = 0) in file. */
+  
+/* In the following, for simplicity, we don’t do any error checks. */
+
+  fseek (ifp, 5L, SEEK_SET);
+  c = fgetc (ifp);
+  printf ("%c\n", c);		/* Print the character with offset = 5 from the beginning. */
+  pos = ftell (ifp);
+  printf ("%ld\n", pos);	/* Print the file offset. */
+  fseek (ifp, 3L, SEEK_CUR);	/* Go to the character whose offset is 3 plus */
+  c = fgetc(ifp); /* the current offset, read that character and */
+  printf("%c\n", c); /* print it. */
+  pos = ftell(ifp); printf("%ld\n", pos); /* Also print offset. */
+
+  fseek (ifp, -4L, SEEK_CUR);	/* Go to the character whose offset is 4 less */
+  c = fgetc (ifp); /* than the current position, read that */
+  printf ("%c\n", c); /* character and print it. */
+  pos = ftell (ifp);
+  printf ("%ld\n", pos);
+  
+  
+  fseek (ifp, -5L, SEEK_END);	/* Go to the character whose offset is 5 less */
+  c = fgetc (ifp); /* than the end of file, read that */
+  printf ("%c\n", c); /* character and print it. */
+  pos = ftell (ifp);
+  printf ("%ld\n", pos);
+  
+  
+/* Get to the beginning of the file. */
+  rewind (ifp);
+  c = fgetc (ifp); /* Read the character at offset = 0 */
+  printf ("%c\n", c); /* and print it. */
+  pos = ftell (ifp);
+  printf ("%ld\n", pos);
+
+
+/* Close the input file. */
+    if (fclose (ifp) == EOF)
+    {
+      fprintf (stderr, "Could not close file: %s\n", argv[1]);
+    }
+  return 0;
+}				
+/* End of main. */
+
+
+</pre>
+<!-- END CODE-CELL -->
+
+
+</body>
+</html>

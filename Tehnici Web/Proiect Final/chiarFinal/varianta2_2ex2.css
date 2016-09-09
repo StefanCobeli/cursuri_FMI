@@ -1,0 +1,90 @@
+header{
+	position: relative;
+  	text-align: center;
+	top: 3%;
+	right: 1%;
+	font-family: 'Lobster', cursive;
+	font-weight: bold;
+	line-height: 32px;
+	font-size: 30px;
+
+}
+
+button {
+  display: inline-block;
+  border-radius: 50px;
+  background-color: pink;
+  border: dotted;
+  color: black;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+ 
+}
+
+.dispare {
+	display : none;
+	cursor: pointer;
+}
+p {
+
+cursor: pointer;
+
+}
+nav:hover .dispare{
+	cursor: pointer;
+	display : block;
+}
+
+iframe{
+
+	height: 30em;
+	width: 50%;
+
+}
+
+aside{
+width:  49%;
+	float: right;
+}
+footer{
+	position: fixed;
+    bottom: 0;
+    right: 0;
+    font-family: "Great Vibes", cursive;
+    animation: pulse 5s infinite;
+}
+@keyframes pulse {
+  0% {
+    background-color: BarkKhaki;
+  }
+  33%{
+
+  	background-color: PaleGreen;
+  }
+  66% {
+    background-color: Moccasin;
+  }
+  100%{
+  	background-color: BarkKhaki;
+  }
+}
+body{
+
+background-image: url("background1.jpg");
+
+}
+
+#competed-tasks label{
+
+	font-family: "Great Vibes", cursive;
+	text-decoration: line-through;
+
+}
+
+#incomplete-tasks label{
+	font-family: "Libre Baskerville", cursive;
+	//position: absolute;
+	max-width: 30px;
+
+}

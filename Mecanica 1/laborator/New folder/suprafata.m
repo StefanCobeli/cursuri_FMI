@@ -1,0 +1,7 @@
+x=linspace(0, 2*pi, 40 )
+y=linspace(0, 2*pi, 40)
+[X,Y]=meshgrid(x, y)
+Z=sin(X).*cos(Y)
+T=sin(X).*sin(Y)
+U=cos(X)
+surf(Z,T,U)

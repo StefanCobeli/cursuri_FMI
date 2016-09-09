@@ -1,0 +1,660 @@
+fmod TEMA12 is
+
+   protecting NAT .
+
+   sorts Multime MultMultime Pereche MultimePerechi .
+   subsorts Nat < Multime < MultMultime .
+   subsort Pereche < MultimePerechi .
+
+   op nil : -> Multime .
+   op __ : Multime Multime -> Multime [assoc comm id: nil prec 20] .
+
+   op null : -> MultMultime .
+   op _;_ : MultMultime MultMultime -> MultMultime [assoc comm id: null prec 30] .
+
+   op (_,_) : Nat Nat -> Pereche .
+
+   op vida : -> MultimePerechi .
+   op _|_ : MultimePerechi MultimePerechi -> MultimePerechi [assoc comm id: vida prec 30] .
+***> concatenarea de multimi de perechi de numere naturale 
+
+   op _x_ : Multime Multime -> MultimePerechi [prec 25] . ***> produsul cartezian
+
+   op adauga : Nat MultMultime -> MultMultime .
+   op parti : Multime -> MultMultime .   ***> partile unei multimi
+***> trebuie sa primeasca o multime ca argument, adica o lista fara duplicate
+
+   vars X Y : Nat .
+   vars M N : Multime .
+   var P : MultMultime .
+
+   eq nil x M = vida .
+   eq M x nil = vida .
+   eq X M x Y N = (X,Y) | X x N | M x Y | M x N .
+
+   eq adauga(X,null) = null .
+   eq adauga(X,M ; P) = X M ; adauga(X,P) . 
+
+   eq parti(nil) = nil .   ***> Atentie: nu null!
+   eq parti(X M) = parti(M) ; adauga(X,parti(M)) .
+
+endfm
+
+
+fmod TEMA13 is
+***> adunarea, scaderea si inmultirea polinoamelor cu coeficienti intregi
+
+   protecting INT .
+
+   sorts Monom Polinom .
+   subsort Monom < Polinom .
+
+   op (_,_) : Int Nat -> Monom .   ***> un monom = (coeficient,exponent)
+***> presupunem monoamele dintr-un polinom asezate descrescator dupa exponent
+
+   op nil : -> Polinom .
+   op __ : Polinom Polinom -> Polinom [assoc id: nil prec 20] .
+
+   ops _+_ : Polinom Polinom -> Polinom [assoc comm prec 40] .
+   op _*_ : Polinom Polinom -> Polinom [assoc comm prec 30] .
+   op _-_ : Polinom Polinom -> Polinom [prec 40] .
+
+   ops p1 p2 p3 : -> Polinom .
+
+   vars C1 C2 : Int .
+   vars E1 E2 : Nat .
+   vars P1 P2 : Polinom .
+
+   ceq (C1,E1) P1 + (C2,E2) P2 = (C1 + C2,E1) (P1 + P2) if E1 == E2 .
+   ceq (C1,E1) P1 + (C2,E2) P2 = (C1,E1) (P1 + (C2,E2) P2) if E1 > E2 .
+   ceq (C1,E1) P1 + (C2,E2) P2 = (C2,E2) ((C1,E1) P1 + P2) if E1 < E2 .
+   eq nil + P1 = P1 .
+
+   ceq (C1,E1) P1 - (C2,E2) P2 = (C1 - C2,E1) (P1 - P2) if E1 == E2 .
+   ceq (C1,E1) P1 - (C2,E2) P2 = (C1,E1) (P1 - (C2,E2) P2) if E1 > E2 .
+   ceq (C1,E1) P1 - (C2,E2) P2 = (- C2,E2) ((C1,E1) P1 - P2) if E1 < E2 .
+   eq P1 - nil = P1 .
+   eq nil - P1 = (0,0) - P1 .
+
+   eq (C1,E1) P1 * (C2,E2) P2 = (C1 * C2,E1 + E2) + P1 * P2 + (C1,E1) * P2 + (C2,E2) * P1 . 
+   eq P1 * nil = nil .
+
+   eq p1 = (2,3) (7,1) (5,0) .
+   eq p2 = (1,2) (1,0) .
+   eq p3 = (2,1) .
+
+endfm
+
+
+fmod TEMA14 is
+
+   sorts Bit SirBit .
+   subsort Bit < SirBit .
+
+   ops 0 1 : -> Bit .
+
+   op nil : -> SirBit .
+   op __ : SirBit SirBit -> SirBit [assoc id: nil prec 20] .
+
+   op _andb_ : Bit Bit -> Bit .
+   op _orb_ : Bit Bit -> Bit .
+   op _xorb_ : Bit Bit -> Bit .
+
+   op _and_ : SirBit SirBit -> SirBit [prec 30] .
+   op _or_ : SirBit SirBit -> SirBit [prec 30] .
+   op _xor_ : SirBit SirBit -> SirBit [prec 30] .
+
+   op _+_ : SirBit SirBit -> SirBit [prec 30] .
+   op t : SirBit -> SirBit .   ***> transport
+
+   vars A B : Bit .
+   vars S T : SirBit .
+
+   eq 0 andb B = 0 .
+   eq B andb 0 = 0 .
+   eq 1 andb 1 = 1 . 
+
+   eq 1 orb B = 1 .
+   eq B orb 1 = 1 .
+   eq 0 orb 0 = 0 .
+
+   eq A xorb B = if A == B then 0 else 1 fi .
+
+   eq nil and S = S .
+   eq S and nil = S .
+   eq S A and T B = (S and T) (A andb B) . 
+
+   eq nil or S = S .
+   eq S or nil = S .
+   eq S A or T B = (S or T) (A orb B) . 
+
+   eq nil xor S = S .
+   eq S xor nil = S .
+   eq S A xor T B = (S xor T) (A xorb B) . 
+
+   eq S + nil = S .
+   eq nil + S = S .
+   eq S 0 + T 0 = (S + T) 0 .
+   eq S 0 + T 1 = (S + T) 1 .
+   eq S 1 + T 0 = (S + T) 1 .
+   eq S 1 + T 1 = t(S + T) 0 .
+
+   eq t(nil) = 1 .
+   eq t(S 0) = S 1 .
+   eq t(S 1) = t(S) 0 .
+
+endfm
+
+
+fmod TEMA15 is
+***> arbori binari
+
+   extending NAT .
+
+   sorts Lista Arbbin .
+   subsort Nat < Lista .
+
+   op nil : -> Lista . ***> lista de numere naturale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Nat Arbbin Arbbin -> Arbbin .
+
+   op drs : Arbbin -> Lista .
+***> parcurgerea unui arbore binar in ordinea dreapta-radacina-stanga
+
+   ops h nr maxim : Arbbin -> Nat .
+***> inaltimea, numarul de noduri, maximul dintre informatiile din noduri
+
+   ops 2fii ech : Arbbin -> Bool .
+***> 2fii determina daca orice nod care nu e frunza are 2 fii
+***> ech determina daca arborele binar este echilibrat
+   op test : Nat Nat -> Bool .
+***> operatie auxiliara pentru ech
+
+   ops ex1 ex2 ex3 : -> Arbbin . ***> exemple de arbori binari
+
+   vars X Y : Nat .
+   vars A B : Arbbin .
+
+   eq drs(null) = nil .
+   eq drs(X{A,B}) = drs(B) X drs(A) .
+
+   eq h(null) = 0 .
+   eq h(X{A,B}) = s max(h(A),h(B)) .
+
+   eq nr(null) = 0 .
+   eq nr(X{A,B}) = s(nr(A) + nr(B)) .
+
+   eq maxim(null) = 0 .
+   eq maxim(X{A,B}) = max(X,max(maxim(A),maxim(B))) .
+
+   eq 2fii(null) = true .
+   eq 2fii(X{null,null}) = true .
+   ceq 2fii(X{A,null}) = false if A =/= null .
+   ceq 2fii(X{null,B}) = false if B =/= null .
+   ceq 2fii(X{A,B}) = 2fii(A) and 2fii(B) if A =/= null and B =/= null .
+   
+   eq ech(null) = true .
+   eq ech(X{A,B}) = if test(h(A),h(B)) then ech(A) and ech(B) else false fi .
+
+   eq test(X,Y) = X == Y or X == s Y or s X == Y . 
+
+   eq ex1 = 1{2{null,null},3{null,4{null,null}}} .
+   eq ex2 = 1{2{4{null,null},5{6{null,null},null}},3{null,7{8{null,null},9{10{null,null},null}}}} .
+   eq ex3 = 1{2{4{null,null},5{null,null}},3{null,null}} .
+
+endfm
+
+
+fmod TEMA16NAT is
+
+   extending TEMA15 .
+
+   op ecaut : Arbbin -> Bool .
+***> determina daca un arbore binar e arbore de cautare
+   ops minarbbin maxarbbin : Arbbin -> Nat .
+***( determina valoarea minima, respectiv maxima,
+din nodurile unui arbore binar nevid )
+
+   op _in_ : Nat Arbbin -> Bool .
+***( determina daca o valoare se afla intr-un
+arbore binar de cautare )
+
+   op insert : Nat Arbbin -> Arbbin .
+   op insertlist : Lista Arbbin -> Arbbin .
+   op sortdown : Lista -> Lista .
+***> sorteaza descrescator o lista
+
+   ops exarbcaut exnonarbcaut : -> Arbbin .
+
+   vars X Y Z : Nat .
+   var L : Lista .
+   vars A B C D : Arbbin .
+
+   eq minarbbin(X{null,null}) = X .
+   eq minarbbin(X{Y{A,B},null}) = min(X,minarbbin(Y{A,B})) .
+   eq minarbbin(X{null,Z{C,D}}) = min(X,minarbbin(Z{C,D})) .
+   eq minarbbin(X{Y{A,B},Z{C,D}}) = min(X,min(minarbbin(Y{A,B}),minarbbin(Z{C,D}))) .
+
+   eq maxarbbin(X{null,null}) = X .
+   eq maxarbbin(X{Y{A,B},null}) = max(X,maxarbbin(Y{A,B})) .
+   eq maxarbbin(X{null,Z{C,D}}) = max(X,maxarbbin(Z{C,D})) .
+   eq maxarbbin(X{Y{A,B},Z{C,D}}) = max(X,max(maxarbbin(Y{A,B}),maxarbbin(Z{C,D}))) .
+
+   eq ecaut(null) = true .
+   eq ecaut(X{null,null}) = true .
+   eq ecaut(X{Y{A,B},null}) = maxarbbin(Y{A,B}) <= X and ecaut(Y{A,B}) .
+   eq ecaut(X{null,Z{C,D}}) = X < minarbbin(Z{C,D}) and ecaut(Z{C,D}) .
+   eq ecaut(X{Y{A,B},Z{C,D}}) = maxarbbin(Y{A,B}) <= X and X < minarbbin(Z{C,D}) and ecaut(Y{A,B}) and ecaut(Z{C,D}) .
+
+   eq X in null = false .
+   eq X in X{A,B} = true .
+   ceq X in Y{A,B} = X in A if X < Y .
+   ceq X in Y{A,B} = X in B if X > Y .
+
+   eq insert(Y,null) = Y{null,null} .
+   eq insert(Y,X{A,B}) = if Y <= X then X{insert(Y,A),B} else X{A,insert(Y,B)} fi .
+
+   eq insertlist(nil,A) = A .
+   eq insertlist(X L,A) = insert(X,insertlist(L,A)) . 
+
+   eq sortdown(L) = drs(insertlist(L,null)) .
+
+   eq exarbcaut = 10{2{null,null},20{15{null,null},100{null,null}}} .
+   eq exnonarbcaut = 10{2{null,null},20{1{null,null},100{null,null}}} .
+
+***> red ecaut(exarbcaut) . => true.
+***> red ecaut(exnonarbcaut) . => false.
+
+endfm
+
+
+fmod TEMA16a is
+
+   protecting INT .
+
+   sorts Lista Arbbin .
+   subsort Int < Lista .
+
+   op nil : -> Lista . ***> lista de numere intregi vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Int Arbbin Arbbin -> Arbbin .
+
+   op ino : Arbbin -> Lista .
+***> parcurgerea unui arbore binar in inordine
+
+   op insert : Int Arbbin -> Arbbin .
+   op insertlist : Lista Arbbin -> Arbbin .
+   op sortare : Lista -> Lista .
+***> sorteaza o lista de intregi
+
+   vars X Y Z : Int .
+   var L : Lista .
+   vars A B C D : Arbbin .
+
+   eq ino(null) = nil .
+   eq ino(X{A,B}) = ino(A) X ino(B) .
+
+   eq insert(Y,null) = Y{null,null} .
+   eq insert(Y,X{A,B}) = if Y <= X then X{insert(Y,A),B} else X{A,insert(Y,B)} fi .
+
+   eq insertlist(nil,A) = A .
+   eq insertlist(X L,A) = insert(X,insertlist(L,A)) . 
+
+   eq sortare(L) = ino(insertlist(L,null)) .
+
+endfm
+
+
+fmod TEMA16b is
+
+   protecting RAT .
+
+   sorts Lista Arbbin .
+   subsort Rat < Lista .
+
+   op nil : -> Lista . ***> lista de numere rationale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Rat Arbbin Arbbin -> Arbbin .
+
+   op ino : Arbbin -> Lista .
+***> parcurgerea unui arbore binar in inordine
+
+   op insert : Rat Arbbin -> Arbbin .
+   op insertlist : Lista Arbbin -> Arbbin .
+   op sortare : Lista -> Lista .
+***> sorteaza o lista de numere rationale
+
+   vars X Y Z : Rat .
+   var L : Lista .
+   vars A B C D : Arbbin .
+
+   eq ino(null) = nil .
+   eq ino(X{A,B}) = ino(A) X ino(B) .
+
+   eq insert(Y,null) = Y{null,null} .
+   eq insert(Y,X{A,B}) = if Y <= X then X{insert(Y,A),B} else X{A,insert(Y,B)} fi .
+
+   eq insertlist(nil,A) = A .
+   eq insertlist(X L,A) = insert(X,insertlist(L,A)) . 
+
+   eq sortare(L) = ino(insertlist(L,null)) .
+
+endfm
+
+
+fmod TEMA16c is
+
+   protecting FLOAT .
+
+   sorts Lista Arbbin .
+   subsort Float < Lista .
+
+   op nil : -> Lista . ***> lista de numere reale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Float Arbbin Arbbin -> Arbbin .
+
+   op ino : Arbbin -> Lista .
+***> parcurgerea unui arbore binar in inordine
+
+   op insert : Float Arbbin -> Arbbin .
+   op insertlist : Lista Arbbin -> Arbbin .
+   op sortare : Lista -> Lista .
+***> sorteaza o lista de numere reale
+
+   vars X Y Z : Float .
+   var L : Lista .
+   vars A B C D : Arbbin .
+
+   eq ino(null) = nil .
+   eq ino(X{A,B}) = ino(A) X ino(B) .
+
+   eq insert(Y,null) = Y{null,null} .
+   eq insert(Y,X{A,B}) = if Y <= X then X{insert(Y,A),B} else X{A,insert(Y,B)} fi .
+
+   eq insertlist(nil,A) = A .
+   eq insertlist(X L,A) = insert(X,insertlist(L,A)) . 
+
+   eq sortare(L) = ino(insertlist(L,null)) .
+
+endfm
+
+
+fmod TEMA16d is
+
+   protecting STRING .
+
+   sorts Lista Arbbin .
+   subsort Char < Lista .
+
+   op nil : -> Lista . ***> lista de caractere vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Char Arbbin Arbbin -> Arbbin .
+
+   op ino : Arbbin -> Lista .
+***> parcurgerea unui arbore binar in inordine
+
+   op insert : Char Arbbin -> Arbbin .
+   op insertlist : Lista Arbbin -> Arbbin .
+   op sortare : Lista -> Lista .
+***> sorteaza o lista de caractere
+
+   vars X Y Z : Char .
+   var L : Lista .
+   vars A B C D : Arbbin .
+
+   eq ino(null) = nil .
+   eq ino(X{A,B}) = ino(A) X ino(B) .
+
+   eq insert(Y,null) = Y{null,null} .
+   eq insert(Y,X{A,B}) = if Y <= X then X{insert(Y,A),B} else X{A,insert(Y,B)} fi .
+
+   eq insertlist(nil,A) = A .
+   eq insertlist(X L,A) = insert(X,insertlist(L,A)) . 
+
+   eq sortare(L) = ino(insertlist(L,null)) .
+
+endfm
+
+
+fmod TEMA16e is
+
+   protecting STRING .
+
+   sorts Lista Arbbin .
+   subsort String < Lista .
+
+   op nil : -> Lista . ***> lista de siruri de caractere vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : String Arbbin Arbbin -> Arbbin .
+
+   op ino : Arbbin -> Lista .
+***> parcurgerea unui arbore binar in inordine
+
+   op insert : String Arbbin -> Arbbin .
+   op insertlist : Lista Arbbin -> Arbbin .
+   op sortare : Lista -> Lista .
+***> sorteaza o lista de siruri de caractere
+
+   vars X Y Z : String .
+   var L : Lista .
+   vars A B C D : Arbbin .
+
+   eq ino(null) = nil .
+   eq ino(X{A,B}) = ino(A) X ino(B) .
+
+   eq insert(Y,null) = Y{null,null} .
+   eq insert(Y,X{A,B}) = if Y <= X then X{insert(Y,A),B} else X{A,insert(Y,B)} fi .
+
+   eq insertlist(nil,A) = A .
+   eq insertlist(X L,A) = insert(X,insertlist(L,A)) . 
+
+   eq sortare(L) = ino(insertlist(L,null)) .
+
+endfm
+
+
+fmod ARBORE is
+***> arbori oarecare 
+
+   protecting NAT .
+
+   sorts Lista Arbore ListArb .
+   subsort Nat < Lista .
+   subsort Arbore < ListArb .
+
+   op nil : -> Lista . ***> lista de numere naturale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbore . ***> arborele vid
+   op _{_} : Nat ListArb -> Arbore [prec 20] .
+
+   op frunza : -> ListArb . ***> lista de arbori vida
+   op _;_ : ListArb ListArb -> ListArb [assoc id: frunza prec 30] .
+***> concatenarea de liste de arbori
+
+   op ex : -> Arbore .   ***> un exemplu de arbore oarecare
+
+   eq ex = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}} ; 7{frunza}} .
+
+endfm
+
+
+fmod TEMA17 is
+
+   protecting ARBORE .
+
+   ops maxlist : Lista -> Nat .
+***> maximul dintr-o lista de numere naturale
+
+   op lungime : ListArb -> Nat .
+***> lungimea unei liste de arbori
+
+   ops h nr maxim nrfii nrmaxfii : Arbore -> Nat .
+***( inaltimea, numarul de noduri, valoarea maxima din noduri, numarul de
+fii, respectiv numarul maxim de fii al unui nod intr-un arbore oarecare )
+   ops hlist nrlist maximlist nrfiilist : Arbore -> Lista .
+***> operatii auxiliare pentru h, nr, maxim, respectiv nrmaxfii
+
+   ops dfds bfds : Arbore -> Lista .
+***> parcurgerile in adancime, respectiv pe niveluri, de la dreapta la stanga
+   ops dfdslist bfdslist : ListArb -> Lista .
+
+   var X : Nat .
+   var L : Lista .
+   var A : Arbore .
+   vars LA LA1 : ListArb .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(X L) = max(X,maxlist(L)) .
+
+   eq lungime(frunza) = 0 .
+   eq lungime(A ; LA) = s lungime(LA) .
+
+   eq h(null) = 0 .
+   eq h(X{LA}) = s maxlist(hlist(LA)) .
+
+   eq hlist(frunza) = nil .
+   eq hlist(A ; LA) = h(A) hlist(LA) .
+
+   eq nr(null) = 0 .
+   eq nr(X{LA}) = s nrlist(LA) .
+
+   eq nrlist(frunza) = 0 .
+   eq nrlist(A ; LA) = nr(A) + nrlist(LA) .
+
+   eq maxim(null) = 0 .
+   eq maxim(X{LA}) = max(X,maximlist(LA)) .
+
+   eq maximlist(frunza) = 0 .
+   eq maximlist(A ; LA) = max(maxim(A),maximlist(LA)) .
+
+   eq nrfii(null) = 0 .
+   eq nrfii(X{LA}) = lungime(LA) .
+
+   eq nrfiilist(frunza) = nil .
+   eq nrfiilist(A ; LA) = nrfii(A) nrfiilist(LA) .
+
+   eq nrmaxfii(null) = 0 .
+   eq nrmaxfii(X{LA}) = max(nrfii(X{LA}),maxlist(nrfiilist(LA))) .
+
+   eq dfds(null) = nil .
+   eq dfds(X{LA}) = X dfdslist(LA) .
+
+   eq dfdslist(frunza) = nil .
+   eq dfdslist(LA ; A) = dfds(A) dfdslist(LA) .
+
+   eq bfds(null) = nil .
+   eq bfds(X{LA}) = X bfdslist(LA) .
+
+   eq bfdslist(frunza) = nil .
+   eq bfdslist(LA1 ; X{LA}) = X bfdslist(LA ; LA1) . 
+
+endfm
+
+
+fmod TEMA-OBLIGATORIE is ***> pentru bonus la nota la prima lucrare
+
+***( Exercitiile din aceasta tema sunt obligatorii, in sensul
+ca rezolvarea lor conteaza pentru notarea la prima lucrare de
+control. Rezolvarile acestor exercitii trebuie aduse de
+studentii fiecarei grupe la primul laborator de dupa Paste.
+Daca sunt aduse mai tarziu, atunci nu vor fi notate. )
+
+***( Prima cerinta din tema obligatorie este sa scrieti un
+modul in Maude pentru numere complexe, care sa importe modulul
+predefinit FLOAT, in care sunt definite numerele reale, pentru
+lucrul cu partea reala si partea imaginara a unui numar complex.
+Modulul vostru pentru numere complexe trebuie sa contina
+operatiile de: calcul al modulului unui numar complex, adunare,
+scadere, inmultire si impartire a doua numere complexe. )
+
+***( A doua cerinta din tema obligatorie este sa scrieti in Maude
+un modul pentru polinoame cu coeficienti intregi, care sa contina
+o operatie pentru determinarea listei tuturor radacinilor intregi
+ale unui polinom cu coeficienti intregi. Amintesc ca toate
+radacinile intregi ale unui polinom cu coeficienti intregi sunt
+divizori intregi ai termenului liber al polinomului. A se revedea
+TEMA 13 din modlectia7_8.maude, a carei rezolvare am sa v-o trimit
+la sfarsitul acestei saptamani. )
+
+***( Ultima cerinta din tema obligatorie este un exercitiu dat de
+doamna Profesoara I. Leustean, care va cere sa scrieti in Maude un
+modul pentru implementarea tipului multiset cu elemente din
+multimea numerelor naturale.
+   Daca E este o multime, atunci un multiset cu elemente din E
+este o multime de perechi M = {(x,n) | x in E, n natural}. Intr-un
+multiset, un element poate aparea de mai multe ori: (x,n) in M
+inseamna ca x apare de n ori in M. Un multiset poate fi scris ca o
+multime in care permitem ca un element sa apara de mai multe ori
+(ordinea elementelor nu are importanta), sau ca o lista de perechi,
+cu prima componenta dintr-o pereche reprezentand elementul, iar a
+doua componenta a perechii reprezentand numarul de aparitii ale
+elementului in multiset. De exemplu: M = {1, 2, 1, 5, 3, 4, 5, 4, 1,
+3, 5, 0} = {(1,3), (2,1), (3,2), (4,2), (5,3), (0,1)}.
+   Scrieti un modul pentru multiseturi cu elemente din multimea
+numerelor naturale, care sa contina doua operatii pentru trecerea
+dintr-o reprezentare in cealalta, la care sa adaugati alte doua
+operatii, pentru definirea reuniunii si, respectiv, a intersectiei
+a doua multiseturi in reprezentarea cu perechi. In reuniunea a doua
+multiseturi, fiecare element are ca numar de aparitii maximul dintre
+numerele aparitiilor sale in fiecare dintre cele doua multiseturi, in
+timp ce, in intersectia a doua multiseturi, fiecare element are ca
+numar de aparitii minimul dintre numerele aparitiilor sale in fiecare
+dintre cele doua multiseturi.
+   Ca indicatie, multiseturile in prima reprezentare vor fi liste de
+numere naturale, avand concatenarea comutativa si admitand duplicate,
+iar multiseturile in a doua reprezentare vor fi liste de perechi de
+numere naturale, avand concatenarea comutativa si admitand cel mult
+o pereche cu o anumita prima componenta. )
+
+endfm
+
+
+fmod OBSERVATIE-TEMA is
+
+***( Si temele urmatoare, care nu sunt obligatorii, trebuie aduse tot
+la primul laborator de dupa Paste. Amintesc ca punctajele acumulate
+din rezolvarea acestor teme, pe care vi le dau dupa fiecare laborator,
+va pot furniza un punctaj-bonus la examen. )
+
+endfm
+
+
+fmod TEMA18 is   ***> 150 puncte
+
+***( Scrieti un modul pentru polinoame cu coeficienti reali, importand
+modulul FLOAT predefinit, care sa contina operatii pentru adunarea,
+scaderea, inmultirea a doua polinoame, precum si pentru catul si restul
+impartirii a doua polinoame cu coeficienti reali. )
+
+endfm
+
+
+fmod TEMA19 is   ***> 90 puncte
+
+***( Scrieti un modul pentru implementarea unui automat finit
+determinist, cu starile, starea initiala, starile finale, alfabetul
+si functia de tranzitie date in interiorul modulului, si care sa
+contina o operatie care sa determine daca un cuvant este sau nu
+acceptat de automat. )
+
+endfm
+
+
+fmod TEMA20 is   ***> 90 puncte
+
+***> La fel ca in TEMA 19, dar pentru un automat finit nedeterminist.
+
+endfm

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="starstyles.css" type="text/css"?>
+
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="450" height="500"  id="stea">
+ <defs>
+    <style type="text/css"><![CDATA[
+       
+      text#te{
+	font-family: verdana, sans-serif;
+	font-size: 500%;
+	fill: #003565;
+  }	
+  #cerc:hover{transform: scale(0.75); -moz-transform:scale(0.75);}
+    
+	]]></style>
+	
+	
+    <linearGradient id="myLG"
+                    x1="0%" y1="0%"
+                    x2="0%" y2="100%"
+                    spreadMethod="pad">
+      <stop offset="0%"   stop-color="#00ff00" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#0000ff" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+
+
+   <path
+     d="M 230,32 L181,175 L 230,240 L 275,175 L 230,32 z "
+	  style="fill:#00ff00"
+      id="1a"  class="cb"/> <!-- green -->
+	  
+	  
+	  <circle id="cerc" cx="230" cy="32" r="10">
+	  
+	  <animateMotion
+              path= "M0,0 L50,132 L-50, 132 L0,0"
+              begin="0s" dur="10s" repeatCount="indefinite"
+              />	  
+      </circle> 
+	
+	<path
+     d="M 30,175 L 150,265 L 230,240 L 181,175 L 30,175 "
+     style="fill:url(#myLG)"  id="2a" class="cb" /> <!-- grey -->
+	 
+	 <path
+     d="M 230,240 L 150,265 L 105,412 L 230,323 L 230,240 "
+     style="fill:#0000ff"
+     id="3a" class="cb" />  <!-- blue -->
+	 
+  <path
+     d="M 230,240 L 230,323 L 352,412 L 305,265 L 230,240  "
+     style="fill:#ffff00"
+     id="4a" class="cb" />  <!-- yellow -->
+  <path
+     d="M 275,175 L 230,240 L 305,265 L 426,175 L 275,175 "
+     style="fill:#ff0000"
+     id="5a" class="cb" />  <!-- red -->
+	 
+	
+	  <circle id="cerc" cx="400" cy="300" r="24" style="stroke:#006600; fill:blue" >
+	   <animateTransform attributeName="transform"
+                      type="scale"
+                      from="1" to="0.75"
+                      begin="0s" dur="5s"
+                      repeatCount="3" />  
+	  </circle>
+	  
+	 <text  id="te" x="150" y="450">star</text>
+	 
+	 
+	 
+	  
+	 
+	 </svg>

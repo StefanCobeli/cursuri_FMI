@@ -1,0 +1,384 @@
+fmod ERONAT is
+
+***> cum NU se scrie o specificatie in Maude
+
+   sort Nat .
+
+   op 0  : -> Nat .
+   op s_ : Nat -> Nat .
+   op _+_ : Nat -> Nat .
+
+   vars X Y : Nat .
+
+   eq X + 0 = X .
+   eq X + s Y = s (X + Y) .
+   eq s X + s Y = s (X + Y) . ***( ecuatie prin
+adaugarea careia se pierde confluenta rescrierii )
+   eq s X = s s s X . ***( ecuatie prin adaugarea
+careia se pierde terminarea rescrierii )
+
+endfm
+
+
+fmod PERECHI is
+
+   protecting NAT .
+
+   sort Pereche .
+
+   op (_,_) : Nat Nat -> Pereche .
+   op _+_ : Pereche Pereche -> Pereche .
+***> suma pe componente
+   op _*_ : Pereche Pereche -> Nat .
+***> produsul scalar
+   op _<=_ : Pereche Pereche -> Bool .
+***> ordinea lexicografica
+
+   vars X Y X1 Y1 : Nat .
+
+   eq (X , Y) + (X1 , Y1) = (X + X1 , Y + Y1) .
+   eq (X , Y) * (X1 , Y1) = X * X1 + Y * Y1 .
+   eq (X , Y) <= (X1 , Y1) = (X < X1) or ((X == X1) and (Y <= Y1)) .
+
+endfm
+
+
+fmod PERECHI-LISTE is
+
+   extending NAT .
+
+   sorts Lista PerNat PerLista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista . ***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+***> concatenarea listelor
+
+   op (_,_) : Nat Nat -> PerNat .
+***> operatia care construieste sortul PerNat
+
+   op {_;_} : Lista Lista -> PerLista [prec 30] .
+***> operatia care construieste sortul PerLista
+
+   op concat : PerLista PerLista -> PerLista .
+***> concatenarea de perechi de liste, pe componente
+
+   op perip : Lista -> PerLista .
+***( perip(L) = { L1 ; L2 }, unde:
+L1 = lista elementelor din L aflate pe pozitii impare in L,
+L2 = lista elementelor din L aflate pe pozitii pare in L,
+cu pozitiile numerotate incepand de la 1, si dand rezultatul
+printr-o singura parcurgere a listei L )
+
+   op eroare : -> PerNat .
+***( pentru tratarea separata a cazului listei vide in operatiile
+minpper si minuper de mai jos; daca aceste operatii sunt aplicate
+unei liste nevide, atunci recursia prin care sunt definite nu merge
+pana la lista vida, ci se termina cu lista cu un singur element )
+   
+   op succ : PerNat -> PerNat .
+***> operatie auxiliara pentru calcularea lui minppoz si minupoz
+
+   op minpper : PerNat PerNat -> PerNat .
+***> operatie auxiliara pentru calcularea lui minppoz
+
+   op minppoz : Lista -> PerNat .
+***( minppoz(L) = (minimul din lista L,prima pozitie a minimului in L),
+calculate cu o singura parcurgere a listei L, si intoarcand eroare
+atunci cand L este vida )
+
+   op minuper : PerNat PerNat -> PerNat .
+***> operatie auxiliara pentru calcularea lui minupoz
+
+   op minupoz : Lista -> PerNat .
+***( minupoz(L) = (minimul din lista L,ultima pozitie a minimului in L),
+calculate cu o singura parcurgere a listei L, si intoarcand eroare
+atunci cand L este vida )
+
+   vars X Y X1 Y1 : Nat .
+   vars L M L1 M1 : Lista .
+
+   eq concat({ L ; M },{ L1 ; M1 }) = { L L1 ; M M1 } . 
+
+   eq perip(nil) = { nil ; nil } .
+   eq perip(X) = { X ; nil } .
+   eq perip(X Y L) = concat({ X ; Y },perip(L)) .
+
+   eq succ((X,Y)) = (X,s Y) .
+
+   ceq minpper((X,Y),(X1,Y1)) = (X,Y) if X <= X1 .
+   ceq minpper((X,Y),(X1,Y1)) = (X1,Y1) if X > X1 .
+
+   eq minppoz(nil) = eroare .
+   eq minppoz(X) = (X,1) .
+   eq minppoz(X Y L) = minpper((X,1),succ(minppoz(Y L))) .
+
+   ceq minuper((X,Y),(X1,Y1)) = (X,Y) if X < X1 .
+   ceq minuper((X,Y),(X1,Y1)) = (X1,Y1) if X >= X1 .
+
+   eq minupoz(nil) = eroare .
+   eq minupoz(X) = (X,1) .
+   eq minupoz(X Y L) = minuper((X,1),succ(minupoz(Y L))) .
+
+endfm
+
+
+fmod STIVE is
+
+   protecting NAT .
+
+   sort Stiva .
+   subsort Nat < Stiva .
+
+   op nil : -> Stiva .
+   op __ : Stiva Stiva -> Stiva [assoc id: nil] .
+   op push : Nat Stiva -> Stiva .
+   op pop : Stiva -> Nat .
+   op popstiva : Stiva -> Stiva .
+
+   var X : Nat .
+   var S : Stiva .
+
+   eq push(X,S) = X S .
+   eq pop(X S) = X .
+   eq popstiva(X S) = S .    
+   
+endfm
+
+
+fmod COZI is
+
+   protecting NAT .
+
+   sort Coada .
+   subsort Nat < Coada .
+
+   op nil : -> Coada .
+   op __ : Coada Coada -> Coada [assoc id: nil] .
+   op push : Nat Coada -> Coada .
+   op pop : Coada -> Nat .
+   op popcoada : Coada -> Coada .
+
+   var X : Nat .
+   var C : Coada .
+
+   eq push(X,C) = C X .
+   eq pop(X C) = X .
+   eq popcoada(X C) = C .    
+   
+endfm
+
+
+fmod OP-MULTIMI is
+
+   protecting NAT .
+
+   sorts Multime MultMultime Pereche MultimePerechi .
+   subsorts Nat < Multime < MultMultime .
+   subsort Pereche < MultimePerechi .
+
+   op nil : -> Multime .
+   op __ : Multime Multime -> Multime [assoc comm id: nil prec 20] .
+
+   op null : -> MultMultime .
+   op _;_ : MultMultime MultMultime -> MultMultime [assoc comm id: null prec 30] .
+
+   op (_,_) : Nat Nat -> Pereche .
+
+   op vida : -> MultimePerechi .
+   op _|_ : MultimePerechi MultimePerechi -> MultimePerechi [assoc comm id: vida prec 30] .
+***> concatenarea de multimi de perechi de numere naturale 
+
+   op _x_ : Multime Multime -> MultimePerechi [prec 25] . ***> produsul cartezian
+
+   op adauga : Nat MultMultime -> MultMultime .
+   op parti : Multime -> MultMultime .   ***> partile unei multimi
+***> trebuie sa primeasca o multime ca argument, adica o lista fara duplicate
+
+   vars X Y : Nat .
+   vars M N : Multime .
+   var P : MultMultime .
+
+   eq nil x M = vida .
+   eq M x nil = vida .
+   eq X M x Y N = (X,Y) | X x N | M x Y | M x N .
+
+   eq adauga(X,null) = null .
+   eq adauga(X,M ; P) = X M ; adauga(X,P) . 
+
+   eq parti(nil) = nil .   ***> Atentie: nu null!
+   eq parti(X M) = parti(M) ; adauga(X,parti(M)) .
+
+endfm
+
+
+fmod POLINOAME is
+***> adunarea, scaderea si inmultirea polinoamelor cu coeficienti intregi
+
+   protecting INT .
+
+   sorts Monom Polinom .
+   subsort Monom < Polinom .
+
+   op (_,_) : Int Nat -> Monom .   ***> un monom = (coeficient,exponent)
+***> presupunem monoamele dintr-un polinom asezate descrescator dupa exponent
+
+   op nil : -> Polinom .
+   op __ : Polinom Polinom -> Polinom [assoc id: nil prec 20] .
+
+   ops _+_ : Polinom Polinom -> Polinom [assoc comm prec 40] .
+   op _*_ : Polinom Polinom -> Polinom [assoc comm prec 30] .
+   op _-_ : Polinom Polinom -> Polinom [prec 40] .
+
+   ops p1 p2 p3 : -> Polinom .
+
+   vars C1 C2 : Int .
+   vars E1 E2 : Nat .
+   vars P1 P2 : Polinom .
+
+   ceq (C1,E1) P1 + (C2,E2) P2 = (C1 + C2,E1) (P1 + P2) if E1 == E2 .
+   ceq (C1,E1) P1 + (C2,E2) P2 = (C1,E1) (P1 + (C2,E2) P2) if E1 > E2 .
+   ceq (C1,E1) P1 + (C2,E2) P2 = (C2,E2) ((C1,E1) P1 + P2) if E1 < E2 .
+   eq nil + P1 = P1 .
+
+   ceq (C1,E1) P1 - (C2,E2) P2 = (C1 - C2,E1) (P1 - P2) if E1 == E2 .
+   ceq (C1,E1) P1 - (C2,E2) P2 = (C1,E1) (P1 - (C2,E2) P2) if E1 > E2 .
+   ceq (C1,E1) P1 - (C2,E2) P2 = (- C2,E2) ((C1,E1) P1 - P2) if E1 < E2 .
+   eq P1 - nil = P1 .
+   eq nil - P1 = (0,0) - P1 .
+
+   eq (C1,E1) P1 * (C2,E2) P2 = (C1 * C2,E1 + E2) + P1 * P2 + (C1,E1) * P2 + (C2,E2) * P1 . 
+   eq P1 * nil = nil .
+
+   eq p1 = (2,3) (7,1) (5,0) .
+   eq p2 = (1,2) (1,0) .
+   eq p3 = (2,1) .
+
+endfm
+
+
+fmod SIRURIBITI is
+
+   sorts Bit SirBit .
+   subsort Bit < SirBit .
+
+   ops 0 1 : -> Bit .
+
+   op nil : -> SirBit .
+   op __ : SirBit SirBit -> SirBit [assoc id: nil prec 20] .
+
+   op _andb_ : Bit Bit -> Bit .
+   op _orb_ : Bit Bit -> Bit .
+   op _xorb_ : Bit Bit -> Bit .
+
+   op _and_ : SirBit SirBit -> SirBit [prec 30] .
+   op _or_ : SirBit SirBit -> SirBit [prec 30] .
+   op _xor_ : SirBit SirBit -> SirBit [prec 30] .
+
+   op _+_ : SirBit SirBit -> SirBit [prec 30] .
+   op t : SirBit -> SirBit .   ***> transport
+
+   vars A B : Bit .
+   vars S T : SirBit .
+
+   eq 0 andb B = 0 .
+   eq B andb 0 = 0 .
+   eq 1 andb 1 = 1 . 
+
+   eq 1 orb B = 1 .
+   eq B orb 1 = 1 .
+   eq 0 orb 0 = 0 .
+
+   eq A xorb B = if A == B then 0 else 1 fi .
+
+   eq nil and S = S .
+   eq S and nil = S .
+   eq S A and T B = (S and T) (A andb B) . 
+
+   eq nil or S = S .
+   eq S or nil = S .
+   eq S A or T B = (S or T) (A orb B) . 
+
+   eq nil xor S = S .
+   eq S xor nil = S .
+   eq S A xor T B = (S xor T) (A xorb B) . 
+
+   eq S + nil = S .
+   eq nil + S = S .
+   eq S 0 + T 0 = (S + T) 0 .
+   eq S 0 + T 1 = (S + T) 1 .
+   eq S 1 + T 0 = (S + T) 1 .
+   eq S 1 + T 1 = t(S + T) 0 .
+
+   eq t(nil) = 1 .
+   eq t(S 0) = S 1 .
+   eq t(S 1) = t(S) 0 .
+
+endfm
+
+
+fmod DAME is
+***> problema celor N dame
+
+***> presupunem casutele numerotate de la 1 la N, atat pe linii, cat si pe coloane
+***> configuratia unei table va fi lista coloanelor pe care sunt asezate damele
+
+   protecting INT .
+
+   sorts Tabla ListaTable .
+
+   subsorts NzNat < Tabla < ListaTable .
+
+   op nil : -> Tabla .
+   op __ : Tabla Tabla -> Tabla [assoc id: nil prec 20] .
+
+   op null : -> ListaTable .
+   op _;_ : ListaTable ListaTable -> ListaTable [assoc id: null prec 30] .
+
+   op config : NzNat -> ListaTable . ***> lista configuratiilor posibile
+
+   op asezare : NzNat NzNat -> ListaTable .
+***> pozitiile posibile a M <= N dame pe o tabla de sah NxN
+***> operatii ajutatoare:
+   op incauna : ListaTable NzNat -> ListaTable .
+   op pusuna : Tabla NzNat -> ListaTable .
+   op pune : Tabla NzNat -> ListaTable .
+   op nuseataca : Tabla NzNat -> Bool .
+   op nusebat : Tabla NzNat NzNat NzNat -> Bool .
+   op lungime : Tabla -> Nat .
+   op modul : Int -> Int .
+
+   vars M N K X : NzNat .
+   var I : Int .
+   var T : Tabla .
+   var L : ListaTable .
+
+   ceq modul(I) = I if I >= 0 .
+   ceq modul(I) = - I if I < 0 .
+
+   eq lungime(nil) = 0 .
+   eq lungime(N T) = s lungime(T) .
+
+   eq config(N) = asezare(N,N) .
+
+   eq asezare(1,1) = 1 .
+   eq asezare(1,s N) = asezare(1,N) ; (s N) .
+   ceq asezare(s M,N) = incauna(asezare(M,N),N) if s M <= N .
+   ceq asezare(M,N) = null if M > N .
+
+   eq incauna(null,N) = null .
+   eq incauna(T ; L,N) = pusuna(T,N) ; incauna(L,N) .
+
+   eq pusuna(T,1) = pune(T,1) .
+   eq pusuna(T,s N) = pusuna(T,N) ; pune(T,s N) .
+
+   ceq pune(T,N) = T N if nuseataca(T,N) .
+   ceq pune(T,N) = null if not nuseataca(T,N) .
+
+   eq nuseataca(nil,N) = true .
+   eq nuseataca(M T,N) = nusebat(M T,N,1,s lungime(M T)) .
+
+   eq nusebat(nil,N,K,X) = true .
+   eq nusebat(M T,N,K,X) = (M =/= N) and (modul(M - N) =/= modul(K - X)) and nusebat(T,N,s(K),X) .
+
+endfm

@@ -1,0 +1,414 @@
+fmod NATP1 is
+
+   sort Nat .
+
+   op 0 : -> Nat .
+   ops s_ p_ : Nat -> Nat .
+ 
+***( numerele naturale, cu 0,
+     succesor si predecesor )
+
+   var X : Nat .
+   
+   eq p s X = X .
+   eq s p X = X .
+
+endfm
+
+red p 0 .
+red p p p 0 .
+red p s 0 .
+red p s s p s 0 .
+red s p 0 .
+red p p p s p s s 0 . 
+
+
+fmod NATP2-1 is
+
+   sorts NzNat Nat .
+
+   subsort NzNat < Nat .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> NzNat .
+   op p_ : NzNat -> Nat .
+   
+   var X : Nat .
+   var Y : NzNat .
+   
+   eq p s X = X .
+   eq s p Y = Y .
+
+endfm
+
+red p 0 .
+red p p p 0 .
+red p s 0 .
+red p s s p s 0 . 
+red s p 0 .
+red p p p s p s s 0 . 
+
+
+fmod NATP2-2 is
+
+   sorts Zero NzNat Nat .
+
+   subsorts Zero NzNat < Nat .
+
+   op 0 : -> Zero .
+   op s_ : Nat -> NzNat .
+   op p_ : NzNat -> Nat .
+   
+   var X : Nat .
+   var Y : NzNat .
+   
+   eq p s X = X .
+   eq s p Y = Y .
+
+endfm
+
+red p 0 .
+red p p p 0 .
+red p s 0 .
+red p s s p s 0 . 
+red s p 0 .
+red p p p s p s s 0 . 
+
+
+fmod NATP3-1 is
+
+   sorts NzNat Nat Eroare NatEr .
+
+   subsort NzNat < Nat .
+   subsorts Nat Eroare < NatEr .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> NzNat .
+   op p_ : NzNat -> Nat .
+   op s_ : NatEr -> NatEr .
+   op p_ : NatEr -> NatEr .
+   op eroare : -> Eroare .
+   
+   var X : Nat .
+   var Y : NzNat .
+   
+   eq p s X = X .
+   eq s p Y = Y .
+   eq p 0 = eroare .
+   eq p eroare = eroare .
+   eq s eroare = eroare . 
+
+endfm
+
+red p 0 .
+red p p p 0 .
+red p s 0 .
+red p s s p s 0 . 
+red s p 0 .
+red p p p s p s s 0 . 
+
+
+fmod NATP3-2 is
+
+   sorts Zero NzNat Nat Eroare NatEr .
+
+   subsorts Zero NzNat < Nat .
+   subsorts Nat Eroare < NatEr .
+
+   op 0 : -> Zero .
+   op s_ : Nat -> NzNat .
+   op p_ : NzNat -> Nat .
+   op s_ : NatEr -> NatEr .
+   op p_ : NatEr -> NatEr .
+   op p_ : Zero -> Eroare .
+   op eroare : -> Eroare .
+   
+   var X : Nat .
+   var Y : NzNat .
+   
+   eq p s X = X .
+   eq s p Y = Y .
+   eq p 0 = eroare .
+   eq p eroare = eroare .
+   eq s eroare = eroare . 
+
+endfm
+
+red p 0 .
+red p p p 0 .
+red p s 0 .
+red p s s p s 0 . 
+red s p 0 .
+red p p p s p s s 0 . 
+
+
+fmod NATPRED is
+
+   extending NAT .
+
+   sorts Eroare NatEr .
+
+   subsorts Nat Eroare < NatEr .
+
+   op p_ : NzNat -> Nat .
+   op p_ : NatEr -> NatEr .
+   op eroare : -> Eroare .
+
+***( predecesorul pentru
+numerele naturale predefinite )
+   
+   var X : Nat .
+   var Y : NzNat .
+   
+   eq p s X = X .
+   eq s p Y = Y .
+   eq p 0 = eroare .
+   eq p eroare = eroare .
+   eq s eroare = eroare . 
+
+endfm
+
+red p 0 .
+red p p p 0 .
+red p s 0 .
+red p 1 .
+red p 10000 .
+red p s s p s 0 . 
+red s p 0 .
+red p p p s p s s 0 .
+
+
+fmod PERECHI is
+
+   protecting NAT .
+
+   sort Pereche .
+
+   op (_,_) : Nat Nat -> Pereche .
+   op _+_ : Pereche Pereche -> Pereche .
+***> suma pe componente
+   op _*_ : Pereche Pereche -> Nat .
+***> produsul scalar
+   op _<=_ : Pereche Pereche -> Bool .
+***> ordinea lexicografica
+
+   vars X Y X1 Y1 : Nat .
+
+   eq (X , Y) + (X1 , Y1) = (X + X1 , Y + Y1) .
+   eq (X , Y) * (X1 , Y1) = X * X1 + Y * Y1 .
+   eq (X , Y) <= (X1 , Y1) = (X < X1) or ((X == X1) and (Y <= Y1)) .
+
+endfm
+
+
+fmod LISTE-NOTOK is
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+   
+   op nil : -> Lista .
+***> lista vida
+   op __ : Lista Lista -> Lista [assoc] .
+***> concatenarea
+
+   op lungime : Lista -> Nat .   
+
+   var X : Nat .
+   var L : Lista .
+
+   eq L nil = L .
+   eq nil L = L .
+ 
+   eq lungime(nil) = 0 .   
+   eq lungime(X L) = s lungime(L) .
+
+***( Nu functioneaza cum trebuie, pentru ca
+nu stie sa rescrie o lista in ea insasi
+concatenata cu lista vida (nil). Pentru aceasta,
+nil trebuie declarata element neutru la concatenare,
+ca in modulul urmator. )
+
+endfm
+
+
+fmod LISTE-OK is
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+   
+   op nil : -> Lista .
+***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+***> concatenarea
+
+   op lungime : Lista -> Nat .   
+
+   var X : Nat .
+   var L : Lista .
+
+   eq lungime(nil) = 0 .   
+   eq lungime(X L) = s lungime(L) .
+
+endfm
+
+
+fmod LISTE is
+
+***> mai multe operatii cu liste
+
+   extending NAT .
+
+   sorts Infinit NatInf Lista .
+
+   subsorts Nat Infinit < NatInf .
+
+   subsort Nat < Lista .
+   
+   op infinit : -> Infinit .  
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op lungime : Lista -> Nat .
+***> lungimea listei (numarul de elemente)
+
+   op suma : Lista -> Nat .
+***> suma elementelor listei
+
+   op indicipari : Lista -> Lista .
+***> sublista elementelor de indici pari
+***> (numarati de la 1, din capul listei)
+
+   op elempare : Lista -> Lista .
+***> sublista elementelor pare
+
+   op maxim : Nat Nat -> Nat .
+***> maximul a doua numere naturale
+***> exista max predefinit in NAT
+   op maxlista : Lista -> Nat .
+***> maximul dintr-o lista
+
+   op minim : Nat Nat -> Nat .
+***> minimul a doua numere naturale
+***> exista min predefinit in NAT
+   op minlista : Lista -> NatInf .
+***> minimul dintr-o lista
+
+   op nucifre : Lista -> Lista .
+***> selecteaza elementele care nu sunt cifre 
+
+   op eordcresc : Lista -> Bool .
+***> testeaza daca lista e ordonata crescator
+
+   op lm3 : Nat -> Lista .
+***> lm3(N) = lista primilor N multipli pozitivi de 3
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   eq lungime(nil) = 0 .   
+   eq lungime(X L) = s lungime(L) .
+
+   eq suma(nil) = 0 .
+   eq suma(X L) = X + suma(L) .
+
+   eq indicipari(nil) = nil .
+   eq indicipari(X) = nil .
+   eq indicipari(X Y L) = Y indicipari(L) .
+
+   eq elempare(nil) = nil .
+   ceq elempare(X L) = X elempare(L) if 2 divides X .
+   ceq elempare(X L) = elempare(L) if not (2 divides X) .
+
+   ceq maxim(X,Y) = Y if X <= Y .
+   ceq maxim(X,Y) = X if X > Y .
+
+   eq maxlista(nil) = 0 .
+   eq maxlista(X L) = maxim(X,maxlista(L)) .   
+
+   ceq minim(X,Y) = Y if X >= Y .
+   ceq minim(X,Y) = X if X < Y .
+
+   eq minlista(nil) = infinit .
+   eq minlista(X) = X .
+   eq minlista(X Y L) = minim(X,minlista(Y L)) .   
+
+   eq nucifre(nil) = nil .
+   ceq nucifre(X L) = X nucifre(L) if X >= 10 .
+   ceq nucifre(X L) = nucifre(L) if X < 10 .
+
+   eq eordcresc(nil) = true .
+   eq eordcresc(X) = true .
+   eq eordcresc(X Y L) = (X <= Y) and eordcresc(Y L) .   
+
+   eq lm3(0) = nil .
+   eq lm3(s X) = lm3(X) (3 * (s X)) .
+
+endfm
+
+
+fmod SIR-FIBONACCI is
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op sirfib : Nat -> Lista .
+***> genereaza sirul lui Fibonacci pana la un indice dat
+
+   op adauga : Lista -> Lista .
+***( adauga la o lista de lungime cel putin
+2 suma ultimelor sale doua elemente )
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   eq adauga(L X Y) = L X Y (X + Y) .
+
+   eq sirfib(0) = 0 .
+   eq sirfib(1) = 0 1 .
+   eq sirfib(s s X) = adauga(sirfib(s X)) . 
+
+endfm
+
+
+fmod TEMA1 is   ***> 15 puncte
+
+***( Definiti scaderea pe numerele naturale
+definite cu specificatia lui Lawvere, precum
+si pe numerele naturale predefinite. Folositi
+un sort de eroare in ambele cazuri. )
+
+***( Aduceti aceste module la laboratorul de
+saptamana viitoare. La fel pentru toate temele
+care vor urma. Nu se vor puncta temele aduse cu
+cel putin o saptamana intarziere. Se acorda punctaj
+numai pentru temele aduse in saptamana imediat 
+urmatoare celei in care au fost date. )
+
+endfm
+
+
+fmod TEMA2 is   ***> 30 puncte
+
+***( Definiti in Maude o specificatie pentru
+numerele intregi, cu operatiile: 0, s (succesor),
+p (predecesor), +, - unar si binar, *. )
+
+endfm
+
+
+fmod TEMA3 is   ***> 15 puncte
+
+***( Sa se creeze un modul pentru stive, cu 
+operatiile pop si push. Acelasi lucru pentru cozi. )
+
+endfm

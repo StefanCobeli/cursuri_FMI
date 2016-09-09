@@ -1,0 +1,94 @@
+fmod TEMA-OBLIGATORIE is ***> pentru nota la prima lucrare
+
+***( Exercitiile din aceasta tema sunt obligatorii, in sensul
+ca rezolvarea lor conteaza pentru notarea la prima lucrare de
+control. Rezolvarile acestor exercitii trebuie aduse de
+studentii fiecarei grupe la primul laborator de dupa Paste.
+Daca sunt aduse mai tarziu, atunci nu vor fi notate. )
+
+***( Prima cerinta din tema obligatorie este sa scrieti un
+modul in Maude pentru numere complexe, care sa importe modulul
+predefinit FLOAT, in care sunt definite numerele reale, pentru
+lucrul cu partea reala si partea imaginara a unui numar complex.
+Modulul vostru pentru numere complexe trebuie sa contina
+operatiile de: calcul al modulului unui numar complex, adunare,
+scadere, inmultire si impartire a doua numere complexe. )
+
+***( A doua cerinta din tema obligatorie este sa scrieti in Maude
+un modul pentru polinoame cu coeficienti intregi, care sa contina
+o operatie pentru determinarea listei tuturor radacinilor intregi
+ale unui polinom cu coeficienti intregi. Amintesc ca toate
+radacinile intregi ale unui polinom cu coeficienti intregi sunt
+divizori intregi ai termenului liber al polinomului. A se revedea
+TEMA 13 din modlectia7_8.maude, a carei rezolvare am sa v-o trimit
+la sfarsitul acestei saptamani. )
+
+***( Ultima cerinta din tema obligatorie este un exercitiu dat de
+doamna Profesoara I. Leustean, care va cere sa scrieti in Maude un
+modul pentru implementarea tipului multiset cu elemente din
+multimea numerelor naturale.
+   Daca E este o multime, atunci un multiset cu elemente din E
+este o multime de perechi M = {(x,n) | x in E, n natural}. Intr-un
+multiset, un element poate aparea de mai multe ori: (x,n) in M
+inseamna ca x apare de n ori in M. Un multiset poate fi scris ca o
+multime in care permitem ca un element sa apara de mai multe ori
+(ordinea elementelor nu are importanta), sau ca o lista de perechi,
+cu prima componenta dintr-o pereche reprezentand elementul, iar a
+doua componenta a perechii reprezentand numarul de aparitii ale
+elementului in multiset. De exemplu: M = {1, 2, 1, 5, 3, 4, 5, 4, 1,
+3, 5, 0} = {(1,3), (2,1), (3,2), (4,2), (5,3), (0,1)}.
+   Scrieti un modul pentru multiseturi cu elemente din multimea
+numerelor naturale, care sa contina doua operatii pentru trecerea
+dintr-o reprezentare in cealalta, la care sa adaugati alte doua
+operatii, pentru definirea reuniunii si, respectiv, a intersectiei
+a doua multiseturi in reprezentarea cu perechi. In reuniunea a doua
+multiseturi, fiecare element are ca numar de aparitii maximul dintre
+numerele aparitiilor sale in fiecare dintre cele doua multiseturi, in
+timp ce, in intersectia a doua multiseturi, fiecare element are ca
+numar de aparitii minimul dintre numerele aparitiilor sale in fiecare
+dintre cele doua multiseturi.
+   Ca indicatie, multiseturile in prima reprezentare vor fi liste de
+numere naturale, avand concatenarea comutativa si admitand duplicate,
+iar multiseturile in a doua reprezentare vor fi liste de perechi de
+numere naturale, avand concatenarea comutativa si admitand cel mult
+o pereche cu o anumita prima componenta. )
+
+endfm
+
+
+fmod OBSERVATIE-TEMA is
+
+***( Si temele urmatoare, care nu sunt obligatorii, trebuie aduse tot
+la primul laborator de dupa Paste. Amintesc ca punctajele acumulate
+din rezolvarea acestor teme, pe care vi le dau dupa fiecare laborator,
+va pot furniza un punctaj-bonus la examen. )
+
+endfm
+
+
+fmod TEMA18 is   ***> 150 puncte
+
+***( Scrieti un modul pentru polinoame cu coeficienti reali, importand
+modulul FLOAT predefinit, care sa contina operatii pentru adunarea,
+scaderea, inmultirea a doua polinoame, precum si pentru catul si restul
+impartirii a doua polinoame cu coeficienti reali. )
+
+endfm
+
+
+fmod TEMA19 is   ***> 90 puncte
+
+***( Scrieti un modul pentru implementarea unui automat finit
+determinist, cu starile, starea initiala, starile finale, alfabetul
+si functia de tranzitie date in interiorul modulului, si care sa
+contina o operatie care sa determine daca un cuvant este sau nu
+acceptat de automat. )
+
+endfm
+
+
+fmod TEMA20 is   ***> 90 puncte
+
+***> La fel ca in TEMA 19, dar pentru un automat finit nedeterminist.
+
+endfm

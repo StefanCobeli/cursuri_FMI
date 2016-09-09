@@ -1,0 +1,99 @@
+fmod TEMA19AFD is
+***> un automat finit determinist
+
+   sorts Stare Litera Cuvant .
+   subsorts Litera < Cuvant .
+
+   ops q0 q1 q2 eroare : -> Stare .
+***> q0 este starea initiala
+***> eroare serveste la definirea completa a functiei de tranzitie
+   op finala : Stare -> Bool . ***> starile finale
+
+   ops a b : -> Litera .
+
+   op nil : -> Cuvant .
+   op __ : Cuvant Cuvant -> Cuvant [assoc id: nil] .
+
+   op lambda : Stare Litera -> Stare . ***> functia de tranzitie
+   op accepta : Cuvant -> Bool . ***> limbajul acceptat de automat
+   op tran : Stare Cuvant -> Stare .
+
+   var L : Litera .
+   var C : Cuvant .
+   var S : Stare .
+
+   eq finala(q0) = true .
+   ceq finala(S) = false if S =/= q0 .
+
+   eq lambda(q0,a) = q1 .
+   eq lambda(q0,b) = eroare .
+   eq lambda(q1,b) = q2 .
+   eq lambda(q1,a) = eroare .
+   eq lambda(q2,a) = q0 .
+   eq lambda(q2,b) = eroare .
+   eq lambda(eroare,L) = eroare .
+
+***> Limbajul acceptat de automat este: {(aba)^n | n natural}.
+
+   eq accepta(C) = finala(tran(q0,C)) .
+
+   eq tran(S,nil) = S .
+   eq tran(S,L) = lambda(S,L) .
+   eq tran(S,L C) = tran(lambda(S,L),C) .
+
+endfm
+
+
+fmod TEMA20AFN is
+***> un automat finit nedeterminist
+
+   sorts Stare Stari Litera Cuvant .
+   subsort Stare < Stari .
+   subsort Litera < Cuvant .
+
+   ops q0 q1 q2 : -> Stare . ***> q0 este starea initiala
+   op finala : Stare -> Bool . ***> starile finale
+
+   ops a b : -> Litera .
+
+   op nil : -> Cuvant .
+   op __ : Cuvant Cuvant -> Cuvant [assoc id: nil] .
+
+   op null : -> Stari .
+   op _;_ : Stari Stari -> Stari [assoc comm id: null] .
+
+   op lambda : Stare Litera -> Stari . ***> functia de tranzitie
+   op accepta : Cuvant -> Bool . ***> limbajul acceptat de automat
+   op tran : Stare Cuvant -> Stari .
+   op tranzitie : Stari Cuvant -> Stari .
+   op continefinala : Stari -> Bool .
+
+   var L : Litera .
+   var C : Cuvant .
+   var S : Stare .
+   var St : Stari .
+
+   eq finala(q0) = true .
+   ceq finala(S) = false if S =/= q0 .
+
+   eq lambda(q0,a) = q1 .
+   eq lambda(q0,b) = null .
+   eq lambda(q1,b) = q2 ; q0 .
+   eq lambda(q1,a) = null .
+   eq lambda(q2,a) = q0 .
+   eq lambda(q2,b) = null .
+
+   eq continefinala(null) = false .
+   eq continefinala(S ; St) = finala(S) or continefinala(St) .
+
+   eq accepta(C) = continefinala(tran(q0,C)) .
+
+   eq tran(S,nil) = S .
+   eq tran(S,L) = lambda(S,L) .
+   eq tran(S,L C) = tranzitie(lambda(S,L),C) .
+
+   eq tranzitie(null,C) = null .
+   eq tranzitie(S ; St,C) = tran(S,C) ; tranzitie(St,C).
+
+endfm
+

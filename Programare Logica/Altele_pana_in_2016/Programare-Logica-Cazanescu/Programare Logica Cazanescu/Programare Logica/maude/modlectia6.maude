@@ -1,0 +1,546 @@
+fmod TEMA6 is
+
+   extending NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+   
+   op nil : -> Lista . ***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+***> operatii care au mai fost implementate:
+   op lungime : Lista -> Nat .
+   op _apartine_ : Nat Lista -> Bool .
+   op sterge : Nat Lista -> Lista .
+
+   op lung4k3 : Lista -> Bool .   
+***( determina daca lungimea unei liste este
+multiplu de 4 plus 3, fara a calcula efectiv
+lungimea listei )
+
+   op 10to2 : Nat -> Lista .
+***> trece un numar natural din baza 10 in baza 2
+   op 2to10 : Lista -> Nat .
+***> trece un numar natural din baza 2 in baza 10
+***( reprezentarea unui numar natural in baza 2 se
+va face sub forma unei liste nevide de cifre binare )
+
+   op multipli : Nat Nat -> Lista .
+***> lista primilor X+1 multipli naturali de Y
+   op mult : Nat Nat -> Lista .
+***> lista multiplilor naturali de Y mai mici sau egali cu X
+
+   op permutare : Lista -> Bool .
+***( determina daca o lista e permutare a multimii
+primelor n numere naturale nenule, pentru un n natural )
+   op permut : Lista Nat -> Bool .
+***( determina daca o lista e permutare a multimii
+primelor n numere naturale nenule, cu n natural dat )
+
+   op listpozmin : Lista -> Lista .
+***( determina lista tuturor pozitiilor minimului
+intr-o lista, printr-o singura parcurgere a listei )
+   op aux : Lista Nat Nat Lista -> Lista .
+***> operatie auxiliara pentru scrierea lui listpozmin
+***( argumentele ei reprezinta: lista respectiva, pozitia
+curenta in aceasta lista, minimul curent, lista curenta a
+pozitiilor minimului )
+
+   vars X Y Z T : Nat .
+   vars L P : Lista . 
+
+   eq lungime(nil) = 0 .
+   eq lungime(X L) = s lungime(L) .
+
+   eq X apartine nil = false .
+   eq X apartine (X L) = true .
+   ceq X apartine (Y L) = X apartine L if X =/= Y .
+
+   eq sterge(X,nil) = nil .
+   eq sterge(X,X L) = L .
+   ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+
+   eq lung4k3(nil) = false .
+   eq lung4k3(X) = false .
+   eq lung4k3(X Y) = false .
+   eq lung4k3(X Y Z) = true .
+   eq lung4k3(X Y Z T L) = lung4k3(L) .
+
+   ceq 10to2(X) = X if X < 2 .
+   ceq 10to2(X) = 10to2(X quo 2) (X rem 2) if X >= 2 .
+
+   eq 2to10(X) = X .
+   eq 2to10(L X Y) = 2 * 2to10(L X) + Y . 
+
+   eq multipli(0,Y) = 0 .
+   eq multipli(s X,Y) = multipli(X,Y) (s X * Y) .
+
+   eq mult(0,Y) = 0 .
+   ceq mult(s X,Y) = mult(X,Y) (s X) if Y divides (s X) .
+   ceq mult(s X,Y) = mult(X,Y) if not (Y divides (s X)) .
+
+   eq permutare(L) = permut(L,lungime(L)) .
+
+   eq permut(nil,0) = true .
+   eq permut(nil,s Y) = false .
+   eq permut(X L,0) = false .
+   eq permut(X L,s Y) = (s Y) apartine (X L) and permut(sterge(s Y,X L),Y) .
+
+   eq listpozmin(nil) = nil .
+   eq listpozmin(X L) = aux(X L,1,X,nil) .
+
+   eq aux(nil,Z,T,P) = P .
+   eq aux(X L,Z,X,P) = aux(L,s Z,X,P Z) .
+   ceq aux(X L,Z,T,P) = aux(L,s Z,T,P) if X > T .
+   ceq aux(X L,Z,T,P) = aux(L,s Z,X,Z) if X < T .
+   
+endfm
+
+
+fmod TEMA7 is
+
+   sorts Zero NzNat Nat Neg NzInt Int NzRat Rat .
+   subsort Zero < Nat .
+   subsorts NzNat < Nat NzInt < Int < Rat .
+   subsorts Neg < NzInt < NzRat .
+
+   op 0 : -> Zero .
+
+   ops s_ p_ : Int -> Int .
+   op s_ : Nat -> NzNat .
+   op p_ : NzNat -> Nat .
+   op p_ : Zero -> Neg .
+   op p_ : Neg -> Neg .
+  
+   ops (_+_) (_*_) (_-_) : Int Int -> Int . 
+   ops (_+_) (_*_) : Nat Nat -> Nat .
+   op _+_ : NzNat Nat -> NzNat .
+   op _+_ : Nat NzNat -> NzNat .
+   op _*_ : NzInt NzInt -> NzInt .
+   op _*_ : NzNat NzNat -> NzNat .
+   op _*_ : Zero Int -> Zero .
+   op _*_ : Int Zero -> Zero .
+
+   op -_ : Int -> Int .
+   op -_ : NzNat -> Neg .
+   op -_ : Neg -> NzNat .
+
+   op _/_ : Int NzInt -> Rat .
+   op _/_ : NzInt NzInt -> NzRat .
+   op _/_ : Rat NzRat -> Rat .
+   op _/_ : NzRat NzRat -> NzRat .
+
+   ops (_+_) (_*_) (_-_) : Rat Rat -> Rat . 
+   op _*_ : NzRat NzRat -> NzRat . 
+
+   op -_ : Rat -> Rat .
+   op -_ : NzRat -> NzRat .
+   
+   op abs : Int -> Nat .
+   op abs : NzInt -> NzNat .
+
+   ops (_<=_) (_<_) (_>=_) (_>_) : Rat Rat -> Bool .
+   
+   op _div_ : Nat NzNat -> Nat .
+   op _div_ : Int NzInt -> Int .
+   op _mod_ : Int NzInt -> Nat .
+   
+   op cmmdc : Int Int -> Nat .
+
+   vars X Y : Int .
+   vars Z T U : NzInt .
+   vars M M1 : Nat .
+   vars N N1 : Neg .
+   vars P S : NzNat .
+   vars Q R : Rat . 
+
+   eq p s X = X .
+   eq s p X = X .
+
+   eq X + 0 = X .
+   eq X + s Y = s (X + Y) .
+   eq X + p Y = p (X + Y) .
+
+   eq - 0 = 0 .
+   eq - - X = X .
+   eq - s X = p (- X) .
+   eq - p X = s (- X) .
+
+   eq X - 0 = X .
+   eq X - s Y = p (X - Y) .
+   eq X - p Y = s (X - Y) .
+
+   eq X * 0 = 0 .
+   eq X * s Y = (X * Y) + X .
+   eq X * p Y = (X * Y) - X .
+
+   eq abs(M) = M .
+   eq abs(N) = - N .
+
+   eq 0 <= M = true .
+   eq P <= 0 = false .
+   eq - M <= - M1 = M1 <= M .
+   eq N <= M = true .
+   eq M <= N = false .
+   eq s X <= s Y = X <= Y .
+   eq p X <= p Y = X <= Y .
+
+   eq Q < R = Q <= R and Q =/= R .
+
+   eq Q >= R = R <= Q .
+
+   eq Q > R = R < Q .   
+
+   ceq M div P = 0 if M < P .
+   ceq M div P = s((M - P) div P) if P <= M .
+
+   ceq M mod P = M if M < P .
+   ceq M mod P = (M - P) mod P if P <= M .
+
+   eq cmmdc(0,M) = M .
+   eq cmmdc(P,M) = cmmdc(M mod P,P) .
+
+   ceq cmmdc(X,Y) = cmmdc(abs(X),abs(Y)) if X < 0 or Y < 0 .
+
+   eq X mod N = X mod (- N) .
+   ceq N mod P = 0 if (- N) mod P == 0 .
+   ceq N mod P = P - ((- N) mod P) if (- N) mod P =/= 0 .
+
+   eq X div N = - (X div (- N)) .
+   ceq N div P = - ((- N) div P) if (- N) mod P == 0 .
+   ceq N div P = p (- ((- N) div P)) if (- N) mod P =/= 0 .
+ 
+   eq X / (s 0) = X .
+   ceq X / Z = (X div cmmdc(X,Z)) / (Z div cmmdc(X,Z)) if cmmdc(X,Z) =/= s 0 .
+
+   eq (X / Z) / (T / U) = (X * U) / (Z * T) .
+   eq X / (T / U) = (X * U) / T .
+   eq (X / Z) / T = X / (Z * T) .
+
+   eq (X / Z) * (Y / T) = (X * Y) / (Z * T) .
+   eq X * (Y / T) = (X * Y) / T .
+   eq (X / Z) * Y = (X * Y) / Z .
+
+   eq (X / Z) + (Y / T) = ((X * T) + (Y * Z)) / (Z * T) .
+   eq X + (Y / T) = ((X * T) + Y) / T .
+   eq (X / Z) + Y = (X + (Y * Z)) / Z .
+
+   eq (X / Z) - (Y / T) = ((X * T) - (Y * Z)) / (Z * T) .
+   eq X - (Y / T) = ((X * T) - Y) / T .
+   eq (X / Z) - Y = (X - (Y * Z)) / Z .
+
+   eq - (X / Z) = (- X) / Z .
+
+   eq X / P <= Y / S = X * S <= Y * P .
+   eq X / N <= Y / N1 = Y / (- N1) <= X / (- N) .
+   eq X / N <= Y / S = (- X) / (- N) <= Y / S .
+   eq X / P <= Y / N1 = X / P <= (- Y) / (- N1) .
+
+   eq X <= Y / S = X * S <= Y .
+   eq X <= Y / N1 = X <= (- Y) / (- N1) . 
+
+   eq X / Z <= Y = (- Y) <= (- X) / Z .
+
+endfm
+
+
+fmod MULTIMI is
+***> operatii cu multimi
+***> multimile vor fi reprezentate ca liste fara duplicate
+
+   protecting NAT .
+
+   sort Multime .
+   subsort Nat < Multime .
+
+   op nil : -> Multime .
+   op __ : Multime Multime -> Multime [assoc comm id: nil prec 20] .
+
+***> Urmatoarele doua operatii au mai fost implementate:
+   op _apartine_ : Nat Multime -> Bool [prec 30] .
+   op elimdup : Multime -> Multime .
+***> transforma o lista intr-o multime, prin eliminarea duplicatelor
+
+***( Privind operatiile cu multimi de mai jos, presupunem ca acestea
+vor fi intotdeauna aplicate unor multimi, i. e. niciodata nu vor primi
+ca argumente liste cu duplicate. Ca sa le putem aplica si listelor cu
+duplicate, am avea nevoie de operatii auxiliare; de exemplu, pentru
+intersectie, am avea nevoie de o operatie auxiliara de intersectie:
+op _I2_ : Multime Multime -> Multime [assoc comm prec 30] .
+definita astfel:
+eq L I2 M = elimdup(L) I elimdup(M) .
+sau astfel:
+eq L I2 M = elimdup(L I M) .
+Singura operatie de mai jos care nu ar necesita acest artificiu este
+operatia _V_ (reuniunea calculata cu a doua metoda). )
+
+   ops (_U_) (_V_) : Multime Multime -> Multime [assoc comm prec 30] .
+***> reuniunea, calculata prin doua metode
+   op _I_ : Multime Multime -> Multime [assoc comm prec 30] .
+***> intersectia
+   op _\_ : Multime Multime -> Multime [prec 30] .
+***> diferenta
+   ops (_D_) (_-_) : Multime Multime -> Multime [assoc comm prec 30] .
+***> diferenta simetrica 
+
+   vars X Y : Nat .
+   vars L M : Multime .
+
+   eq X apartine nil = false .
+   eq X apartine X M = true .
+   ceq X apartine Y M = X apartine M if X =/= Y .
+
+   eq elimdup(nil) = nil .
+   ceq elimdup(X M) = X elimdup(M) if not (X apartine M) .
+   ceq elimdup(X M) = elimdup(M) if X apartine M .
+
+   eq nil U M = M .
+   ceq X L U M = X (L U M) if not (X apartine M) .
+   ceq X L U M = L U M if X apartine M .
+
+   eq L V M = elimdup(L M) .
+
+   eq nil I M = nil .
+   ceq X L I M = L I M if not (X apartine M) .
+   ceq X L I M = X (L I M) if X apartine M .
+
+   eq nil \ M = nil .
+   ceq X L \ M = X (L \ M) if not (X apartine M) .
+   ceq X L \ M = L \ M if X apartine M .
+
+   eq L D M = (L \ M) U (M \ L) .
+
+   eq L - M = (L \ M) V (M \ L) .
+
+endfm
+
+
+fmod PERMCIRC is
+***( generarea permutarilor circulare ale unei
+liste cu sau fara duplicate )
+
+***> Acest modul exemplifica lucrul cu liste de liste.
+***> De fapt nu avem nevoie aici de listele vide.
+
+   protecting NAT .
+
+   sorts Lista ListLista .
+   subsorts Nat < Lista < ListLista .
+***> Lista = sortul pentru liste de numere naturale
+***> ListLista = sortul pentru liste de liste de numere naturale
+
+   op nil : -> Lista .
+***( lista vida de numere naturale: elementul neutru la
+concatenarea de liste de numere naturale )
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+***> concatenarea de liste de numere naturale
+   op null : -> ListLista .
+***( lista vida de liste de numere naturale: elementul neutru la
+concatenarea de liste de liste de numere naturale )
+   op _;_ : ListLista ListLista -> ListLista [assoc id: null prec 30] .
+***> concatenarea de liste de liste de numere naturale
+
+   op genperm : Lista -> ListLista .
+***> operatia care genereaza permutarile circulare
+   op permuta : Lista Lista -> ListLista .
+***> operatie auxiliara pentru scrierea lui genperm
+
+   var X : Nat .
+   vars L M : Lista .
+
+   eq genperm(nil) = nil . ***( lista de liste de numere
+naturale cu unicul element dat de lista vida de numere
+naturale (lista de numere naturale fara elemente) )
+
+   eq genperm(L X) = permuta(L X,X L) .
+
+   eq permuta(L,L) = L .
+   ceq permuta(L,M X) = M X ; permuta(L,X M) if L =/= M X .
+
+endfm
+
+
+fmod PERMCIRC2 is
+***( Generarea permutarilor circulare ale unei
+liste cu sau fara duplicate, versiunea 2: fara
+liste vide. )
+
+   protecting NAT .
+
+   sorts Lista ListLista .
+   subsorts Nat < Lista < ListLista .
+***> Lista = sortul pentru liste de numere naturale
+***> ListLista = sortul pentru liste de liste de numere naturale
+
+   op __ : Lista Lista -> Lista [assoc prec 20] .
+***> concatenarea de liste de numere naturale
+   op _;_ : ListLista ListLista -> ListLista [assoc prec 30] .
+***> concatenarea de liste de liste de numere naturale
+
+   op genperm : Lista -> ListLista .
+***> operatia care genereaza permutarile circulare
+   op permuta : Lista Lista -> ListLista .
+***> operatie auxiliara pentru scrierea lui genperm
+
+   var X : Nat .
+   vars L M : Lista .
+
+   eq genperm(X) = X .
+   eq genperm(L X) = permuta(L X,X L) .
+
+   eq permuta(L,L) = L .
+   ceq permuta(L,M X) = M X ; permuta(L,X M) if L =/= M X .
+
+endfm
+
+
+fmod LISTENAT is
+***> liste de numere naturale, cu lista vida si concatenarea
+***> modul pe care il vom importa in modulele urmatoare, pentru sortari
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+endfm
+
+
+fmod INSSORT is
+***> sortarea prin insertie directa 
+
+   extending LISTENAT .
+
+   op sortare : Lista -> Lista .
+   op inserare : Nat Lista -> Lista .
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   eq sortare(nil) = nil .
+   eq sortare(X L) = inserare(X,sortare(L)) .
+
+   eq inserare(X,nil) = X .
+   ceq inserare(X,Y L) = Y inserare(X,L) if Y < X .
+   ceq inserare(X,Y L) = X Y L if X <= Y .
+
+endfm
+
+
+fmod MERGESORT is
+***> sortarea prin interclasare
+***( Intrucat oricum taierea unei liste in doua parti,
+indiferent de metoda de taiere, se face in timp liniar,
+nu constant, ca intr-o implementare a acestui algoritm
+de sortare intr-un limbaj de programare imperativa, putem
+scrie
+ acest algoritm in Maude, pur si simplu, ca mai jos. )
+   
+   extending LISTENAT .
+
+   op interclasare : Lista Lista -> Lista .
+***> interclaseaza doua liste sortate
+   op sortare : Lista -> Lista .
+
+   vars X Y : Nat .
+   vars L M : Lista .
+
+   eq interclasare(L,nil) = L .
+   eq interclasare(nil,M) = M .
+   ceq interclasare(X L,Y M) = X interclasare(L,Y M) if X <= Y .
+   ceq interclasare(X L,Y M) = Y interclasare(X L,M) if X > Y .
+
+   eq sortare(nil) = nil .
+   eq sortare(X) = X .
+   eq sortare(X L Y M) = interclasare(sortare(X L),sortare(Y M)) .
+
+endfm
+
+
+fmod SELSORT is
+***> sortarea prin selectia directa a minimului
+
+   extending LISTENAT .
+
+   op minim : Nat Nat -> Nat .
+   op minlist : Lista -> Nat .
+   op sterge : Nat Lista -> Lista .
+
+   op sortare : Lista -> Lista .
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   ceq minim(X,Y) = X if X <= Y .
+   ceq minim(X,Y) = Y if X > Y .
+
+   eq minlist(X) = X .
+   eq minlist(X Y L) = min(X,minlist(Y L)) .
+
+   eq sterge(X,nil) = nil .
+   eq sterge(X,X L) = L .
+   ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+
+   eq sortare(nil) = nil .
+   eq sortare(X L) = minlist(X L) sortare(sterge(minlist(X L),X L)) .
+
+endfm
+
+
+fmod TEMA8 is   ***> 20 puncte
+
+***> sortarea prin selectia directa a maximului
+
+***( Aduceti temele din aceasta lectie in saptamana
+urmatoare celei in care dam lucrarea de control. )
+
+endfm
+
+
+fmod TEMA9 is   ***> 50 puncte
+
+***> bubblesortul, efectuat intr-o operatie distincta de concatenare
+
+***( Dupa cum probabil ati observat, sortarea in operatia de
+concatenare este facuta automat de Maude, daca dam atributul comm
+in declaratia operatiei de concatenare. In anumite probleme insa,
+putem avea nevoie si de liste nesortate, si de sortarea acestor liste.
+In astfel de situatii, desigur, va conta pozitia elementelor intr-o
+Lista, asadar concatenarea nu poate fi declarata comutativa, iar
+Sortarea va trebui sa fie efectuata intr-o operatie distincta de
+operatia de concatenare. )
+
+***( Sa presupunem ca, intr-o problema de tipul descris mai sus, dorim
+sa efectuam sortarea prin metoda bulelor. Aceasta este problema din
+tema 9. )
+
+endfm
+
+
+fmod TEMA10 is   ***> 150 puncte
+
+***> generarea tuturor permutarilor unei liste cu sau fara duplicate
+***> (nu numai a celor circulare)
+
+endfm
+
+
+fmod TEMA11 is   ***> 100 puncte
+
+***> problema celor N dame
+
+***( Pentru N natural nenul, sa se aseze N dame pe o tabla de sah NxN,
+astfel incat sa nu se atace una pe alta. Sa se dea toate solutiile
+posibile. Nu exista solutie pentru orice N natural nenul. )
+
+***( Solutia va fi data sub forma de lista de liste de numere naturale,
+reprezentand lista tuturor configuratiilor posibile, unde o configuratie
+va fi lista coloanelor pe care se afla damele de pe liniile 1,2,...,N,
+respectiv. Desigur, aceste coloane vor fi doua cate doua distincte, pentru
+ca damele sa nu se atace pe coloana. )
+
+endfm
+

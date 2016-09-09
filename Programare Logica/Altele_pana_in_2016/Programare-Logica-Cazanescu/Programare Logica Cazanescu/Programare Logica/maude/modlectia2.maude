@@ -1,0 +1,158 @@
+fmod NAT1 is
+
+   sort Nat .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+   op _+_ : Nat Nat -> Nat .
+   
+   vars X Y : Nat .
+   
+   eq X + 0 = X .
+   eq X + s Y = s (X + Y) .
+
+endfm
+
+
+fmod FIBO is
+
+   extending NAT1 .
+   
+   op fib : Nat -> Nat .
+
+   var X : Nat .
+
+   eq fib(0) = 0 .
+   eq fib(s 0) = s 0 .
+   eq fib(s s X) = fib(s X) + fib(X) .
+
+   ***( al n-lea termen din
+        sirul lui Fibonacci )
+
+endfm
+
+
+fmod FIBONACCI is
+
+   extending NAT .
+   
+   op fib : Nat -> Nat .
+
+   var X : Nat .
+
+   eq fib(0) = 0 .
+   eq fib(1) = 1 .
+   eq fib(s s X) = fib(s X) + fib(X) .
+
+   ***( al n-lea termen din sirul
+        lui Fibonacci, cu numerele
+        naturale predefinite )
+
+endfm
+
+
+fmod M3 is
+
+   sort Nat .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+   op m3 : Nat -> Bool .
+***( testeaza daca argumentul sau
+     este multiplu de 3, folosind
+     doar operatiile 0 si succesor )
+
+***( A se vedea operatia
+     _divides_ din modulul
+     NAT predefinit. )
+
+   var X : Nat .
+
+   eq m3(0) = true .
+   eq m3(s 0) = false .
+   eq m3(s s 0) = false .
+   eq m3(s s s X) = m3(X) .
+
+endfm
+
+
+fmod Z2 is
+
+***( specificatie pentru clasele
+     de resturi modulo 2 )
+
+   sort Nat .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+
+   var X : Nat .
+
+   eq s s X = X .
+
+endfm 
+
+
+fmod FP is
+   
+   sort Nat .
+   
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+   ops _+_ _*_ : Nat Nat -> Nat .
+   op _! : Nat -> Nat . ***> factorialul
+   op _^_ : Nat Nat -> Nat .
+***( ridicarea la putere, operatie care, in
+     modulul predefinit NAT, este predefinita )  
+
+   vars X Y : Nat .
+   
+   eq X + 0 = X .
+   eq X + s Y = s (X + Y) .
+
+   eq X * 0 = 0 .
+   eq X * s Y = (X * Y) + X .
+
+   eq 0 ! = s 0 .
+   eq (s X) ! = (X !) * (s X) .
+
+   eq X ^ 0 = s 0 .
+   eq X ^ (s Y) = (X ^ Y) * X .   
+
+endfm
+
+
+fmod FACTORIAL is
+   
+   extending NAT .
+    
+   op _! : Nat -> Nat . ***> factorialul
+
+   var X : Nat .
+   
+   eq 0 ! = 1 .
+   eq (s X) ! = (X !) * (s X) .
+
+endfm
+
+
+fmod ERONAT is
+
+***> cum NU se scrie o specificatie in Maude
+
+   sort Nat .
+
+   op 0  : -> Nat .
+   op s_ : Nat -> Nat .
+   op _+_ : Nat -> Nat .
+
+   vars X Y : Nat .
+
+   eq X + 0 = X .
+   eq X + s Y = s (X+Y) .
+   eq s X + s Y = s (X+Y) . ***( ecuatie prin
+adaugarea careia se pierde confluenta rescrierii )
+   eq s X = s s s X . ***( ecuatie prin adaugarea
+careia se pierde terminarea rescrierii )
+
+endfm

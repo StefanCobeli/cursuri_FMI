@@ -1,0 +1,1 @@
+Verificati ca in Simulator/Settings este selectat corect fisierul trap.han

@@ -1,0 +1,142 @@
+//CSS
+
+
+<head>
+<style>
+body {
+    background-color: blue ;
+  
+  color : orange
+}
+
+.prima{
+  color : orange ;
+  
+}
+
+
+p, section,  {
+    color: red ;
+    margin-left: 40px;
+  text-align: center;
+  
+} 
+
+table{
+  
+  border : colaps ;
+  color : blue ;
+  border-style: dotted;
+  border-width: 2px 10px 4px 20px;
+  
+}
+
+th{
+  
+  color : green
+  
+}
+
+li{
+  
+  color : orange
+    border-style: dotted dashed solid double;
+  border-style: dotted dashed solid double;
+  width: 20%;
+    padding: 10px;
+    border: 10px solid navy;
+    margin: 10px;
+  
+}
+
+</style>
+</head>
+
+
+
+
+///HTML
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  
+  p.prima, th.prima{
+  color : magenta ;
+  
+}
+  
+  </style>
+<title>
+Instructions
+</title>
+</head>
+
+<body>
+
+<p>  
+
+<h2> In this page will appear Stefan's interests: </h2>
+</p>
+
+<p class = "prima" { color : "blue"; }>
+
+Instructions:
+
+Click on the marked spots to change the display
+ and see the selected interest info.
+
+
+</p>
+    
+  <h3>Studii</h3>
+    <p>
+      <h5> Liceul Teoretic "Ion Luca" din Vatra Dornei</h5>
+    Absolvent al promotiei 2009 - 2013
+    </p>
+  <p>
+    
+    <h5 class = "prima">Universitatea Bucureti - Facultatea de Matematică si informatica</h5>
+    Student in anul al III-lea, al domeniului Matematica, specializarea "Matematica si Informatica"
+  </p>
+
+ <table  >
+    <tr>
+    <th>Month</th>
+    <th>Savings</th>
+    <th class = "prima">Happiness</th>
+  </tr>
+  <tr>
+    <td>January</td>
+    <td>$100</td>
+    
+  </tr>
+  <tr>
+    <th>Lasa asa</th>
+    
+  </tr>
+  </table>
+
+    </section>
+    <section id = "compet" >
+  <h3 >Competente</h3>  
+    <p>
+      Am folosit limbajele de programare:
+      <ul style = "list-style-type:circle">
+      <li> C </li>
+        <li> C++ </li>
+        <li> Java </li>
+        <li> Python </li>
+        <li> SQL </li>
+      
+       </ul>
+      </p>
+<p>
+
+</body>
+
+
+
+</html>

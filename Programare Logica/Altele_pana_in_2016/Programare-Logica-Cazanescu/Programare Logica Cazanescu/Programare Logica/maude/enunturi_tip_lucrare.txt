@@ -1,0 +1,144 @@
+OBSERVATIE: Desigur, voi va trebui sa scrieti in Maude modulele pe care vi le voi cere la lucrarea de control. Enunturile de mai jos au fost date la unele lucrari de control in anii trecuti; limbajul facut atunci la laboratoarele de programare logica era CafeObj-ul. 
+
+
+1) Semigrupa 2412, marti 16-18:
+	Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii e2 si nfact, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si cele necesare pentru implementarea operatiilor e2 si nfact.
+Operatiile e2 si nfact vor avea ca input o lista de numere naturale si ca output tot o lista de numere naturale, deci vom avea:
+ops e2 nfact : Lista -> Lista
+	Pentru orice lista finita L de numere naturale:
+e2(L) = lista formata din exponentii maximi ai lui 2 care divid elementele nenule ale lui L, in ordinea lor din L, de exemplu: e2(4 0 12 3 6 0 24 5) = 2 2 0 1 3 0;
+nfact(L) = lista formata din elementele lui L de forma N! (= N factorial), cu N natural nenul, de exemplu: nfact(0 1 2 3 4 5 6 7) = 1 2 6 . 
+
+
+2) Semigrupa 2432, marti 18-20:
+Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii nsn si cresc, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si cele necesare pentru implementarea operatiilor nsn si cresc.
+Operatiile nsn si cresc vor avea ca input o lista de numere naturale si ca output tot o lista de numere naturale, deci vom avea:
+ops nsn cresc : Lista -> Lista
+	Pentru orice lista finita L de numere naturale:
+nsn(L) = lista formata din elementele lui L de forma N*(N+1), cu N natural, de exemplu: nsn(0 1 2 3 4 5 6 7 8 9 10 11 12 13 14) = 0 2 6 12;
+cresc(L) = sublista crescatoare a lui L formata din: primul element al lui L, fie acesta E1, apoi urmatorul element al lui L care este mai mare sau egal cu E1, fie acesta E2, apoi urmatorul element al lui L care este mai mare sau egal cu E2 s. a. m. d., de exemplu: cresc(4 0 1 5 4 2 3 4 5 1 7) = 4 5 5 7 . 
+
+
+3) Semigrupa 2421, miercuri 14-16:
+       Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii inccresc si cp, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si cele necesare pentru implementarea operatiilor inccresc si cp.
+       Operatiile inccresc si cp vor avea ca input o lista de numere naturale si ca output tot o lista de numere naturale, deci vom avea:
+       ops inccresc cp : Lista -> Lista
+	Pentru orice lista finita L de numere naturale:
+inccresc(L) = sublista crescatoare de lungime maxima a lui L cu care incepe lista L si care este formata din elemente consecutive din L, de exemplu: inccresc(2 5 5 7 10 3 15 20) = 2 5 5 7 10 ;
+cp(L) = lista formata din cuburile perfecte din L, de exemplu: cp(0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30) = 0 1 8 27 .
+
+
+4) Grupa 311, vineri 10-12:
+	Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii lp3 si cdivu, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si cele necesare pentru implementarea operatiilor lp3 si cdivu.
+	Operatiile lp3 si cdivu vor fi definite astfel:
+ops lp3 cdivu : Lista -> Lista
+	Pentru orice lista finita L de numere naturale:
+lp3(L) = lista formata din puterile naturale ale lui 3 din L (de exemplu: lp3(1 14 12 9 27 28 0 1 5 9 1 0) = 1 9 27 1 9 1);
+cdivu(L) = sublista K a lui L de lungime maxima care verifica urmatoarele proprietati: lista L incepe cu sublista K, K este formata din elemente consecutive (ca pozitie) din L si, pentru orice element N al listei K diferit de ultimul element al lui K, N divide elementul care ii succede in lista K.
+	Mentiuni: in modulul predefinit NAT exista:
+   op _divides_ : NzNat Nat -> Bool
+	_divides_ din NAT este relatia "divide pe" dintre un natural nenul si un natural. Vom adauga la relatia _divides_ cazurile in care primul argument al relatiei "divide pe" este 0.
+	Stim ca:
+orice numar natural N divide pe 0, inclusiv N = 0 (cazul N = 0 nu este inclus in relatia _divides_ din NAT);
+0 nu divide niciun numar natural nenul (nici acest caz nu este inclus in relatia _divides_ din NAT).
+	In scrierea operatiei cdivu se vor aplica si aceste cazuri. De exemplu:
+cdivu(1 1 2 2 4 12 100 1.000 10.000 100.000 1.000.000 10.000.000 100.000.000 1.000.000.000 10.000.000.000 100.000.000.000 1.000.000.000.000) = 1 1 2 2 4 12 (desigur, punctele din scrierea numerelor nu apar in CafeObj);
+cdivu(1 1 2 6 60 120 0 0 0 5 1) = 1 1 2 6 60 120 0 0 0.
+
+
+5) Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii nrdivcresc si nrdivdescresc, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si operatiile ajutatoare necesare pentru implementarea operatiilor nrdivcresc si nrdivdescresc.
+        Operatiile nrdivcresc si nrdivdescresc vor avea ca input o lista de numere naturale si ca output tot o lista de numere naturale, deci vor fi declarate astfel:
+ops nrdivcresc nrdivdescresc : Lista -> Lista
+
+	Pentru orice lista finita L de numere naturale:
+
+nrdivcresc(L) = sublista C a lui L de lungime maxima care indeplineste urmatoarele conditii: lista L incepe cu sublista C (cu alte cuvinte C este un prefix al lui L, adica exista o sublista T a lui L astfel incat L = C T = C concatenata cu T) si oricare doua elemente consecutive M si N din lista C (cu M urmat de N in lista C) au proprietatea ca numarul divizorilor naturali ai lui M este mai mic sau egal cu numarul divizorilor naturali ai lui N;
+
+nrdivdescresc(L) = sublista C a lui L de lungime maxima care indeplineste urmatoarele conditii: lista L incepe cu sublista C (cu alte cuvinte C este un prefix al lui L, adica exista o sublista T a lui L astfel incat L = C T = C concatenata cu T) si oricare doua elemente consecutive M si N din lista C (cu M urmat de N in lista C) au proprietatea ca numarul divizorilor naturali ai lui M este mai mare sau egal cu numarul divizorilor naturali ai lui N.
+
+OBSERVATIE: Numarul divizorilor naturali ai lui 0 este infinit.
+
+OBSERVATIE:  Orice N natural nenul are doar un numar finit de divizori naturali, care, asadar, pot fi numarati cu ajutorul unei operatii nrdiv : NzNat -> Nat.
+
+OBSERVATIE: Modulul predefinit NAT contine relatia “divide pe”, declarata astfel:
+op _divides_ : NzNat Nat -> Bool 
+si definita prin: pentru orice natural nenul Z si orice natural N, Z divides N = true daca si numai daca Z | N (adica daca si numai daca Z divide pe N).
+
+EXEMPLE:
+nrdivcresc(1 3 3 5 7 3 10 12 5 120 1200 24000) = 1 3 3 5 7 3 10 12;
+nrdivcresc(1 3 10 0 0 0 100 1000) = 1 3 10 0 0 0;
+nrdivdescresc(0 0 10 5 1 3 7) = 0 0 10 5 1;
+nrdivdescresc(nil) = nil, unde nil este lista vida.
+
+
+6) Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii x2 si nrapmin, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si operatiile ajutatoare necesare pentru implementarea operatiilor x2 si nrapmin.
+   Operatiile x2 si nrapmin vor fi declarate astfel:
+op x2 : Lista -> Lista
+op nrapmin : Lista -> Nat
+
+   Pentru orice lista finita L de numere naturale:
+
+x2(L) = sublista C a lui L obtinuta astfel: primul element al lui C, fie acesta notat E1, coincide cu primul element al lui L; urmatorul element al lui C, fie acesta notat E2, este primul element al lui L care satisface urmatoarele proprietati: ii urmeaza lui E1 ca pozitie in lista L si are valoarea egala cu dublul valorii lui E1; urmatorul element al lui C, fie acesta notat E3, este primul element al lui L care satisface urmatoarele proprietati: ii urmeaza lui E2 ca pozitie in lista L si are valoarea egala cu dublul valorii lui E2; s. a. m. d. pana la terminarea listei L sau a elementelor lui L care verifica proprietatea de mai sus;
+
+nrapmin(L) = numarul de aparitii in lista L ale minimului din lista L.
+
+EXEMPLE: Daca nil este lista vida:
+x2(nil) = nil
+x2(3 5 2 6 10 0 12 4 17 12 4 6) = 3 6 12
+x2(0 3 2 5 7 0 1 9 2 0 2 5 0) = 0 0 0 0
+nrapmin(nil) = 0
+nrapmin(2 3 1 7 4 3 2) = 1
+nrapmin(5 2 6 10 2 5 2 3 7) = 3
+
+
+7) Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii nrap si nrapcresc, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si operatiile ajutatoare necesare pentru implementarea operatiilor nrap si nrapcresc.
+Operatiile nrap si nrapcresc vor fi declarate astfel:
+ops nrap nrapcresc : Lista -> Lista
+
+Pentru orice lista finita L de numere naturale:
+
+nrap(L) = lista obtinuta din lista L prin inlocuirea fiecarui element al lui L cu numarul de aparitii ale valorii acelui element in L; 
+
+nrapcresc(L) = sublista C a lui L obtinuta astfel: primul element al lui C, fie acesta notat E1, coincide cu primul element al lui L; urmatorul element al lui C, fie acesta notat E2, este primul element al lui L care satisface urmatoarele proprietati: ii urmeaza lui E1 ca pozitie in lista L si are numarul de aparitii in lista L strict mai mare decat numarul de aparitii ale lui E1 in lista L; urmatorul element al lui C, fie acesta notat E3, este primul element al lui L care satisface urmatoarele proprietati: ii urmeaza lui E2 ca pozitie in lista L si are numarul de aparitii in lista L strict mai mare decat numarul de aparitii ale lui E2 in lista L; s. a. m. d. pana la terminarea listei L sau a elementelor lui L care verifica proprietatea de mai sus.
+
+EXEMPLE: Daca nil este lista vida:
+nrap(nil) = nil
+nrap(0 3 2 3 0 3 1 5 1 3 0) = 3 4 1 4 3 4 2 1 2 4 3  
+nrapcresc(nil) = nil
+nrapcresc(5 1 4 4 2 1 6 12 2 1 7 2 7 10 2) = 5 1 2
+
+
+8) Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii valenrap si esumanter, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si operatiile ajutatoare necesare pentru implementarea operatiilor valenrap si esumanter.
+	Operatiile valenrap si esumanter vor fi declarate astfel:
+ops valenrap esumanter : Lista -> Lista
+
+	Pentru orice lista finita L de numere naturale:
+
+valenrap(L) = sublista lui L formata din elementele lui L care sunt egale cu numarul aparitiilor lor in lista L;
+
+esumanter(L) = sublista lui L formata din elementele lui L care sunt egale cu suma elementelor care le preceda in lista L.
+
+EXEMPLE: Daca nil este lista vida, atunci:
+valenrap(nil) = nil
+valenrap(5 2 5 1 3 5 7 4 5 0 8 5 3 3) = 5 5 1 3 5 5 5 3 3
+esumanter(nil) = nil
+esumanter(0 2 5 7 1 7 0 22 3 47 7) = 0 7 22 47
+esumanter(0 0 0 3 3 4 7 0 17 1 35) = 0 0 0 3 17 35
+esumanter(1 1 1 2 5 3 0) = 1 5
+esumanter(1 3 6 10 4) = 10
+esumanter(2 0 7 14 5 0 1 2 100) = nil
+
+
+9) Sa se scrie un modul CafeObj pentru liste de numere naturale, care sa includa modulul NAT predefinit si sa contina doua operatii inloc si elimdupapoz, definite ca mai jos, alaturi de operatiile ajutatoare necesare pentru crearea sortului lista de numere naturale (fie acesta denumit Lista) si operatiile ajutatoare necesare pentru implementarea operatiilor inloc si elimdupapoz.
+	Operatiile inloc si elimdupapoz vor fi declarate astfel:
+ops inloc elimdupapoz : Lista -> Lista
+
+	Pentru orice lista finita L de numere naturale:
+
+inloc(L) = lista obtinuta din L prin inlocuirea fiecarui element par P al lui L cu P quo 2 (= catul impartirii lui P la 2, predefinit in modulul NAT) si a fiecarui element impar I al lui L cu (3 * I) + 1;
+
+elimdupapoz(L) = sublista lui L formata prin eliminarea din L a fiecarui element a carui valoare este strict mai mica decat numarul care indica pozitia lui in lista initiala L, unde pozitiile in L ale elementelor lui L sunt numarate de la 1 la lungimea lui L.
+
+	Amintesc ca in modulul NAT predefinit exista relatia “divide pe”, definita sub forma:
+op _divides_ : NzNat Nat -> Bool
+

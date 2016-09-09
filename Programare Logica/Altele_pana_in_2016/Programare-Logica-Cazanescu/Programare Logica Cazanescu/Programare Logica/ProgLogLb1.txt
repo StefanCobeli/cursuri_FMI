@@ -1,0 +1,14 @@
+fmod LISTE-NR-NAT is
+protecting NAT .
+sort Lista .
+subsort Nat < Lista .
+op nil : -> Lista .
+***> lista vida
+op __ : Lista Lista -> Lista [assoc id: nil] .
+***> concatenarea
+op lungime : Lista -> Nat .
+var X : Nat .
+var L : Lista .
+eq lungime(nil) = 0 .
+eq lungime(X L) = s lungime(L) .
+endfm

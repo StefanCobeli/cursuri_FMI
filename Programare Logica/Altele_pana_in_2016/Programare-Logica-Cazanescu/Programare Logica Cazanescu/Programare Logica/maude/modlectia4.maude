@@ -1,0 +1,271 @@
+fmod TEMA1-1 is
+
+   sorts Nat Eroare NatEr .
+   subsorts Nat Eroare < NatEr .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+   op _-_ : Nat Nat -> NatEr .
+   op eroare : -> Eroare .
+
+   vars X Y : Nat . 
+
+   eq X - 0 = X .
+   eq s X - s Y = X - Y .
+   eq 0 - s Y = eroare .
+
+***( Pentru a se putea evalua expresii compuse
+(cu mai multe operatii) in care unii subtermeni
+se reduc la eroare, se pot declara urmatoarele,
+si adauga ecuatiile de mai jos:
+
+   op s_ : Eroare -> Eroare .
+   op s_ : NatEr -> NatEr .
+   op _-_ : NatEr Eroare -> Eroare .
+   op _-_ : Eroare NatEr -> Eroare .
+   op _-_ : NatEr NatEr -> NatEr .
+
+   var E : NatEr . 
+
+   eq s eroare = eroare .
+
+   eq E - eroare = eroare .
+   eq eroare - E = eroare . )
+
+endfm
+
+
+fmod TEMA1-2 is
+
+   extending NAT .
+
+   sorts Eroare NatEr .
+   subsorts Nat Eroare < NatEr .
+
+   op _-_ : Nat Nat -> NatEr .
+   op eroare : -> Eroare .
+
+   vars X Y : Nat . 
+
+   eq X - 0 = X .
+   eq s X - s Y = X - Y .
+   eq 0 - s Y = eroare .
+
+endfm
+
+
+fmod TEMA2 is
+
+   sort Int .
+
+   op 0 : -> Int .
+   ops s_ p_ : Int -> Int .
+   op -_ : Int -> Int .
+   ops (_+_) (_*_) (_-_) : Int Int -> Int . 
+
+   vars X Y : Int .
+
+   eq p s X = X .
+   eq s p X = X .
+
+   eq X + 0 = X .
+   eq X + s Y = s (X + Y) .
+   eq X + p Y = p (X + Y) .
+
+   eq - 0 = 0 .
+   eq - - X = X .
+   eq - s X = p (- X) .
+   eq - p X = s (- X) .
+
+   eq X - 0 = X .
+   eq X - s Y = p (X - Y) .
+   eq X - p Y = s (X - Y) .
+
+   eq X * 0 = 0 .
+   eq X * s Y = (X * Y) + X .
+   eq X * p Y = (X * Y) - X .
+
+endfm
+
+
+fmod TEMA3-STIVE is
+
+   protecting NAT .
+
+   sort Stiva .
+   subsort Nat < Stiva .
+
+   op nil : -> Stiva .
+   op __ : Stiva Stiva -> Stiva [assoc id: nil] .
+   op push : Nat Stiva -> Stiva .
+   op pop : Stiva -> Nat .
+   op popstiva : Stiva -> Stiva .
+
+   var X : Nat .
+   var S : Stiva .
+
+   eq push(X,S) = X S .
+   eq pop(X S) = X .
+   eq popstiva(X S) = S .    
+   
+endfm
+
+
+fmod TEMA3-COZI is
+
+   protecting NAT .
+
+   sort Coada .
+   subsort Nat < Coada .
+
+   op nil : -> Coada .
+   op __ : Coada Coada -> Coada [assoc id: nil] .
+   op push : Nat Coada -> Coada .
+   op pop : Coada -> Nat .
+   op popcoada : Coada -> Coada .
+
+   var X : Nat .
+   var C : Coada .
+
+   eq push(X,C) = C X .
+   eq pop(X C) = X .
+   eq popcoada(X C) = C .    
+   
+endfm
+
+
+fmod LISTE2 is
+
+***> alte operatii cu liste
+
+   extending NAT .
+
+   sort Lista .
+
+   subsort Nat < Lista .
+   
+   op nil : -> Lista . ***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+***> concatenarea listelor
+
+   op sumaprec : Lista -> Lista .
+***( selecteaza elementele egale cu suma
+celor ce le preceda in lista )
+   op aux : Nat Lista -> Lista .
+***( operatie auxiliara necesara pentru
+scrierea operatiei sumaprec )
+
+   op _apartine_ : Nat Lista -> Bool .
+***( determina daca un element apartine
+unei liste )
+
+   op nraparitii : Nat Lista -> Nat .
+***( calculeaza numarul aparitiilor
+unui element intr-o lista ) 
+
+   op nth : NzNat Lista -> Nat .
+***> al n-lea element dintr-o lista
+
+   op inversa : Lista -> Lista .
+***> inverseaza o lista
+
+   op sterge : Nat Lista -> Lista .
+***> sterge prima aparitie a unui element intr-o lista
+
+   op stergetot : Nat Lista -> Lista .
+***> sterge toate aparitiile unui element intr-o lista
+
+   ops elimdup elimdup2 : Lista -> Lista .
+***> fiecare elimina duplicatele dintr-o lista
+***> elimdup pastreaza ultima pozitie a fiecarui element duplicat
+***> elimdup2 pastreaza prima pozitie a fiecarui element duplicat
+
+   op _lex_ : Lista Lista -> Bool .
+***> ordinea lexicografica
+
+   op listm7 : Nat -> Lista .
+***( genereaza lista multiplilor naturali de 7
+mai mici sau egali cu un numar natural dat )
+
+   vars X Y : Nat .
+   vars L M : Lista .
+
+   eq sumaprec(L) = aux(0,L) .
+
+   eq aux(X,nil) = nil .
+   eq aux(X,X L) = X aux(X + X,L) .
+   ceq aux(X,Y L) = aux(X + Y,L) if X =/= Y .  
+
+   eq X apartine nil = false .
+   eq X apartine (X L) = true .
+   ceq X apartine (Y L) = X apartine L if X =/= Y .
+
+   eq nraparitii(X,nil) = 0 .
+   eq nraparitii(X,X L) = s nraparitii(X,L) .
+   ceq nraparitii(X,Y L) = nraparitii(X,L) if X =/= Y .
+
+   eq nth(1,X L) = X .
+   eq nth(s s Y,X L) = nth(s Y,L) . 
+
+   eq inversa(nil) = nil .
+   eq inversa(X L) = inversa(L) X .
+
+   eq sterge(X,nil) = nil .
+   eq sterge(X,X L) = L .
+   ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+
+   eq stergetot(X,nil) = nil .
+   eq stergetot(X,X L) = stergetot(X,L) .
+   ceq stergetot(X,Y L) = Y stergetot(X,L) if X =/= Y .
+
+   eq elimdup(nil) = nil .
+   ceq elimdup(X L) = X elimdup(L) if not (X apartine L) .
+   ceq elimdup(X L) = elimdup(L) if X apartine L .
+
+   eq elimdup2(nil) = nil .
+   eq elimdup2(X L) = X elimdup2(stergetot(X,L)) .
+
+   eq nil lex L = true .
+   eq (X L) lex nil = false .
+   eq (X L) lex (X M) = L lex M .
+   ceq (X L) lex (Y M) = true if X < Y .
+   ceq (X L) lex (Y M) = false if X > Y .
+
+   eq listm7(0) = 0 .
+   ceq listm7(s X) = listm7(X) (s X) if 7 divides (s X) .
+   ceq listm7(s X) = listm7(X) if not (7 divides (s X)) .
+
+endfm
+
+
+fmod TEMA4 is   ***> 40 puncte
+
+***( Completati modulul pentru numere intregi din
+TEMA2 cu operatiile abs (modulul), div (catul 
+impartirii intregi), mod (restul impartirii intregi)
+si cmmdc (cel mai mare divizor comun), precum si
+relatiile <, <=, >, >=. Stim ca relatiile se definesc
+ca operatii de sort rezultat Bool (sortul boolean).
+Cat despre operatiile de mai sus, probabil ca este de
+preferat sa fie definite mai intai pe numerele naturale,
+adica pe intregii nenegativi, si apoi pe toti intregii.
+Cel mai mare divizor comun poate fi calculat cu
+algoritmul lui Euclid. )
+
+***( Aduceti acest modul la laboratorul de
+saptamana viitoare. La fel pentru toate temele
+care vor urma. Nu se vor puncta temele aduse cu
+cel putin o saptamana intarziere. Se acorda punctaj
+numai pentru temele aduse in decurs de o saptamana
+din ziua in care au fost date. )
+
+endfm
+
+
+fmod TEMA5 is   ***> 20 puncte
+
+***( Scrieti un modul care sa importe modulul predefinit
+NAT si sa contina o operatie definita pe Nat si cu valori 
+booleene care sa determine daca argumentul sau este prim. )
+
+endfm

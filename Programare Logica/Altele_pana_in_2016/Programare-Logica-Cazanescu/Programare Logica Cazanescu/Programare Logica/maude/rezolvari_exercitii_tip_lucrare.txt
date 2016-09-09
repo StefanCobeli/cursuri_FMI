@@ -1,0 +1,426 @@
+OBSERVATIE: Modulele de mai jos sunt scrise in CafeObj. Asemanarea de sintaxa cu Maude-ul este evidenta. Poate ar fi bine ca fiecare dintre voi sa transpuna aceste module in Maude, ca sa va obisnuiti cu sintaxa Maude pana la lucrarea de control.
+
+
+mod! REZOLVARE1{
+
+extending (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops e2 nfact : Lista -> Lista
+op e2pt : NzNat -> Nat
+op isnfact : Nat -> Bool
+op estenfact : NzNat NzNat -> Bool 
+
+var N : Nat
+vars X Z : NzNat
+var L : Lista
+
+ceq e2pt(Z) = 0 if not(2 divides Z) .
+ceq e2pt(Z) = s(e2pt(Z quo 2)) if 2 divides Z .
+
+eq e2(nil) = nil .
+eq e2(0 L) = e2(L) .
+eq e2(Z L) = e2pt(Z) e2(L) .
+
+eq isnfact(0) = false .
+eq isnfact(Z) = estenfact(Z,1) .   
+
+eq estenfact(Z,Z) = true .
+ceq estenfact(X,Z) = false if (Z =/= X) and not (Z divides X) .
+ceq estenfact(X,Z) = estenfact(X quo Z,s(Z)) if (Z =/= X) and (Z divides X) .
+
+eq nfact(nil) = nil .
+ceq nfact(N L) = N nfact(L) if isnfact(N) .
+ceq nfact(N L) = nfact(L) if not isnfact(N) .
+}
+
+
+mod! REZOLVARE2{
+
+protecting (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops nsn cresc : Lista -> Lista
+op ensn : Nat -> Bool
+op ensncun : Nat Nat -> Bool
+op crescdela : Nat Lista -> Lista
+
+vars N M : Nat 
+var L : Lista
+
+eq ensn(N) = ensncun(N,0) .
+
+ceq ensncun(N,M) = true if N == M * s(M) .
+ceq ensncun(N,M) = false if N < M * s(M) .
+ceq ensncun(N,M) = ensncun(N,s(M)) if N > M * s(M) .
+
+eq nsn(nil) = nil .
+ceq nsn(N L) = N nsn(L) if ensn(N) .
+ceq nsn(N L) = nsn(L) if not ensn(N) .
+
+eq crescdela(N,nil) = nil .
+ceq crescdela(N,M L) = M crescdela(M,L) if N <= M .
+ceq crescdela(N,M L) = crescdela(N,L) if N > M .
+
+eq cresc(L) = crescdela(0,L) .
+}
+
+
+** Solutie data de un student: implementarea lui cresc fara operatii auxiliare:
+
+mod! REZOLVARE2STUD{
+
+protecting (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+op cresc : Lista -> Lista
+
+vars N M : Nat 
+var L : Lista
+
+eq cresc(nil) = nil .
+eq cresc(N) = N .
+ceq cresc(N M L) = N cresc(M L) if M >= N .
+ceq cresc(N M L) = cresc(N L) if M < N .
+}
+
+
+mod! REZOLVARE3{
+
+protecting (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops inccresc cp : Lista -> Lista
+op ecp : Nat -> Bool
+op ecpcun : Nat Nat -> Bool
+
+vars N M : Nat
+var L : Lista
+
+eq inccresc(nil) = nil .
+eq inccresc(N) = N .
+ceq inccresc(N M L) = N inccresc(M L) if N <= M .
+ceq inccresc(N M L) = N if N > M .
+
+eq ecp(N) = ecpcun(N,0) .
+
+ceq ecpcun(N,M) = true if N == M * M * M .
+ceq ecpcun(N,M) = ecpcun(N,s(M)) if N > M * M * M .
+ceq ecpcun(N,M) = false if N < M * M * M .
+
+eq cp(nil) = nil .
+ceq cp(N L) = N cp(L) if ecp(N) .
+ceq cp(N L) = cp(L) if not ecp(N) .
+}
+
+
+mod! REZOLVARE4{
+
+protecting (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops lp3 cdivu : Lista -> Lista
+
+op ep3 : Nat -> Bool
+op ep3aux : Nat Nat -> Bool
+
+op _divide-pe_ : Nat Nat -> Bool
+
+vars N M : Nat
+var Z : NzNat
+var L : Lista
+
+eq ep3(N) = ep3aux(N,1) .
+
+ceq ep3aux(N,M) = ep3aux(N,3 * M) if N > M .
+eq ep3aux(N,N) = true .
+ceq ep3aux(N,M) = false if N < M .
+
+eq lp3(nil) = nil .
+ceq lp3(N L) = N lp3(L) if ep3(N) .
+ceq lp3(N L) = lp3(L) if not ep3(N) .
+
+eq Z divide-pe N = Z divides N .
+eq 0 divide-pe 0 = true .
+eq 0 divide-pe Z = false .
+
+eq cdivu(nil) = nil .
+eq cdivu(N) = N .
+ceq cdivu(N M L) = N cdivu(M L) if N divide-pe M .
+ceq cdivu(N M L) = N if not (N divide-pe M) . 
+}
+
+
+mod! REZOLVARE5{
+
+extending (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops nrdivcresc nrdivdescresc : Lista -> Lista
+
+op nrdiv : NzNat -> Nat
+op nrdivdela : NzNat NzNat -> Nat 
+ops nrdivmmic nrdivmmare : Nat Nat -> Bool
+
+vars N M : Nat
+vars Z Y : NzNat
+var L : Lista  
+
+eq nrdiv(Z) = nrdivdela(Z,1) .
+
+ceq nrdivdela(Z,Y) = s(nrdivdela(Z,s(Y))) if Y <= Z and Y divides Z .
+ceq nrdivdela(Z,Y) = nrdivdela(Z,s(Y)) if Y <= Z and not (Y divides Z) .
+ceq nrdivdela(Z,Y) = 0 if Y > Z .
+
+eq nrdivmmic(N,0) = true . 
+eq nrdivmmic(0,Z) = false . 
+eq nrdivmmic(Z,Y) = nrdiv(Z) <= nrdiv(Y) . 
+
+eq nrdivmmare(M,N) = nrdiv(M) == nrdiv(N) or not nrdivmmic(M,N) .
+
+eq nrdivcresc(nil) = nil .
+eq nrdivcresc(N) = N .
+ceq nrdivcresc(M N L) = M if not nrdivmmic(M,N) .
+ceq nrdivcresc(M N L) = M nrdivcresc(N L) if nrdivmmic(M,N) .
+
+eq nrdivdescresc(nil) = nil .
+eq nrdivdescresc(N) = N .
+ceq nrdivdescresc(M N L) = M if not nrdivmmare(M,N) .
+ceq nrdivdescresc(M N L) = M nrdivdescresc(N L) if nrdivmmare(M,N) .
+}
+
+
+mod! REZOLVARE6{
+
+extending (NAT)
+
+[Nat < Lista , PerNat]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+op [_;_] : Nat Nat -> PerNat
+op minsinrapmin : Lista -> PerNat
+op aldoilea : PerNat -> Nat
+op minper : PerNat PerNat -> PerNat
+
+op x2 : Lista -> Lista
+op nrapmin : Lista -> Nat
+
+vars N M X Y : Nat
+var L : Lista
+
+eq x2(nil) = nil .
+eq x2(N) = N .
+ceq x2(N M L) = N x2(M L) if M == N + N .
+ceq x2(N M L) = x2(N L) if M =/= N + N .  
+
+eq nrapmin(nil) = 0 .
+eq nrapmin(N L) = aldoilea(minsinrapmin(N L)) .
+
+eq aldoilea([N ; M]) = M .
+
+eq minsinrapmin(N) = [N ; 1] .
+eq minsinrapmin(N M L) = minper([N ; 1],minsinrapmin(M L)) . 
+
+ceq minper([N ; M],[X ; Y]) = [N ; M] if N < X .
+eq minper([N ; M],[N ; Y]) = [N ; M + Y] .
+ceq minper([N ; M],[X ; Y]) = [X ; Y] if N > X .
+}
+
+
+mod! REZOLVARE6VER2{
+
+extending (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+op min : Nat Nat -> Nat
+op minlist : Lista -> Nat
+op nrap : Nat Lista -> Nat
+
+op x2 : Lista -> Lista
+op nrapmin : Lista -> Nat
+
+vars N M : Nat
+var L : Lista
+
+eq x2(nil) = nil .
+eq x2(N) = N .
+ceq x2(N M L) = N x2(M L) if M == N + N .
+ceq x2(N M L) = x2(N L) if M =/= N + N .  
+
+eq nrapmin(nil) = 0 .
+eq nrapmin(N L) = nrap(minlist(N L),N L) .
+
+ceq min(N,M) = N if N <= M .
+ceq min(N,M) = M if N > M .
+
+eq minlist(N) = N .
+eq minlist(N M L) = min(N,minlist(M L)) .
+
+eq nrap(N,nil) = 0 .
+eq nrap(N,N L) = s(nrap(N,L)) .
+ceq nrap(N,M L) = nrap(N,L) if N =/= M .
+}
+
+
+mod! REZOLVARE7{
+
+extending (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops nrap nrapcresc : Lista -> Lista
+
+op nrapar : Nat Lista -> Nat
+ops nrapculinit nrapcrescculinit : Lista Lista -> Lista
+
+vars N M : Nat
+vars L Linit : Lista
+
+eq nrapar(N,nil) = 0 .
+eq nrapar(N,N L) = s(nrapar(N,L)) .
+ceq nrapar(N,M L) = nrapar(N,L) if N =/= M .
+
+eq nrapculinit(nil,Linit) = nil .
+eq nrapculinit(N L,Linit) = nrapar(N,Linit) nrapculinit(L,Linit) .
+
+eq nrap(L) = nrapculinit(L,L) .
+
+eq nrapcrescculinit(nil,Linit) = nil .
+eq nrapcrescculinit(N,Linit) = N .
+ceq nrapcrescculinit(N M L,Linit) = nrapcrescculinit(N L,Linit) if nrapar(N,Linit) >= nrapar(M,Linit) .
+ceq nrapcrescculinit(N M L,Linit) = N nrapcrescculinit(M L,Linit) if nrapar(N,Linit) < nrapar(M,Linit) .
+
+eq nrapcresc(L) = nrapcrescculinit(L,L) .
+}
+
+
+mod! REZOLVARE7VER2{
+
+extending (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops nrap nrapcresc : Lista -> Lista
+
+op nrapar : Nat Lista -> Nat
+ops nrapculinit nrapcresccul : Lista Lista -> Lista
+
+vars N M X Y : Nat
+vars L L1 : Lista
+
+eq nrapar(N,nil) = 0 .
+eq nrapar(N,N L) = s(nrapar(N,L)) .
+ceq nrapar(N,M L) = nrapar(N,L) if N =/= M .
+
+eq nrapculinit(nil,L1) = nil .
+eq nrapculinit(N L,L1) = nrapar(N,L1) nrapculinit(L,L1) .
+
+eq nrap(L) = nrapculinit(L,L) .
+
+eq nrapcresccul(nil,nil) = nil .
+eq nrapcresccul(N,X) = N .
+ceq nrapcresccul(N M L,X Y L1) = nrapcresccul(N L,X L1) if X >= Y .
+ceq nrapcresccul(N M L,X Y L1) = N nrapcresccul(M L,Y L1) if X < Y .
+
+eq nrapcresc(L) = nrapcresccul(L,nrap(L)) .
+}
+
+
+mod! REZOLVARE8{
+
+extending (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops valenrap esumanter : Lista -> Lista
+
+op nrap : Nat Lista -> Nat
+op valenrapculinit : Lista Lista -> Lista
+op esum : Lista Nat -> Lista 
+
+vars N M : Nat
+vars L L1 : Lista
+
+eq nrap(N,nil) = 0 .
+eq nrap(N,N L) = s(nrap(N,L)) .
+ceq nrap(N,M L) = nrap(N,L) if N =/= M .
+
+eq valenrap(L) = valenrapculinit(L,L) .
+
+eq valenrapculinit(nil,L1) = nil .
+ceq valenrapculinit(N L,L1) = N valenrapculinit(L,L1) if N == nrap(N,L1) .
+ceq valenrapculinit(N L,L1) = valenrapculinit(L,L1) if N =/= nrap(N,L1) .
+
+eq esumanter(L) = esum(L,0) .
+
+eq esum(nil,N) = nil .
+eq esum(N L,N) = N esum(L,N + N) .
+ceq esum(N L,M) = esum(L,N + M) if N =/= M . 
+}
+
+
+mod! REZOLVARE9{
+
+protecting (NAT)
+
+[Nat < Lista]
+
+op nil : -> Lista
+op __ : Lista Lista -> Lista {assoc id: nil}
+
+ops inloc elimdupapoz : Lista -> Lista
+op elimcupozinit : Lista Nat -> Lista
+
+vars N M : Nat
+var L : Lista
+
+eq inloc(nil) = nil .
+ceq inloc(N L) = (N quo 2) inloc(L) if 2 divides N .
+ceq inloc(N L) = s(N + N + N) inloc(L) if not (2 divides N) .
+
+eq elimdupapoz(L) = elimcupozinit(L,1) .
+
+eq elimcupozinit(nil,M) = nil .
+ceq elimcupozinit(N L,M) = N elimcupozinit(L,s(M)) if N >= M .
+ceq elimcupozinit(N L,M) = elimcupozinit(L,s(M)) if N < M .
+}
+

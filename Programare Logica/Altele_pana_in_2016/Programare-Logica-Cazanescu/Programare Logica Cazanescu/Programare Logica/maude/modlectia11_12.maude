@@ -1,0 +1,487 @@
+fmod OBSERVATIE-LUCRARE-2 is
+
+***( A se vedea, la sfarsitul acestui fisier, exercitiile
+pregatitoare pentru a doua lucrare de control. )
+
+endfm 
+
+fmod GRAF is
+***( parcurgerile grafurilor orientate sau neorientate
+(dupa cum dam listele de vecini ale fiecarui varf) )
+
+***( probleme fata de parcurgerile arborilor: posibila neconexitate,
+posibila neunicitate a drumurilor, datorata prezentei ciclurilor )
+
+   protecting NAT .
+
+   sorts Lista VarfVecini Graf .
+   subsort Nat < Lista .
+   subsort VarfVecini < Graf .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+
+   op _{_} : Nat Lista -> VarfVecini [prec 25] .
+
+   op null : -> Graf . ***> graful vid
+   op _;_ : Graf Graf -> Graf [assoc id: null prec 30] .
+***> un graf este o lista de varfuri urmate de listele vecinilor lor
+
+   op _in_ : Nat Lista -> Bool [prec 40] .
+***( operatia apartine; va fi folosita in locul unui vector in care
+sa fie marcate varfurile vizitate )
+
+   ops bf df : Graf -> Lista .
+***> parcurgerile in latime, respectiv in adancime
+***( parcurgerile vor incepe intotdeauna cu primul varf
+din lista care da graful )
+
+   ops bfaux dfaux : Graf Graf Lista -> Lista .
+   op transf : Lista Graf -> Graf .
+   op cauta : Nat Graf -> Graf .
+   op peniveluri : Lista Graf Lista -> Lista .
+   op cautavecini : Nat Graf -> Lista .
+***> operatii auxiliare pentru implementarea operatiilor de parcurgere
+
+   ops exno exo : -> Graf .
+***> un exemplu de graf neorientat si unul de graf orientat
+
+   vars G H : Graf .
+   vars X Y : Nat .
+   vars V L : Lista . 
+
+   eq X in nil = false .
+   eq X in Y L = if X == Y then true else X in L fi .
+
+   eq df(G) = dfaux(G,G,nil) .
+
+   eq dfaux(null,G,L) = L .
+   eq dfaux(X{V} ; H,G,L) = if X in L then dfaux(H,G,L) else dfaux(transf(V,G) ; H,G,L X) fi .
+
+   eq transf(nil,G) = null .
+   eq transf(X L,G) = cauta(X,G) ; transf(L,G) .
+
+   eq cauta(X,null) = null .
+   eq cauta(X,Y{V} ; G) = if X == Y then X{V} else cauta(X,G) fi .
+
+   eq bf(G) = bfaux(G,G,nil) .
+
+   eq bfaux(null,G,L) = L .
+   eq bfaux(X{V} ; H,G,L) = if X in L then bfaux(H,G,L) else bfaux(H,G,L X peniveluri(V,G,L X)) fi .
+
+   eq peniveluri(nil,G,L) = nil .
+   eq peniveluri(X V,G,L) = if X in L then peniveluri(V,G,L) else X peniveluri(V cautavecini(X,G),G,L X) fi . 
+
+   eq cautavecini(X,null) = nil .
+   eq cautavecini(X,Y{V} ; G) = if X == Y then V else cautavecini(X,G) fi .     
+
+   eq exno = 1{2 3} ; 2{1 3 6} ; 3{1 2 4 8 10} ; 4{3} ; 5{nil} ; 6{2 7} ; 7{6} ; 8{3 9} ; 9{8} ; 10{nil} .
+   eq exo = 1{2} ; 2{3} ; 3{1 4 8 10} ; 4{nil} ; 5{nil} ; 6{2} ; 7{6} ; 8{9} ; 9{nil} ; 10{nil} .
+
+endfm
+
+
+fmod CIUR is ***> ciurul lui Eratostene
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op filtreaza_cu_ : Lista Nat -> Lista .
+   op mai-mici-decat_ : Nat -> Lista .
+   op ciuruire_ : Lista -> Lista .
+   op primele-pana-la_ : Nat -> Lista .
+
+   var X : Nat .
+   vars P N : NzNat .
+   var L : Lista .
+
+   eq filtreaza nil cu P = nil .
+   eq filtreaza (N L) cu P = if P divides N then filtreaza L cu P else N filtreaza L cu P fi .
+
+   eq mai-mici-decat 0 = nil .
+   eq mai-mici-decat 1 = nil .
+   eq mai-mici-decat 2 = 2 .
+   eq mai-mici-decat s s N = mai-mici-decat s N s s N .
+
+   eq ciuruire nil = nil .
+   eq ciuruire (N L) = N (ciuruire (filtreaza L cu N)) .
+
+   eq primele-pana-la X = ciuruire (mai-mici-decat X) .
+
+endfm
+
+
+fmod OBSERVATIE-TEME is
+
+***( Temele urmatoare au fost date inainte de Paste. Le puteti aduce
+si saptamana viitoare, dar nu mai tarziu de saptamana viitoare. Daca
+le aduceti in ultima saptamana a semestrului, atunci nu vi le punctez.
+ 
+Dintre aceste teme, cea obligatorie este pentru un bonus la nota pe
+care o obtineti la prima lucrare de control.
+
+Celelalte sunt, dupa cum stiti, pentru un bonus la nota de la examen.
+
+Va rog sa cititi lectiile, temele si subiectele tip lucrare cu arbori
+binari si arbori oarecare pe care vi le-am trimis, ca pregatire pentru
+a doua lucrare de control. )
+
+endfm
+
+
+fmod TEMA-OBLIGATORIE is ***> pentru bonus la nota la prima lucrare
+
+***( Exercitiile din aceasta tema sunt obligatorii, in sensul
+ca rezolvarea lor conteaza pentru notarea la prima lucrare de
+control. Rezolvarile acestor exercitii trebuie aduse de
+studentii fiecarei grupe la primul laborator de dupa Paste.
+Daca sunt aduse mai tarziu, atunci nu vor fi notate. )
+
+***( Prima cerinta din tema obligatorie este sa scrieti un
+modul in Maude pentru numere complexe, care sa importe modulul
+predefinit FLOAT, in care sunt definite numerele reale, pentru
+lucrul cu partea reala si partea imaginara a unui numar complex.
+Modulul vostru pentru numere complexe trebuie sa contina
+operatiile de: calcul al modulului unui numar complex, adunare,
+scadere, inmultire si impartire a doua numere complexe. )
+
+***( A doua cerinta din tema obligatorie este sa scrieti in Maude
+un modul pentru polinoame cu coeficienti intregi, care sa contina
+o operatie pentru determinarea listei tuturor radacinilor intregi
+ale unui polinom cu coeficienti intregi. Amintesc ca toate
+radacinile intregi ale unui polinom cu coeficienti intregi sunt
+divizori intregi ai termenului liber al polinomului. A se revedea
+TEMA 13 din modlectia7_8.maude, a carei rezolvare am sa v-o trimit
+la sfarsitul acestei saptamani. )
+
+***( Ultima cerinta din tema obligatorie este un exercitiu dat de
+doamna Profesoara I. Leustean, care va cere sa scrieti in Maude un
+modul pentru implementarea tipului multiset cu elemente din
+multimea numerelor naturale.
+   Daca E este o multime, atunci un multiset cu elemente din E
+este o multime de perechi M = {(x,n) | x in E, n natural}. Intr-un
+multiset, un element poate aparea de mai multe ori: (x,n) in M
+inseamna ca x apare de n ori in M. Un multiset poate fi scris ca o
+multime in care permitem ca un element sa apara de mai multe ori
+(ordinea elementelor nu are importanta), sau ca o lista de perechi,
+cu prima componenta dintr-o pereche reprezentand elementul, iar a
+doua componenta a perechii reprezentand numarul de aparitii ale
+elementului in multiset. De exemplu: M = {1, 2, 1, 5, 3, 4, 5, 4, 1,
+3, 5, 0} = {(1,3), (2,1), (3,2), (4,2), (5,3), (0,1)}.
+   Scrieti un modul pentru multiseturi cu elemente din multimea
+numerelor naturale, care sa contina doua operatii pentru trecerea
+dintr-o reprezentare in cealalta, la care sa adaugati alte doua
+operatii, pentru definirea reuniunii si, respectiv, a intersectiei
+a doua multiseturi in reprezentarea cu perechi. In reuniunea a doua
+multiseturi, fiecare element are ca numar de aparitii maximul dintre
+numerele aparitiilor sale in fiecare dintre cele doua multiseturi, in
+timp ce, in intersectia a doua multiseturi, fiecare element are ca
+numar de aparitii minimul dintre numerele aparitiilor sale in fiecare
+dintre cele doua multiseturi.
+   Ca indicatie, multiseturile in prima reprezentare vor fi liste de
+numere naturale, avand concatenarea comutativa si admitand duplicate,
+iar multiseturile in a doua reprezentare vor fi liste de perechi de
+numere naturale, avand concatenarea comutativa si admitand cel mult
+o pereche cu o anumita prima componenta. )
+
+endfm
+
+
+fmod TEMA18 is   ***> 150 puncte
+
+***( Scrieti un modul pentru polinoame cu coeficienti reali, importand
+modulul FLOAT predefinit, care sa contina operatii pentru adunarea,
+scaderea, inmultirea a doua polinoame, precum si pentru catul si restul
+impartirii a doua polinoame cu coeficienti reali. )
+
+endfm
+
+
+fmod TEMA19 is   ***> 90 puncte
+
+***( Scrieti un modul pentru implementarea unui automat finit
+determinist, cu starile, starea initiala, starile finale, alfabetul
+si functia de tranzitie date in interiorul modulului, si care sa
+contina o operatie care sa determine daca un cuvant este sau nu
+acceptat de automat. )
+
+endfm
+
+
+fmod TEMA20 is   ***> 90 puncte
+
+***> La fel ca in TEMA 19, dar pentru un automat finit nedeterminist.
+
+endfm
+
+
+fmod ENUNTURI is
+
+***( Cerintele din exercitiile de mai jos au fost date la lucrari de control in anii anteriori. Unele dintre ele au fost rezolvate in modlectia9.maude si modlectia10.maude.
+
+In a doua lucrare de control pe care o veti da, veti avea un exercitiu cu arbori binari si unul cu arbori oarecare (desigur, cele doua exercitii vor avea mai putine cerinte decat exercitiile (I) si (II) de mai jos).
+
+In exercitiile de mai jos, sorturile pentru arbori binari, arbori oarecare si liste de arbori oarecare, precum si operatiile care construiesc aceste sorturi, vor fi denumite si declarate la fel ca in modlectia9.maude.
+
+(I) Sa se scrie in Maude un modul pentru arbori binari cu numere intregi ca informatii in noduri, care sa includa modulul INT predefinit si sa contina urmatoarele operatii, definite ca mai jos.
+   op maxdif : Arbbin -> Nat . 
+   op ecomplet : Arbbin -> Bool .
+   op invers : Arbbin -> Arbbin .
+	Pentru orice arbore binar A: 
+maxdif(A) = maximul modulului diferentei dintre numarul de frunze al subarborelui stang si numarul de frunze al subarborelui drept ale unui nod din arborele binar A;
+ecomplet(A) = true daca A este arbore binar complet, si false in caz contrar;
+invers(A) = arborele binar care se obtine din A prin inversarea subarborelui stang cu subarborele drept al fiecarui nod al lui A.
+
+(II) Sa se scrie in Maude un modul pentru arbori oarecare cu numere naturale ca informatii in noduri, care sa includa modulul NAT predefinit si sa contina urmatoarele operatii, definite ca mai jos.
+   ops nrmaxfii nrminfiinenul nrnodint nrfrunze nrvalpare nrcunrimparfii : Arbore -> Nat .
+   ops estebin descrescniv : Arbore -> Bool .
+   ops addist radpara infoh : Arbore -> Arbore .
+	Pentru orice arbore A: 
+nrmaxfii(A) = numarul maxim de fii ai unui nod din arborele A;
+nrminfiinenul(A) = numarul minim de fii ai unui nod intern (adica nod care nu e frunza) din arborele A, cu conventia: nrminfiinenul(null) = 0 si nrminfiinenul(F) = 0 daca F este o frunza;
+nrnodint(A) = numarul de noduri interne (adica noduri care nu sunt frunze) ale arborelui A;
+nrfrunze(A) = numarul de frunze ale arborelui A;
+nrvalpare(A) = numarul de noduri din arborele A care au informatia para;
+nrcunrimparfii(A) = numarul de noduri din arborele A care au un numar impar de fii;
+estebin(A) = true daca A este arbore binar (cu aceeasi radacina ca aceea din reprezentarea sa ca arbore oarecare), si false in caz contrar;
+descrescniv(A) = true daca informatia din fiecare nod intern (adica nod care nu e frunza) al lui A este mai mare sau egala cu informatia din fiecare fiu al sau, si false in caz contrar;
+addist(A) = arborele obtinut din A prin inlocuirea fiecarei informatii I din fiecare nod al sau cu I + D, unde D este distanta de la radacina arborelui A la acel nod, adica numarul de niveluri care despart radacina lui A de acel nod (D = 0 in cazul radacinii, D = 1 pentru fiecare fiu al radacinii etc.);
+radpara(A) = arborele obtinut din A prin eliminarea tuturor subarborilor sai cu informatia din radacina data de un numar natural impar;
+infoh(A) = arborele obtinut din A prin inlocuirea informatiei din fiecare nod cu inaltimea subarborelui lui A de radacina acel nod.
+
+A se vedea rezolvarile cerintelor de mai sus in modulele urmatoare. )
+
+endfm
+
+
+fmod EXERCITIUL-I is
+
+   protecting INT .
+
+   sorts Lista Arbbin .
+   subsort Int < Lista .
+***> Lista e sortul pentru liste de numere intregi
+***> Arbbin e sortul pentru arbori binari
+
+   op nil : -> Lista . ***> lista de numere intregi vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Int Arbbin Arbbin -> Arbbin .
+***> operatiile care construiesc sortul Arbbin
+
+   ops maxdif nrfrunze absdif h : Arbbin -> Nat . 
+   ops ecomplet : Arbbin -> Bool .
+   op invers : Arbbin -> Arbbin .
+   op plinlaniv : Arbbin Nat Nat -> Bool .
+
+   ops ex1 ex2 ex3 ex4 ex5 ex6 ex7 ex8 ex9 ex10 : -> Arbbin .
+
+   vars H L M N : Nat .
+   vars I J K : Int .
+   vars A B C D : Arbbin .
+
+   eq nrfrunze(null) = 0 .
+   eq nrfrunze(I{null,null}) = 1 .
+   eq nrfrunze(I{null,J{A,B}}) = nrfrunze(J{A,B}) .
+   eq nrfrunze(I{J{A,B},null}) = nrfrunze(J{A,B}) .
+   eq nrfrunze(I{J{A,B},K{C,D}}) = nrfrunze(J{A,B}) + nrfrunze(K{C,D}) .
+
+   eq absdif(null) = 0 .
+   eq absdif(I{A,B}) = abs(nrfrunze(B) - nrfrunze(A)) .
+
+   eq maxdif(null) = 0 .
+   eq maxdif(I{A,B}) = max(absdif(I{A,B}),max(absdif(A),absdif(B))) .
+
+***> max si abs sunt predefinite in modulul INT.
+
+   eq invers(null) = null .
+   eq invers(I{A,B}) = I{invers(B),invers(A)} .
+
+   eq h(null) = 0 .
+   eq h(I{A,B}) = s max(h(A),h(B)) .
+
+   eq ecomplet(A) = plinlaniv(A,h(A),1) .
+
+   ceq plinlaniv(I{A,null},H,L) = false if L < H .
+   ceq plinlaniv(I{null,A},H,L) = false if L < H .
+   ceq plinlaniv(I{J{A,B},K{C,D}},H,L) = plinlaniv(J{A,B},H,s L) and plinlaniv(K{C,D},H,s L) if L < H .
+   ceq plinlaniv(I{A,B},H,L) = true if L >= H .
+   eq plinlaniv(null,H,L) = true .
+
+   eq ex1 = 1{2{null,null},-3{null,4{null,null}}} .
+   eq ex2 = 1{2{null,null},3{-6{null,null},4{7{null,null},5{null,null}}}} .
+   eq ex3 = 1{null,3{6{null,null},4{7{null,null},5{null,null}}}} .
+   eq ex4 = 10{7{null,-8{null,null}},15{-12{null,null},-20{18{null,null},null}}} .
+   eq ex5 = 10{null,25{null,25{null,null}}} .
+   eq ex6 = 10{10{null,null},25{null,25{null,null}}} .
+   eq ex7 = 10{7{null,30{null,null}},15{12{null,null},20{18{null,null},null}}} .
+   eq ex8 = 1{2{null,null},3{null,4{null,null}}} .
+   eq ex9 = 1{-2{null,null},-3{6{null,null},-4{7{null,null},5{null,null}}}} .
+   eq ex10 = 1{2{4{null,null},5{null,null}},3{6{null,null},7{null,null}}} .
+
+endfm
+
+
+fmod EXERCITIUL-II is
+
+   protecting NAT .
+
+   sorts Lista Arbore ListArb .
+   subsort Nat < Lista .
+   subsort Arbore < ListArb .
+***> Lista e sortul pentru liste de numere naturale
+***> Arbore e sortul pentru arbori oarecare
+***> ListArb e sortul pentru liste de arbori oarecare 
+
+   op nil : -> Lista . ***> lista de numere naturale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbore . ***> arborele vid
+   op _{_} : Nat ListArb -> Arbore [prec 20] .
+***> operatiile care construiesc sortul Arbore
+
+   op frunza : -> ListArb . ***> lista de arbori vida
+   op _;_ : ListArb ListArb -> ListArb [assoc id: frunza prec 30] .
+***> concatenarea de liste de arbori
+
+   ops nrmaxfii nrminfiinenul nrnodint nrfrunze nrvalpare nrcunrimparfii : Arbore -> Nat .
+   ops estebin descrescniv : Arbore -> Bool .
+   ops addist radpara infoh : Arbore -> Arbore .
+
+   op lungime : ListArb -> Nat .
+   ops maxlist minlist : Lista -> Nat .
+   op listfara0 : Lista -> Lista .
+   op nrfii : Arbore -> Nat .
+   op nrfiilist : ListArb -> Lista .
+   ops nrnodintlist nrfrunzelist nrvalparelist nrcunrimparfiilist : ListArb -> Nat .
+   op descrescnivcuval : Arbore Nat -> Bool .
+   op descrescnivcuvallist : ListArb Nat -> Bool .
+   op addistcuniv : Arbore Nat -> Arbore .
+   op addistcunivlist : ListArb Nat -> ListArb .
+   ops listaradpara listainfoh : ListArb -> ListArb .
+   op h : Arbore -> Nat .
+   op listah : ListArb -> Lista .
+   ops ex1 ex2 ex3 ex4 ex5 ex6 ex7 ex8 ex9 : -> Arbore .
+
+   vars M N P : Nat .
+   var L : Lista .
+   vars A B C : Arbore .
+   var LA LA1 : ListArb .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(N L) = max(N,maxlist(L)) .
+
+   eq minlist(N) = N .
+   eq minlist(N M L) = min(N,minlist(M L)) .
+
+   eq lungime(frunza) = 0 .
+   eq lungime(A ; LA) = s lungime(LA) .
+
+   eq listfara0(nil) = nil .
+   eq listfara0(0 L) = listfara0(L) . 
+   ceq listfara0(N L) = N listfara0(L) if N =/= 0 .
+
+   eq nrfii(null) = 0 .
+   eq nrfii(N{LA}) = lungime(LA) .
+
+   eq nrfiilist(frunza) = nil .
+   eq nrfiilist(A ; LA) = nrfii(A) nrfiilist(LA) .
+
+   eq nrmaxfii(null) = 0 .
+   eq nrmaxfii(N{LA}) = max(nrfii(N{LA}),maxlist(nrfiilist(LA))) .
+
+   eq nrminfiinenul(null) = 0 .
+   eq nrminfiinenul(N{frunza}) = 0 .
+   eq nrminfiinenul(N{A ; LA}) = minlist(nrfii(N{A ; LA}) listfara0(nrfiilist(A ; LA))) .
+
+   eq nrnodint(null) = 0 .
+   eq nrnodint(N{frunza}) = 0 .
+   eq nrnodint(N{A ; LA}) = s(nrnodintlist(A ; LA)) .
+
+   eq nrnodintlist(frunza) = 0 .
+   eq nrnodintlist(A ; LA) = nrnodint(A) + nrnodintlist(LA) . 
+
+   eq nrfrunze(null) = 0 . 
+   eq nrfrunze(N{frunza}) = 1 .
+   eq nrfrunze(N{A ; LA}) = nrfrunzelist(A ; LA) .
+
+   eq nrfrunzelist(frunza) = 0 .
+   eq nrfrunzelist(A ; LA) = nrfrunze(A) + nrfrunzelist(LA) . 
+
+   eq estebin(null) = true .
+   eq estebin(N{frunza}) = true .
+   eq estebin(N{A}) = estebin(A) .
+   eq estebin(N{A ; B}) = estebin(A) and estebin(B) .
+   eq estebin(N{A ; B ; C ; LA}) = false .
+
+   eq nrvalpare(null) = 0 .
+   ceq nrvalpare(N{LA}) = nrvalparelist(LA) if not (2 divides N) .
+   ceq nrvalpare(N{LA}) = s nrvalparelist(LA) if 2 divides N .
+
+   eq nrvalparelist(frunza) = 0 .
+   eq nrvalparelist(A ; LA) = nrvalpare(A) + nrvalparelist(LA) . 
+
+   eq nrcunrimparfii(null) = 0 .
+   ceq nrcunrimparfii(N{LA}) = nrcunrimparfiilist(LA) if 2 divides lungime(LA) .
+   ceq nrcunrimparfii(N{LA}) = s nrcunrimparfiilist(LA) if not (2 divides lungime(LA)) .
+
+   eq nrcunrimparfiilist(frunza) = 0 .
+   eq nrcunrimparfiilist(A ; LA) = nrcunrimparfii(A) + nrcunrimparfiilist(LA) .
+
+   eq descrescniv(null) = true .
+   eq descrescniv(N{frunza}) = true .
+   eq descrescniv(N{A ; LA}) = descrescnivcuval(N{A ; LA},N) .
+
+   eq descrescnivcuval(null,N) = true .
+   eq descrescnivcuval(M{frunza},N) = N >= M .
+   eq descrescnivcuval(M{P{LA1} ; LA},N) = N >= M and descrescnivcuval(P{LA1},M) and descrescnivcuvallist(LA,M) .
+
+   eq descrescnivcuvallist(frunza,N) = true .
+   eq descrescnivcuvallist((A ; LA),N) = descrescnivcuval(A,N) and descrescnivcuvallist(LA,N) .
+
+   eq addist(A) = addistcuniv(A,0) .
+
+   eq addistcuniv(null,N) = null .
+   eq addistcuniv(M{LA},N) = (M + N){addistcunivlist(LA,s N)} .
+
+   eq addistcunivlist(frunza,N) = frunza .
+   eq addistcunivlist((A ; LA),N) = addistcuniv(A,N) ; addistcunivlist(LA,N) .
+
+   eq radpara(null) = null .
+   ceq radpara(N{LA}) = null if not (2 divides N) .
+   ceq radpara(N{LA}) = N{listaradpara(LA)} if 2 divides N .
+
+   eq listaradpara(frunza) = frunza .
+   ceq listaradpara(N{LA1} ; LA) = radpara(N{LA1}) ; listaradpara(LA) if 2 divides N .
+   ceq listaradpara(N{LA1} ; LA) = listaradpara(LA) if not (2 divides N) .
+
+   eq infoh(null) = null .
+   eq infoh(N{LA}) = h(N{LA}){listainfoh(LA)} .
+
+   eq listainfoh(frunza) = frunza .
+   eq listainfoh(A ; LA) = infoh(A) ; listainfoh(LA) .
+
+   eq h(null) = 0 .
+   eq h(N{LA}) = s maxlist(listah(LA)) .
+
+   eq listah(frunza) = nil .
+   eq listah(A ; LA) = h(A) listah(LA) .
+
+   eq ex1 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}} ; 7{frunza}} .
+   eq ex2 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}}} .
+   eq ex3 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza} ; 7{8{frunza} ; 9{frunza} ; 10{frunza}}}} .
+   eq ex4 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}} ; 7{frunza}} .
+   eq ex5 = 10{2{1{frunza} ; 0{frunza}} ; 5{3{frunza}} ; 7{frunza}} .
+   eq ex6 = 10{2{1{frunza} ; 2{frunza}} ; 5{3{frunza}} ; 7{frunza}} .
+   eq ex7 = 3{4{frunza} ; 0{6{frunza} ; 8{2{frunza} ; 10{frunza} ; 20{frunza}}}} .
+   eq ex8 = 12{5{frunza} ; 0{13{frunza} ; 8{2{frunza} ; 7{frunza} ; 20{frunza}}} ; 22{25{frunza}}} .
+   eq ex9 = 12{5{frunza} ; 0{8{2{frunza} ; 7{frunza} ; 20{frunza}}} ; 22{25{frunza}}} .
+
+endfm
+

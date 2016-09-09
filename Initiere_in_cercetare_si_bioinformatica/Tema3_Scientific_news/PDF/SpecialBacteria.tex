@@ -1,0 +1,140 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thin Sectioned Essay
+% LaTeX Template
+% Version 1.0 (3/8/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original Author:
+% Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper, 11pt]{article} % Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US letter paper)
+
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage{graphicx} % Required for including pictures
+\usepackage{wrapfig} % Allows in-line images
+
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Required for accented characters
+\linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
+
+\renewcommand{\maketitle}{ % Customize the title - do not edit title and author name here, see the TITLE block below
+\begin{flushright} % Right align
+{\LARGE\@title} % Increase the font size of the title
+
+\vspace{50pt} % Some vertical space between the title and author name
+
+{\large\@author} % Author name
+\\\@date % Date
+
+\vspace{40pt} % Some vertical space between the author block and abstract
+\end{flushright}
+}
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{Single Bacteria type grows 60\% better on Space than on Earth}\\ % Title
+} % Subtitle
+
+\author{\textsc{ Cobeli \c Stefan} % Author
+\\{\textit{College of Mathematics and Computer Science, University of Bucharest }}} % Institution
+
+\date{\today} % Date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT AND KEYWORDS
+%----------------------------------------------------------------------------------------
+
+%\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
+
+\begin{abstract}
+ Researchers from University of California 
+ had the idea to collect simple bacteria from different
+ environments on Earth and compare their behaviour on normal
+ environment with their behaviour on space.
+ The starting problem was that until now the attention
+ has been focused on the microbes that have potential
+ pathogenic risk and nobody studied the ordinary bacteria on space .
+The result was surprising. Of the 48 types of bacteria
+ sent on ISS all of them had similar behaviour, with
+ one exception. Bacillus safensis grew 60\% better on ISS than on Earth.
+\end{abstract}
+
+\hspace*{3,6mm} % Keywords
+
+\vspace{30pt} % Some vertical space between the abstract and first section
+
+%----------------------------------------------------------------------------------------
+%	ESSAY BODY
+%----------------------------------------------------------------------------------------
+
+\section*{Summary}
+
+To accomplish this task, it was made a nationwide
+ campain to popularise  science, named Project MERCCURI
+ (Microbial Ecology Research Combining Citizen 
+and University Researchers on the ISS). 
+The people had to collect microbes from public places
+ like museums, sports events,  schools, pools and send
+ them to researchers and the most interesting microbes
+ were selected. The bacteria winners were sent to ISS.
+ 
+ 
+  After the selection, the researchers send
+ samples with the winners on Dragon spacecraft, which was 
+ launched on April 18th 2014.
+The result was that Bacillus safensis bacteria grew 60\%
+ better on the board of ISS than on Earth. 
+ The reason for this is still a mystery. 
+Clues may be found on the genome sequencing of the bacteria,
+ that was recently determined .
+
+
+\section*{Conclusion}
+The lead author of the article Dr. David Coll said that:
+ "Understanding how microbes behave in microgravity is critically 
+ important for planning long-term manned space flight but also
+ has the possibility of providing new insights into how these
+ microbes behave in human constructed environments on Earth."
+Also this study engaged the public in the world of 
+science and research. The authors hope that this article will
+ be a start of inspiration for young and adults to get involved 
+ more in science world.
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\bibliographystyle{unsrt}
+
+\bibliography{sample}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

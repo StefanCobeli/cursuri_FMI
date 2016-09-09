@@ -1,0 +1,28 @@
+td { 
+  height:4em;
+  width:4em;
+  border: 1px solid black;
+  text-align : center;
+}
+footer{
+	position: fixed;
+    bottom: 0;
+    right: 0;
+    font-family: "Great Vibes", cursive;
+    animation: pulse 10s infinite;
+}
+@keyframes pulse {
+  0% {
+    background-color: BarkKhaki;
+  }
+  33%{
+
+  	background-color: PaleGreen;
+  }
+  66% {
+    background-color: Moccasin;
+  }
+  100%{
+  	background-color: BarkKhaki;
+  }
+}

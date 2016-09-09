@@ -1,0 +1,479 @@
+SPECIFICATII BAZATE PE SPECIFICATIA LUI LAWVERE PENTRU NUMERELE NATURALE:
+
+fmod NAT1 is
+
+   sort Nat .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+   op _+_ : Nat Nat -> Nat .
+   
+   vars X Y : Nat .
+   
+   eq X + 0 = X .
+   eq X + s Y = s (X + Y) .
+
+endfm
+
+
+fmod M3 is
+
+   sort Nat .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+   op m3 : Nat -> Bool .
+***( testeaza daca argumentul sau
+     este multiplu de 3, folosind
+     doar operatiile 0 si succesor )
+
+***( A se vedea operatia
+     _divides_ din modulul
+     NAT predefinit. )
+
+   var X : Nat .
+
+   eq m3(0) = true .
+   eq m3(s 0) = false .
+   eq m3(s s 0) = false .
+   eq m3(s s s X) = m3(X) .
+
+endfm
+
+
+fmod Z2 is
+
+***( specificatie pentru clasele
+     de resturi modulo 2 )
+
+   sort Nat .
+
+   op 0 : -> Nat .
+   op s_ : Nat -> Nat .
+
+   var X : Nat .
+
+   eq s s X = X .
+
+endfm 
+
+SPECIFICATII PENTRU CALCULE CU NUMERELE NATURALE PREDEFINITE:
+
+
+
+fmod FP is
+   
+   extending NAT .
+   
+   op _! : Nat -> Nat . ***> factorialul
+   op _la_ : Nat Nat -> Nat .
+***( ridicarea la putere, operatie care, in modulul predefinit
+NAT, este, de fapt, predefinita, si numita _^_ )  
+
+   vars X Y : Nat .
+   
+   eq 0 ! = 1 .
+   eq (s X) ! = (X !) * (s X) .
+
+   eq X la 0 = 1 .
+   eq X la (s Y) = (X la Y) * X .   
+
+endfm
+
+
+OPERATII CU LISTE:
+
+fmod LISTE-NOTOK is
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+   
+   op nil : -> Lista .
+***> lista vida
+   op __ : Lista Lista -> Lista [assoc] .
+***> concatenarea
+
+   op lungime : Lista -> Nat .   
+
+   var X : Nat .
+   var L : Lista .
+
+   eq L nil = L .
+   eq nil L = L .
+ 
+   eq lungime(nil) = 0 .   
+   eq lungime(X L) = s lungime(L) .
+
+***( Nu functioneaza cum trebuie, pentru ca
+nu stie sa rescrie o lista in ea insasi
+concatenata cu lista vida (nil). Pentru aceasta,
+nil trebuie declarata element neutru la concatenare,
+ca in modulul urmator. )
+
+endfm
+
+fmod LISTE-OK is
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+   
+   op nil : -> Lista .
+***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+***> concatenarea
+
+   op lungime : Lista -> Nat .   
+
+   var X : Nat .
+   var L : Lista .
+
+   eq lungime(nil) = 0 .   
+   eq lungime(X L) = s lungime(L) .
+
+endfm
+
+
+fmod LISTE is
+
+***> mai multe operatii cu liste
+
+   extending NAT .
+
+   sorts Infinit NatInf Lista .
+
+   subsorts Nat Infinit < NatInf .
+
+   subsort Nat < Lista .
+   
+   op infinit : -> Infinit .  
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op lungime : Lista -> Nat .
+***> lungimea listei (numarul de elemente)
+
+   op suma : Lista -> Nat .
+***> suma elementelor listei
+
+   op indicipari : Lista -> Lista .
+***> sublista elementelor de indici pari
+***> (numarati de la 1, din capul listei)
+
+   op elempare : Lista -> Lista .
+***> sublista elementelor pare
+
+   op maxim : Nat Nat -> Nat .
+***> maximul a doua numere naturale
+***> exista max predefinit in NAT
+   op maxlista : Lista -> Nat .
+***> maximul dintr-o lista
+
+   op minim : Nat Nat -> Nat .
+***> minimul a doua numere naturale
+***> exista min predefinit in NAT
+   op minlista : Lista -> NatInf .
+***> minimul dintr-o lista
+
+   op nucifre : Lista -> Lista .
+***> selecteaza elementele care nu sunt cifre 
+
+   op eordcresc : Lista -> Bool .
+***> testeaza daca lista e ordonata crescator
+
+   op lm3 : Nat -> Lista .
+***> lm3(N) = lista primilor N multipli pozitivi de 3
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   eq lungime(nil) = 0 .   
+   eq lungime(X L) = s lungime(L) .
+
+   eq suma(nil) = 0 .
+   eq suma(X L) = X + suma(L) .
+
+   eq indicipari(nil) = nil .
+   eq indicipari(X) = nil .
+   eq indicipari(X Y L) = Y indicipari(L) .
+
+   eq elempare(nil) = nil .
+   ceq elempare(X L) = X elempare(L) if 2 divides X .
+   ceq elempare(X L) = elempare(L) if not (2 divides X) .
+
+   ceq maxim(X,Y) = Y if X <= Y .
+   ceq maxim(X,Y) = X if X > Y .
+
+   eq maxlista(nil) = 0 .
+   eq maxlista(X L) = maxim(X,maxlista(L)) .   
+
+   ceq minim(X,Y) = Y if X >= Y .
+   ceq minim(X,Y) = X if X < Y .
+
+   eq minlista(nil) = infinit .
+   eq minlista(X) = X .
+   eq minlista(X Y L) = minim(X,minlista(Y L)) .   
+
+   eq nucifre(nil) = nil .
+   ceq nucifre(X L) = X nucifre(L) if X >= 10 .
+   ceq nucifre(X L) = nucifre(L) if X < 10 .
+
+   eq eordcresc(nil) = true .
+   eq eordcresc(X) = true .
+   eq eordcresc(X Y L) = (X <= Y) and eordcresc(Y L) .   
+
+   eq lm3(0) = nil .
+   eq lm3(s X) = lm3(X) (3 * (s X)) .
+
+endfm
+
+
+fmod FIBONACCI is
+
+   extending NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op sirfib : Nat -> Lista .
+***> genereaza sirul lui Fibonacci pana la un indice dat
+
+   op adauga : Lista -> Lista .
+***( adauga la o lista de lungime cel putin
+2 suma ultimelor sale doua elemente )
+
+   op fib : Nat -> Nat . ***>  al N-lea termen din sirul lui Fibonacci
+   
+   op ult : Lista -> Nat . ***> elementul din coada unei liste
+
+   vars M N : Nat .
+   var L : Lista .
+
+   eq adauga(nil) = nil .
+   eq adauga(N) = N .
+   eq adauga(L M N) = L M N (M + N) .
+***> nu e recursie, ci definitie pe cazuri
+***> era ok aici si numai cu ultima ecuatie
+
+   eq sirfib(0) = 0 .
+   eq sirfib(1) = 0 1 .
+   eq sirfib(s s N) = adauga(sirfib(s N)) . 
+
+   eq ult(nil) = 0 .
+   eq ult(L N) = N .
+***> aceleasi comentarii ca la operatia adauga
+
+   eq fib(N) = ult(sirfib(N)) .
+
+endfm
+
+fmod LISTE2 is
+
+***> alte operatii cu liste
+
+   extending NAT .
+
+   sort Lista .
+
+   subsort Nat < Lista .
+   
+   op nil : -> Lista . ***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+***> concatenarea listelor
+
+   op sumaprec : Lista -> Lista .
+***( selecteaza elementele egale cu suma
+celor ce le preceda in lista )
+   op aux : Nat Lista -> Lista .
+***( operatie auxiliara necesara pentru
+scrierea operatiei sumaprec )
+
+   op _apartine_ : Nat Lista -> Bool .
+***( determina daca un element apartine
+unei liste )
+
+   op nraparitii : Nat Lista -> Nat .
+***( calculeaza numarul aparitiilor
+unui element intr-o lista ) 
+
+   op nth : NzNat Lista -> Nat .
+***> al n-lea element dintr-o lista
+
+   op inversa : Lista -> Lista .
+***> inverseaza o lista
+
+   op sterge : Nat Lista -> Lista .
+***> sterge prima aparitie a unui element intr-o lista
+
+   op stergetot : Nat Lista -> Lista .
+***> sterge toate aparitiile unui element intr-o lista
+
+   ops elimdup elimdup2 : Lista -> Lista .
+***> fiecare elimina duplicatele dintr-o lista
+***> elimdup pastreaza ultima pozitie a fiecarui element duplicat
+***> elimdup2 pastreaza prima pozitie a fiecarui element duplicat
+
+   op _lex_ : Lista Lista -> Bool .
+***> ordinea lexicografica
+
+   op listm7 : Nat -> Lista .
+***( genereaza lista multiplilor naturali de 7
+mai mici sau egali cu un numar natural dat )
+
+   vars X Y : Nat .
+   vars L M : Lista .
+
+   eq sumaprec(L) = aux(0,L) .
+
+   eq aux(X,nil) = nil .
+   eq aux(X,X L) = X aux(X + X,L) .
+   ceq aux(X,Y L) = aux(X + Y,L) if X =/= Y .  
+
+   eq X apartine nil = false .
+   eq X apartine (X L) = true .
+   ceq X apartine (Y L) = X apartine L if X =/= Y .
+
+   eq nraparitii(X,nil) = 0 .
+   eq nraparitii(X,X L) = s nraparitii(X,L) .
+   ceq nraparitii(X,Y L) = nraparitii(X,L) if X =/= Y .
+
+   eq nth(1,X L) = X .
+   eq nth(s s Y,X L) = nth(s Y,L) . 
+
+   eq inversa(nil) = nil .
+   eq inversa(X L) = inversa(L) X .
+
+   eq sterge(X,nil) = nil .
+   eq sterge(X,X L) = L .
+   ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+
+   eq stergetot(X,nil) = nil .
+   eq stergetot(X,X L) = stergetot(X,L) .
+   ceq stergetot(X,Y L) = Y stergetot(X,L) if X =/= Y .
+
+   eq elimdup(nil) = nil .
+   ceq elimdup(X L) = X elimdup(L) if not (X apartine L) .
+   ceq elimdup(X L) = elimdup(L) if X apartine L .
+
+   eq elimdup2(nil) = nil .
+   eq elimdup2(X L) = X elimdup2(stergetot(X,L)) .
+
+   eq nil lex L = true .
+   eq (X L) lex nil = false .
+   eq (X L) lex (X M) = L lex M .
+   ceq (X L) lex (Y M) = true if X < Y .
+   ceq (X L) lex (Y M) = false if X > Y .
+
+   eq listm7(0) = 0 .
+   ceq listm7(s X) = listm7(X) (s X) if 7 divides (s X) .
+   ceq listm7(s X) = listm7(X) if not (7 divides (s X)) .
+
+endfm
+
+fmod LISTE3 is
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+   
+   op nil : -> Lista . ***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+***> concatenarea listelor
+
+***> operatii din modulul LISTE2:
+   op _apartine_ : Nat Lista -> Bool .
+   op inversa : Lista -> Lista .
+   op stergetot : Nat Lista -> Lista .
+   ops elimdup elimdup2 : Lista -> Lista .
+
+   ops lungpara lungimpara : Lista -> Bool .
+***( determina daca o lista are lungimea para,
+respectiv impara, fara a calcula lungimea listei )
+
+   ops simetrica sim : Lista -> Bool .
+***> fiecare determina daca o lista e simetrica
+
+   op listacifre : Nat -> Lista .
+***> lista cifrelor unui numar natural
+
+   ops palindrom pal : Nat -> Bool .
+***( fiecare determina daca un numar natural
+este palindrom, adica, citit de la coada la cap,
+ramane neschimbat )
+
+   op _sublista_ : Lista Lista -> Bool .
+***( determina daca o lista e sublista a altei
+liste - cu elementele in ordine, dar nu neaparat
+pe pozitii consecutive )
+
+   ops multime multime2 mult : Lista -> Bool .
+***( fiecare determina daca o lista e multime,
+i. e. daca lista nu contine duplicate )
+
+   vars X Y : Nat .
+   vars L M : Lista .
+
+   eq X apartine nil = false .
+   eq X apartine (X L) = true .
+   ceq X apartine (Y L) = X apartine L if X =/= Y .
+
+   eq inversa(nil) = nil .
+   eq inversa(X L) = inversa(L) X .
+
+   eq stergetot(X,nil) = nil .
+   eq stergetot(X,X L) = stergetot(X,L) .
+   ceq stergetot(X,Y L) = Y stergetot(X,L) if X =/= Y .
+
+   eq elimdup(nil) = nil .
+   ceq elimdup(X L) = X elimdup(L) if not (X apartine L) .
+   ceq elimdup(X L) = elimdup(L) if X apartine L .
+
+   eq elimdup2(nil) = nil .
+   eq elimdup2(X L) = X elimdup2(stergetot(X,L)) .
+
+   eq lungpara(nil) = true .
+   eq lungpara(X) = false .
+   eq lungpara(X Y L) = lungpara(L) .
+
+   eq lungimpara(nil) = false .
+   eq lungimpara(X L) = lungpara(L) .
+
+   eq simetrica(L) = L == inversa(L) .
+
+   eq sim(nil) = true .
+   eq sim(X) = true .
+   eq sim(X L X) = sim(L) . 
+   ceq sim(X L Y) = false if X =/= Y . 
+
+   ceq listacifre(X) = X if X < 10 .
+   ceq listacifre(X) = listacifre(X quo 10) (X rem 10) if X >= 10 .
+
+   eq palindrom(X) = simetrica(listacifre(X)) .
+
+   eq pal(X) = sim(listacifre(X)) .
+
+   eq nil sublista L = true .
+   eq (X M) sublista nil = false .
+   eq (X M) sublista (X L) = M sublista L .
+   ceq (X M) sublista (Y L) = (X M) sublista L if X =/= Y .
+
+   eq multime(L) = L == elimdup(L) .
+***> elimdup lasa lista neschimbata ddaca lista e multime
+
+   eq multime2(L) = L == elimdup2(L) .
+***> elimdup2 lasa lista neschimbata ddaca lista e multime
+
+   eq mult(nil) = true .
+   eq mult(X L) = mult(L) and not (X apartine L) .
+
+endfm
+
+

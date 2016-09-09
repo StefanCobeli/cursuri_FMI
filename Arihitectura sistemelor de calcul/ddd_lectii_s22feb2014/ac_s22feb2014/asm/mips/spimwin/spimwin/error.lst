@@ -1,0 +1,57 @@
+08:03:29 PM GTB, or, 12/11/14
+
+1: .data
+2:  x:.space 4
+3:  y:.space 4
+4: .text
+5: main:
+6:  li $t0,1
+7:  sw $t0,x
+8:  li $t0,2
+9:  sw $t0,y
+10: # de aici e ca inainte
+11:  lw $t0,x
+12:  lw $t1,y
+13:  sw $t0,y
+14:  sw $t1,x
+15: li $v0,10
+16: syscall
+
+Text Segment:
+Address		Opcode	    Bare Instruction		    Original Text
+[0x00400000]	0x8fa40000  lw $4, 0($29)                   ; 102: lw $a0, 0($sp)
+[0x00400004]	0x27a50004  addiu $5, $29, 4                ; 103: addiu $a1, $sp, 4 # argv
+[0x00400008]	0x24a60004  addiu $6, $5, 4                 ; 104: addiu $a2, $a1, 4 # envp
+[0x0040000c]	0x00041080  sll $2, $4, 2                   ; 105: sll $v0, $a0, 2
+[0x00400010]	0x00c23021  addu $6, $6, $2                 ; 106: addu $a2, $a2, $v0
+[0x00400014]	0x0c100008  jal 0x00400020 [main]           ; 107: jal main
+[0x00400018]	0x3402000a  ori $2, $0, 10                  ; 108: li $v0 10
+[0x0040001c]	0x0000000c  syscall                         ; 109: syscall
+[0x00400020]	0x34080001  ori $8, $0, 1                   ; 6: li $t0,1
+[0x00400024]	0x3c011001  lui $1, 4097                    ; 7: sw $t0,x
+[0x00400028]	0xac280000  sw $8, 0($1)
+[0x0040002c]	0x34080002  ori $8, $0, 2                   ; 8: li $t0,2
+[0x00400030]	0x3c011001  lui $1, 4097                    ; 9: sw $t0,y
+[0x00400034]	0xac280004  sw $8, 4($1)
+[0x00400038]	0x3c011001  lui $1, 4097                    ; 11: lw $t0,x
+[0x0040003c]	0x8c280000  lw $8, 0($1)
+[0x00400040]	0x3c011001  lui $1, 4097                    ; 12: lw $t1,y
+[0x00400044]	0x8c290004  lw $9, 4($1)
+[0x00400048]	0x3c011001  lui $1, 4097                    ; 13: sw $t0,y
+[0x0040004c]	0xac280004  sw $8, 4($1)
+[0x00400050]	0x3c011001  lui $1, 4097                    ; 14: sw $t1,x
+[0x00400054]	0xac290000  sw $9, 0($1)
+[0x00400058]	0x3402000a  ori $2, $0, 10                  ; 15: li $v0,10
+[0x0040005c]	0x0000000c  syscall                         ; 16: syscall
+
+Data Segment:
+Label		Address		First 4 bytes of value
+x	[0x10010000]	0x00000000
+y	[0x10010004]	0x00000000
+
+Symbol Table:
+globl	text	__start at 0x00400000
+undef	main
+local	data	x at 0x10010000
+local	data	y at 0x10010004
+local	text	main at 0x00400020

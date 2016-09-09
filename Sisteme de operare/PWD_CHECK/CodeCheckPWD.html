@@ -1,0 +1,122 @@
+<html lang="ro">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link href="../src/prettify.css" type="text/css" rel="stylesheet" />
+
+    <script src="../src/prettify.js" type="text/javascript"></script>
+
+<!-- <style type="text/css">
+      body { margin-left: .5in }
+</style> -->
+
+<style  type="text/css">
+ h2 {color:blue;}
+ h3 {color:red;} p {color:blue;} 
+	body{ margin-left: .5in;}
+</style>
+</head>
+
+<!-- BODY BODY BODY BODY BODY BODY BODY BODY BODY BODY  -->
+  <body onload="prettyPrint()" bgcolor="white">
+<H2>Lucru cu fișiere -- concatenare</H2>
+<strong>Problema de rezolvat:</strong>
+<strong>Problema 3:</strong><br />
+<strong>A17.</strong> (1 punct) Scrieti un program care sa verifice daca schimbandu-si valoarea
+ variabilei de environment PWD, functia getcwd returneaza acelasi director
+ curent.
+
+
+<hr align="center" />
+Constatare: comanda <code>system()</code> nu modifică decât "pentru o linie de cod" variabila <code>PWD</code>, 
+programul rămânând efectiv
+"lipit" de directorul în care se găsește sursa executabilului.<br />
+Pentru modificarea efectivă a <code>PWD</code> trebuie folosită comanda <code>chdir()</code>.
+<hr align="center" />
+
+
+<strong><h4>Vezi sursa .html pentru a vedea ce biblioteci se includ în preambulul file.c, pentru că în .html 
+&lt; &gt; și ce e între ele devin invizibile!!!</h4></strong>
+
+<!-- File1 -->
+<h3 >Schimbarea <code>PWD</code> din <code>.c</code> file -- tests</h3>
+<!-- START CODE-CELL -->
+<pre class="prettyprint">
+/* check the values of $PWD and of getcwd before and after changes
+ * getcwd - get the pathname of the current working directory
+ * #include <unistd.h>
+ * getcwd(char *buf, size_t size);
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main() {
+	
+    char dirname[100];
+    int PATH_MAX=200;
+    // In the begining:
+    system("echo Directorul inițial este: $PWD");  
+    printf("Aici suntem la început.\n\n");
+    
+	/* To be passed to getcwd system call. */
+	/* Use getcwd to get the name of the current working directory. */
+	if (getcwd(dirname, PATH_MAX) == NULL) {
+		fprintf(stderr, "Could not obtain current working directory.\n");
+		exit(1);
+	}
+	else {
+		printf("Altfel, verificăm folosind getcwd(): \nDirectorul inițial este: %s\n", dirname);
+	}
+	
+	printf("\n==============================================\n");
+    // After:
+    // system("ls -1");
+    system("export PWD=/tmp; echo Directorul schimbat este: PWD=$PWD");
+    printf("\nComanda PWD=/tmp funcționează din linia de comandă și schimbă directorul!!!\n");
+    system("echo Cu system însă, dacă mai întreb încă o dată: PWD=$PWD");  
+    system("pwd");
+    system("echo Deci nu s-a schimbat nimic!!!\n\n");  
+
+
+    printf("\n");	
+	system("echo Altă încercare, folosind setenv");
+    setenv("PWD", "/tmp", 1); // Create environment variable
+
+	/* To be passed to getcwd system call. */
+	/* Use getcwd to get the name of the current working directory. */
+	if (getcwd(dirname, PATH_MAX) == NULL) {
+		fprintf(stderr, "Could not obtain current working directory.\n");
+		exit(1);
+	}
+	else {
+		printf("\nSe verifică neschimbarea și cu getcwd(): \nPWD=%s\n", dirname);
+	}
+	
+	/////////////////////////////////////
+	// Altfel
+	printf("\n==============================================\n");
+	char cwd[1024];
+	printf("\n\nSchimbăm acum directorul în /tmp folosind C-command: chdir");
+    chdir("/tmp"); // directory to change to
+    getcwd(cwd, sizeof(cwd));
+    printf("\nVerificare: PWD=: %s\n", cwd);
+    
+    printf("\n\nVerificare dublă:\nLa comanda ls obținem:\n\n");
+    system("ls");
+    printf("\n");
+    system("echo iar directorul curent este: $PWD\n");
+
+
+  return 0;
+} 
+
+
+</pre>
+<!-- END CODE-CELL -->
+
+
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+fmod LISTENAT is
+
+   extending NAT .
+
+   sorts Lista ListaListe .
+   subsorts Nat < Lista < ListaListe .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+
+   op null : -> ListaListe .
+   op _;_ : ListaListe ListaListe -> ListaListe [assoc id: null prec 30] .
+
+   op inversa : Lista -> Lista .
+
+   op nrcifre : Nat -> Nat .
+   op nrcifrelist : Lista -> Lista .
+
+   op permcirc : Lista -> ListaListe .
+   op aux : Lista Lista -> ListaListe .
+
+   var X : Nat .
+   vars L M : Lista .
+
+   eq inversa(nil) = nil .
+   eq inversa(X L) = inversa(L) X .
+
+   ceq nrcifre(X) = 1 if X < 10 .
+   ceq nrcifre(X) = s nrcifre(X quo 10) if X >= 10 .
+
+   eq nrcifrelist(nil) = nil .
+   eq nrcifrelist(X L) = nrcifre(X) nrcifrelist(L) .
+
+   eq permcirc(nil) = nil .
+   eq permcirc(X L) = aux(L X,X L) .
+
+   eq aux(L,L) = L .
+   ceq aux(X L,M) = X L ; aux(L X,M) if X L =/= M .
+
+endfm

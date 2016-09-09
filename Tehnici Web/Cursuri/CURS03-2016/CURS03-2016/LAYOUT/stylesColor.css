@@ -1,0 +1,28 @@
+/* culori */
+
+header{ background-color:aqua}
+       
+aside{
+    background-image: linear-gradient(to bottom, aqua, grey);
+    background-image: -webkit-linear-gradient(to bottom, aqua, grey);
+    background-image: -ms-linear-gradient(to bottom, aqua, grey);
+    background-image: -moz-linear-gradient(to bottom, aqua, grey);
+    background-image: -o-linear-gradient(to bottom, aqua, grey);
+ }
+
+
+
+#baralat{ 
+  background-image: linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+  background-image: -webkit-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+  background-image: -ms-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+  background-image: -moz-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+  background-image: -o-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+}
+
+footer{background-color:grey}
+
+
+
+
+

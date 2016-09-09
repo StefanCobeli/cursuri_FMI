@@ -1,0 +1,14 @@
+function [y]=tema2(t,x)
+y=zeros(2,1);
+y(1)=((-9*x(1))/(sqrt(x(1)^2+x(2)^2)))-3;
+y(2)=(-9*x(2))/(sqrt(x(1)^2+x(2)^2));
+end
+
+tspan=(0,1,50);
+y0=[5,3];
+[t,z]=ode45('tema2',tspan,y0);
+u=zeros(2,1);
+u(:,1)=3.*tspan+2(:,1);
+u(:,2)=2(:,2);
+plot(u(:,1),u(:,2))
+plot(t,z(:,1),t,z(:,2))

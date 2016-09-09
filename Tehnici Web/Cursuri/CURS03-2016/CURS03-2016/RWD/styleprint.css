@@ -1,0 +1,81 @@
+
+body { font-family: serif; 
+       margin:0px;  
+       
+} 
+
+header{height: 60px; 
+       background-color:aqua;
+       text-align:center;
+}
+
+#logo{position:absolute;
+      top:0px;
+      left:0px;
+}
+
+header nav{float:right;}
+
+
+
+aside{width:15%; 
+      float:right;
+      text-align:center;
+}
+
+
+#container{width:80%; float:left;}
+
+#baralat{width:25%;  float:left;}
+
+#main{width:70%; float:right;
+      -moz-column-count:2;
+      -moz-column-gap:5%;
+      -ms-column-count:2;
+      -ms-column-gap:5%;
+      -webkit-column-count:2;
+      -webkit-column-gap:5%;
+      -o-column-count:2;
+      -o-column-gap:5%;
+       text-align:justify;}
+
+footer{height:40px;
+       background-color:grey; 
+       clear:both;
+       text-align:center;}
+
+
+aside{
+    background-image: linear-gradient(to bottom, aqua, grey);
+    background-image: -webkit-linear-gradient(to bottom, aqua, grey);
+    background-image: -ms-linear-gradient(to bottom, aqua, grey);
+    background-image: -moz-linear-gradient(to bottom, aqua, grey);
+    background-image: -o-linear-gradient(to bottom, aqua, grey);
+ }
+
+
+aside div {text-align:center;
+           margin-left:auto;
+           margin-right:auto; 
+           width: 70%;}
+
+ 
+
+
+
+#baralat{ padding-top:14px; 
+         font-size:1.2em; 
+         font-weight:600;
+  background-image: linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+ background-image: -webkit-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+ background-image: -ms-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+background-image: -moz-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+background-image: -o-linear-gradient(to bottom, aqua, yellow, red, yellow,grey);
+}
+
+/*  pentru printare */
+
+aside, #baralat{display:none;}
+#main, #container {width:95%;}
+ 
+

@@ -1,0 +1,79 @@
+netsh wlan start hostednetwork
+// for turning youre PC into a router on windows 7
+arp -a
+// to find IP adresses of PC-s near you and connected to the same network
+acum 17 ore
+https://play.google.com/store/apps/details?id=cogxorg.aigo
+Sfârşitul conversaţiei
+
+
+ToDo
+
+Make a web page like a CV and use a lot of the elements from the lab.
+
+
+#################################
+
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <p >Sciu un nou text, dacă vreau.</p>
+  <h6>Nu încerca să </h6>instalezi acum, că nu are sens.
+  chiar nu
+  
+  <p><h3>Să punem i o poza, zic...</h3></p>
+  
+  <img  src="http://www.w3schools.com/images/lamp.gif" alt="Lamp" width="15" height="15">
+  <img  src="http://www.w3schools.com/images/lamp.gif" alt="Lamp" width="95" height="95">
+  <div>
+  <a href="http://www.w3schools.com/images/lamp.gif">Am pus i un<b> lin</b>k ca sa nu fiu rau</a>
+    <ol start="10" reversed type = "i">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+  </div>
+<title><em>Titlul meu</em> -- nu se vede</title>
+  
+  <a href ="https://validator.w3.org/nu/#textarea" target = "nume"> Buna </a>
+  
+  
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a <strong>parag<i>raph.</i></strong></p>
+
+  <iframe src="https://labtehniciweb.wordpress.com/category/laborator/" height = 500 width =900 name = "nume"></iframe>
+  
+  
+  
+  <table border = 5 >
+    <tr>
+    <th>Month</th>
+    <th>Savings</th>
+    <th>Happiness</th>
+  </tr>
+  <tr>
+    <td>January</td>
+    <td>$100</td>
+    
+  </tr>
+  <tr>
+    <th>Lasa asa</th>
+    
+  </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+</body>
+</html>
+
+#################################

@@ -1,0 +1,156 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{University of Bucharest, College of Mathematics and Computer Science  } \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Telomeres \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{\c Stefan Cobeli} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\section{Motivation}
+
+\lipsum[200]  %Dummy text
+
+\paragraph{}
+When a cell divides, its DNA must be multiplied also. For that both cells have to have  the DNA information. 
+The DNA is a double helix construction of nucleotides. In the DNA replication process, some enzymes cut the bounds from the two strands of the double helix form and others completes the two separate strands with the complementary nucleotides needed for obtaining twice the same DNA .\\
+Here occurs a problem, that is caused by the enzymes that generate the new nucleotides. They cannot go all the way to the end of a strand, and stop almost at the final. \\
+Hence, at every DNA multiplication, there is some lose of the genetic information.
+Luckily, at the end of each chromosome there exists Telomeres, that prevent the disappear of the main nucleotides .
+
+%------------------------------------------------
+
+\section{ About Telomeres  }
+\paragraph{Overview }
+
+A Telomere is a region at the end of a chromosome with a sequence of nucleotides that repeats several times. 
+So every time the DNA is replicated, when the enzymes don't copy all the information to the end, it's not such a big problem, because the chromosome will lose a little part of a telomere, but not the main genetic information.
+Hence the telomeres controls the life of a cell. If the cells cannot divides anymore, the whole organism cannot survive.\\
+Another important role of telomeres is that prevents the chromosomes to bind to each other ( DNA is sticky  ).
+
+%\linebreak
+In conclusion, the telomeres protects the ends of the chromosomes.\\
+
+There exists an enzyme that preserve the length of telomeres and it's called telomerase. In human body, there is a little concentration of telomerase, in the somatic cells, but it still remains unused.
+
+\paragraph{ History }
+Although the telomerase existence was observed since the 1930s, their impact on ageing was intuited barely in the 1970s, when Alexey Olovnikov realised that the DNA wasn't completely replicated.\\
+In 2009 Carol Greider and Jack Szostak won the Nobel Prize in Medicine for discovering the telomerase enzyme and how it affects the telomere length.\\
+
+\paragraph{ Fun Facts }
+
+It is expected, that if we can synthesize telomerase, the average life expectancy will grow to 500 years .\\
+
+Cancer cells contain active telomerase and make use of it very well. This fact makes them almost immortal. It is belived that drugs that make telomerase inactive, can stop cancer in it's spread and disappear completely.\\
+
+All vertebrates have the same telomere composition TTAGGG and this section of nucleotides is repeated approximately 2,500 times in human body cells.\\
+
+Other telomere compositions : 
+\begin{list}{}{}
+
+\item Higher plants have TTTAGGG ;
+\item Insects have TTAGG .
+
+\end{list}
+%------------------------------------------------
+
+\newpage
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+
+\section{Recreation}
+
+%------------------------------------------------
+
+
+\subsection{Fractions and Integrals}
+
+\begin{itemize}
+\item Let's write some shorthand formulas:\\
+
+$$ \frac{1}{2} + \frac{1}{4} +\frac{1}{8} + \ldots =  \sum_{n=1}^{\infty}\frac{ 1 }{ 2 ^ n} = 1$$\\
+
+\item Let's write some obvious facts:\\
+$$ \int\int\int\int\int\int\int\int\int \mathrm{dx} =    x  ^{10}      $$
+
+\item \paragraph{Fun Facts}
+
+  $$ 1-1+1-1+1-\ldots = \frac{1}{2} $$
+ Therefore:
+ $$ 1+2+3+4+\ldots = -\frac{1}{12} $$
+
+\item $$\int_{a}^{b} x^n dx = \frac{x ^{n+1}}{n+1} $$
+\end{itemize}
+
+%------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

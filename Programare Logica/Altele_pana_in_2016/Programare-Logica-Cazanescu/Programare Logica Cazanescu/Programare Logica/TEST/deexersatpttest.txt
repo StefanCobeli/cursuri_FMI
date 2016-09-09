@@ -1,0 +1,125 @@
+Sa se scrie in Maude un modul pentru liste de numere naturale, care sa importe modulul NAT predefinit si sa contina (pe langa alte operatii) urmatoarele operatii:
+
+   ops eordcresc ealtern mmjumpare epermut sqanter : Lista -> Bool .
+   ops sublpare sublpare2 sublsqanter : Lista -> ListaListe .
+   ops nrsublctpare nrsqpozconsec : Lista -> Nat .
+   op listmult : Nat Nat -> Lista .
+   op maxsublcresc : Lista -> Lista .
+
+unde Lista este sortul pentru liste de numere naturale, ListaListe este sortul pentru liste de liste de numere naturale si, pentru orice lista L de numere naturale si orice numere naturale N si P:
+
+eordcresc(L) = true, daca L e ordonata crescator, si
+eordcresc(L) = false, in caz contrar;
+
+ealtern(L) = true, daca L = X1 X2 X3 X4 X5..., cu:
+X1 <= X2 >= X3 <= X4 >= X5 <=... sau X1 >= X2 <= X3 >= X4 <= X5 >=..., si
+ealtern(L) = false, in caz contrar;
+
+mmjumpare(L) = true, daca cel putin jumatate dintre elementele listei L sunt pare, si
+mmjumpare(L) = false, in caz contrar;
+
+epermut(L) = true, daca L este permutare a multimii primelor n numere naturale nenule, pentru un n natural, si
+epermut(L) = false, in caz contrar;
+
+sqanter(L) = true, daca fiecare element al listei L (mai putin primul) este egal cu patratul elementului care il preceda in lista L, si
+sqanter(L) = false, in caz contrar;
+
+sublpare(L) = lista sublistelor S ale lui L care satisfac urmatoarele conditii: S este nevida, elementele lui S se afla pe pozitii consecutive in lista L si sunt toate pare, si sublista S nu poate fi prelungita cu niciun element din lista L astfel incat sa se pastreze proprietatile anterioare;
+
+sublpare2(L) = lista sublistelor S ale lui L care satisfac urmatoarele conditii: elementele lui S se afla pe pozitii consecutive in lista L si sunt toate pare, si sublista S nu poate fi prelungita cu niciun element din lista L astfel incat sa se pastreze proprietatile anterioare;
+
+sublsqanter(L) = lista sublistelor S ale lui L care satisfac urmatoarele conditii: S este nevida, elementele lui S se afla pe pozitii consecutive in lista L, S are fiecare element (cu exceptia primului) egal cu patratul elementului care il preceda, si sublista S nu poate fi prelungita cu niciun element din lista L astfel incat sa se pastreze proprietatile anterioare;
+
+nrsublctpare(L) = numarul sublistelor S ale lui L care satisfac urmatoarele conditii: S este nevida, elementele lui S se afla pe pozitii consecutive in lista L si au toate aceeasi valoare, iar aceasta valoare este para, si sublista S nu poate fi prelungita cu niciun element din lista L astfel incat sa se pastreze proprietatile anterioare;
+
+nrsqpozconsec(L) = numarul elementelor lui L care sunt succedate in L de patratul lor;
+
+listmult(P,N) = lista multiplilor naturali ai lui P mai mici sau egali cu N;
+
+maxsublcresc(L) = sublista crescatoare de lungime maxima a lui L cu elementele aflate pe pozitii consecutive in lista L.
+
+EXEMPLU: Cu nil reprezentand lista vida de numere naturale si null reprezentand lista vida de liste de numere naturale, iar concatenarea de liste de numere naturale data de alaturarea de liste (separate doar prin blank-uri) si concatenarea de liste de liste de numere naturale notata tot infixat si denumita ”;” (i. e. concatenarea de liste de liste de numere naturale este data de alaturarea unor astfel de liste si separarea lor prin punct si virgula):
+
+eordcresc(nil) = true .
+eordcresc(3) = true .
+eordcresc(5 5 5) = true .
+eordcresc(7 7 10 20 20 35) = true .
+eordcresc(10 2 5) = false .
+(eordcresc e implementata in unul dintre modulele cu liste pe care vi le-am trimis)
+
+ealtern(nil) = true .
+ealtern(2) = true .
+ealtern(7 7 7) = true .
+ealtern(1 2 2 5 0 0) = true .
+ealtern(1 2 2 0) = false .
+ealtern(3 2 2 0) = true .
+
+mmjumpare(nil) = true .
+mmjumpare(1) = false .
+mmjumpare(2) = true .
+mmjumpare(1 2 1 2) = true .
+mmjumpare(1 2 3 4 5) = false .
+
+epermut(nil) = true .
+epermut(1) = true .
+epermut(0) = false .
+epermut(3 1 4 2) = true .
+epermut(3 1 2 2) = false .
+epermut(2 5 4 3 6) = false .
+(epermut e implementata in unul dintre modulele cu liste pe care vi le-am trimis, in doua moduri, cu alte denumiri)
+
+sqanter(nil) = true .
+sqanter(7) = true .
+sqanter(0 0 0) = true .
+sqanter(1 1 1 1) = true .
+sqanter(5 25 625) = true .
+sqanter(2 2 4) = false .
+
+sublpare(nil) = null .
+sublpare(1) = null .
+sublpare(1 3 5) = null .
+sublpare(2) = 2 .
+sublpare(1 2 3 4 5) = 2 ; 4 .
+sublpare(2 4 0 2) = 2 4 0 2 .
+sublpare(2 0 3 8 1 7 3 0 0 6 5) = 2 0 ; 8 ; 0 0 6 .
+
+sublpare2(nil) = nil .
+sublpare2(1) = nil .
+sublpare2(1 3 5) = nil .
+sublpare2(2) = 2 .
+sublpare2(1 2 3 4 5) = 2 ; 4 .
+sublpare2(2 4 0 2) = 2 4 0 2 .
+sublpare2(2 0 3 8 1 7 3 0 0 6 5) = 2 0 ; 8 ; 0 0 6 .
+
+sublsqanter(nil) = null .
+sublsqanter(2) = 2 .
+sublsqanter(1) = 1 .
+sublsqanter(1 1 1) = 1 1 1 .
+sublsqanter(2 4 16 256) = 2 4 16 256 .
+sublsqanter(0 1 1 2 4 16 5 3) = 0 ; 1 1 ; 2 4 16 ; 5 ; 3 .
+
+nrsublctpare(nil) = 0 .
+nrsublctpare(1) = 0 .
+nrsublctpare(1 3 5) = 0 .
+nrsublctpare(2 4 2) = 3 .
+nrsublctpare(2 2 2) = 1 .
+nrsublctpare(2 4 4 0 2) = 4 .
+nrsublctpare(2 2 2 0 3 8 1 0 0 6 5) = 5 .
+
+nrsqpozconsec(nil) = 0 .
+nrsqpozconsec(2) = 0 .
+nrsqpozconsec(1) = 0 .
+nrsqpozconsec(1 1 1) = 2 .
+nrsqpozconsec(2 4 16 256) = 3 .
+nrsqpozconsec(0 1 1 2 4 16 5 3) = 3 .
+
+listmult(0,100) = 0 .
+listmult(10,3) = 0 .
+listmult(7,7) = 0 7 .
+listmult(5,23) = 0 5 10 15 20 .
+
+maxsublcresc(nil) = nil .
+maxsublcresc(2) = 2 .
+maxsublcresc(3 3 10 200) = 3 3 10 200 .
+maxsublcresc(1 1 3 10 0 2 0 5 7 7 10 12 12 6 5) = 0 5 7 7 10 12 12 .
+

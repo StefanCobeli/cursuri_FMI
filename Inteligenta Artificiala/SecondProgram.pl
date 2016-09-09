@@ -1,0 +1,4 @@
+floare(trandafir) .
+floare(lalea) .
+
+

@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thin Formal Letter
+% LaTeX Template
+% Version 1.11 (8/12/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% WikiBooks (http://en.wikibooks.org/wiki/LaTeX/Letters)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{letter}
+
+% Adjust margins for aesthetics
+\addtolength{\voffset}{-0.5in}
+\addtolength{\hoffset}{-0.3in}
+\addtolength{\textheight}{2cm}
+
+%\longindentation=0pt % Un-commenting this line will push the closing "Sincerely," to the left of the page
+
+%----------------------------------------------------------------------------------------
+%	YOUR NAME & ADDRESS SECTION
+%----------------------------------------------------------------------------------------
+
+\signature{Semn\u atura} % Your name for the signature at the bottom
+
+\date{\vspace{-5ex}}
+%----------------------------------------------------------------------------------------
+\newcommand\textbox[1]{%
+  \parbox{.333\textwidth}{#1}%
+}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+\title{Cerere}
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	ADDRESSEE SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{letter}{  } % Name/title of the addressee
+
+%----------------------------------------------------------------------------------------
+%	LETTER CONTENT SECTION
+%----------------------------------------------------------------------------------------
+{\Large 
+\opening{\textbf{Domnului Decan \\ al Facult\u a\c tii\\ de Matematic\u a \c si Informatic\u a \\ }}
+
+\vspace{2\parskip} % Extra whitespace for aesthetics
+\vspace{2\parskip}
+\vspace{2\parskip}
+\vspace{2\parskip} % Extra whitespace for aesthetics
+
+Subsemnatul Cobeli \c Stefan-Matei, student al\\ \textit{Facult\u a\c tii de Matematic\u a \c si Informatic\u a} a\\ \textit{Universit\u a\c tii din Bucure\c sti}, domeniul \textit{Matematic\u a},\\ specializarea \textit{Matematic\u a \c si Informatic\u a}, anul al \rom{3}-\textit{lea},\\ v\u a rog s\u a binevoi\c ti a aproba \^ inscrierea la concursul\\ de selec\c tie a studen\c tilor pentru a beneficia\\ de un grant \textit{ERASMUS}, \^ in scopul efectu\u arii unui stagiu de studii \^ in cursul anului universitar \textit{2016-2017},\\ la universitatea \textit{Freie Universit\" at Berlin}.\\
+
+Anexez  scrisoarea de inten\c tie, planul de  studii,\\certificatul de competen\c te lingvistice, curriculum vitae\\ \c si copia c\u ar\c tii de identitate.
+
+
+
+\vspace{2\parskip} % Extra whitespace for aesthetics
+\vspace{2\parskip}
+\vspace{2\parskip}
+\vspace{2\parskip} % Extra whitespace for aesthetics
+\noindent \textbf{Data} \hfill \hfill \textbf{Semn\u atura}
+
+\par}
+%----------------------------------------------------------------------------------------
+
+\end{letter}
+ 
+\end{document}

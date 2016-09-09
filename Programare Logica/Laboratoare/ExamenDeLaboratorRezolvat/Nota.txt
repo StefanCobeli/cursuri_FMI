@@ -1,0 +1,9 @@
+Am luat 28 de puncte din 30.
+Sunt douã gre?eli.
+
+1. În "Part2" am scris gresit ecua?ia lui "pC", "Number2" apar?ine intervalului [1,3]. Trebuia pus un "and" ?i ni?te paranteze pe acolo.
+
+2. La teorii în "Part3" trebuia pus "[id: Z]" la opera?ia "%".
+
+În rest exerci?iile sunt corecte.
+Ambele gre?eli de mai sus au valorat câte un punct în minus.

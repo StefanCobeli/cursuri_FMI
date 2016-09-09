@@ -1,0 +1,296 @@
+fmod BSORT is 
+***> bubblesortul pe liste cu elementele a, b si c 
+
+   sort Lista .
+
+   ops a b c : -> Lista .
+   op __ : Lista Lista -> Lista [assoc] .
+
+   eq b a = a b .
+   eq c a = a c .
+   eq c b = b c .
+
+endfm
+
+
+fmod BUBBLESORT is
+***> bubblesortul pe liste de numere naturale
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op __ : Lista Lista -> Lista [assoc] .
+
+   vars X Y : Nat .
+
+   ceq X Y = Y X if Y < X .
+
+endfm
+
+
+fmod LISTENAT is
+***> liste de numere naturale, cu lista vida si concatenarea
+***> modul pe care il vom importa in modulele urmatoare, pentru sortari
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+endfm
+
+
+fmod INSSORT is
+***> sortarea prin insertie directa 
+
+   extending LISTENAT .
+
+   op sortare : Lista -> Lista .
+   op inserare : Nat Lista -> Lista .
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   eq sortare(nil) = nil .
+   eq sortare(X L) = inserare(X,sortare(L)) .
+
+   eq inserare(X,nil) = X .
+   ceq inserare(X,Y L) = Y inserare(X,L) if Y < X .
+   ceq inserare(X,Y L) = X Y L if X <= Y .
+
+endfm
+
+
+fmod MERGESORT is
+***> sortarea prin interclasare
+***( Intrucat oricum taierea unei liste in doua parti,
+indiferent de metoda de taiere, se face in timp liniar,
+nu constant, ca intr-o implementare a acestui algoritm
+de sortare intr-un limbaj de programare imperativa, putem
+scrie acest algoritm in Maude, pur si simplu, ca mai jos. )
+   
+   extending LISTENAT .
+
+   op interclasare : Lista Lista -> Lista .
+***> interclaseaza doua liste sortate
+   op sortare : Lista -> Lista .
+
+   vars X Y : Nat .
+   vars L M : Lista .
+
+   eq interclasare(L,nil) = L .
+   eq interclasare(nil,M) = M .
+   ceq interclasare(X L,Y M) = X interclasare(L,Y M) if X <= Y .
+   ceq interclasare(X L,Y M) = Y interclasare(X L,M) if X > Y .
+
+   eq sortare(nil) = nil .
+   eq sortare(X) = X .
+   eq sortare(X L Y M) = interclasare(sortare(X L),sortare(Y M)) .
+
+endfm
+
+
+fmod SELSORT is
+***> sortarea prin selectia directa a minimului
+
+   extending LISTENAT .
+
+   op minim : Nat Nat -> Nat .
+   op minlist : Lista -> Nat .
+   op sterge : Nat Lista -> Lista .
+
+   op sortare : Lista -> Lista .
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   ceq minim(X,Y) = X if X <= Y .
+   ceq minim(X,Y) = Y if X > Y .
+
+   eq minlist(X) = X .
+   eq minlist(X Y L) = minim(X,minlist(Y L)) .
+
+   eq sterge(X,nil) = nil .
+   eq sterge(X,X L) = L .
+   ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+
+   eq sortare(nil) = nil .
+   eq sortare(X L) = minlist(X L) sortare(sterge(minlist(X L),X L)) .
+
+endfm
+
+
+fmod SELMAXSORT is
+***> sortarea prin selectia directa a maximului
+
+   extending LISTENAT .
+
+   op maxim : Nat Nat -> Nat .
+   op maxlist : Lista -> Nat .
+   op sterge : Nat Lista -> Lista .
+
+   op sortare : Lista -> Lista .
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   ceq maxim(X,Y) = X if X >= Y .
+   ceq maxim(X,Y) = Y if X < Y .
+
+   eq maxlist(X) = X .
+   eq maxlist(X Y L) = maxim(X,maxlist(Y L)) .
+
+   eq sterge(X,nil) = nil .
+   eq sterge(X,X L) = L .
+   ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+
+   eq sortare(nil) = nil .
+   eq sortare(X L) = sortare(sterge(maxlist(X L),X L)) maxlist(X L) .
+
+endfm
+
+
+fmod SELMAXSORT2 is
+***( tot sortarea prin selectia directa a maximului, dar cu evitarea
+recalcularii maximului din lista in operatia de sortare )
+
+   extending LISTENAT .
+
+   op maxim : Nat Nat -> Nat .
+   op maxlist : Lista -> Nat .
+   op sterge : Nat Lista -> Lista .
+
+   op sortare : Lista -> Lista .
+   op restul : Nat Lista -> Lista .
+
+   vars X Y : Nat .
+   var L : Lista .
+
+   ceq maxim(X,Y) = X if X >= Y .
+   ceq maxim(X,Y) = Y if X < Y .
+
+   eq maxlist(X) = X .
+   eq maxlist(X Y L) = maxim(X,maxlist(Y L)) .
+
+   eq sterge(X,nil) = nil .
+   eq sterge(X,X L) = L .
+   ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+
+   eq sortare(nil) = nil .
+   eq sortare(X L) = restul(maxlist(X L),X L) .
+
+   eq restul(Y,L) = sortare(sterge(Y,L)) Y .
+
+endfm
+
+
+fmod BBLSORT is
+***> bubblesortul, efectuat intr-o operatie distincta de concatenare
+
+   extending LISTENAT .
+
+   op bsort : Lista -> Lista .
+   op parcurge : Lista -> Lista .
+   op eordcresc : Lista -> Bool .
+
+   var L : Lista .
+   vars X Y : Nat .
+
+   eq eordcresc(nil) = true .
+   eq eordcresc(X) = true .
+   eq eordcresc(X Y L) = X <= Y and eordcresc(Y L) .
+
+   eq parcurge(nil) = nil .
+   eq parcurge(X) = X .
+   ceq parcurge(X Y L) = X parcurge(Y L) if X <= Y .
+   ceq parcurge(X Y L) = Y parcurge(X L) if X > Y .
+
+   ceq bsort(L) = L if eordcresc(L) .
+   ceq bsort(L) = bsort(parcurge(L)) if not eordcresc(L) .
+
+endfm
+
+
+fmod BUBBLESORT is
+***> tot bubblesortul, efectuat intr-o operatie distincta de concatenare
+
+   extending LISTENAT .
+
+   op bsort : Lista -> Lista .
+   op aux : Lista Lista Bool -> Lista .
+***( verifica daca mai trebuie parcursa lista direct,
+in timp ce sorteaza ) 
+
+   vars L S : Lista .
+   vars X Y : Nat .
+   var B : Bool .
+
+   eq bsort(nil) = nil .
+   eq bsort(X L) = aux(X L,nil,false) .
+
+   eq aux(nil,S,false) = S .
+   eq aux(nil,S,true) = aux(S,nil,false) .
+   eq aux(X,S,B) = aux(nil,S X,B) .
+   ceq aux(X Y L,S,B) = aux(Y L,S X,B) if X <= Y .
+   ceq aux(X Y L,S,B) = aux(X L,S Y,true) if X > Y .
+
+endfm
+
+
+fmod QUICKSORT is
+
+***> sortarea rapida
+***( OBSERVATIE: calculele de complexitate pentru algoritmi
+din programarea imperativa nu sunt valabile aici. Quicksort
+reprezinta doar denumirea acestei metode de sortare. ) 
+
+   protecting NAT .
+
+   sorts Lista PerecheListe .
+
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+
+   op {_;_} : Lista Lista -> PerecheListe [prec 30] .
+***> operatia care construieste sortul PerecheListe 
+
+   op concat : PerecheListe PerecheListe -> PerecheListe .
+***> concatenarea pe componente
+
+   op per-lista : PerecheListe -> Lista .
+
+   op taie : Nat Lista -> PerecheListe .
+
+   op qsort : Lista -> Lista .
+   op qsortper : PerecheListe -> PerecheListe .
+
+   vars X Y : Nat .
+   vars L L1 T T1 : Lista .
+
+   eq concat({ L ; L1 },{ T ; T1 }) = { L T ; L1 T1 } .
+
+***> in cele ce urmeaza, X va fi pivotul
+
+   eq taie(X,nil) = { nil ; nil } .
+   ceq taie(X,Y L) = concat({ Y ; nil },taie(X,L)) if Y <= X .
+   ceq taie(X,Y L) = concat({ nil ; Y },taie(X,L)) if Y > X .
+
+   eq per-lista({ L ; L1 }) = L L1 .
+
+   eq qsort(nil) = nil .
+   eq qsort(X L) = per-lista(concat(qsortper(taie(X,L)),{ X ; nil })) .
+***( este esential sa nu includem pivotul in lista care trebuie taiata,
+pentru ca avem nevoie sa micsoram lungimea listei )
+
+   eq qsortper({ L ; L1 }) = { qsort(L) ; qsort(L1) } .
+
+endfm
+
+

@@ -1,0 +1,393 @@
+fmod SUBIECTUL1 is
+
+   extending NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] . 
+
+   op altp2p3 : Lista -> Bool .
+***( 
+altp2p3(L) = true, daca toate elementele lui L de 
+indici pari sunt puteri naturale ale lui 2 si 
+toate elementele lui L de indici impari sunt 
+puteri naturale ale lui 3 (cu indicii indicand 
+pozitiile elementelor in lista L si incepand de la 
+1 pentru primul element al listei L), si
+altp2p3(L) = false, in caz contrar.
+ )
+   op toateconsec : Lista -> Bool .
+***( 
+toateconsec(L) = true, daca toate elementele listei L 
+sunt numere naturale consecutive (desigur, pe pozitii 
+consecutive, ordonate crescator si fara duplicate), si
+toateconsec(L) = false, in caz contrar.
+ )
+   op sublconsec : Lista -> Lista .
+***( 
+sublconsec(L) = o sublista S a lui L de lungime maxima 
+cu proprietatea ca elementele lui S se afla pe pozitii 
+consecutive in lista L si aceste elemente sunt numere 
+naturale consecutive (desigur, ordonate crescator si 
+fara duplicate).
+ )
+
+***> Operatii auxiliare necesare:
+
+   ops p2 p3 : Nat -> Bool .
+***( determina daca un numar natural este putere naturala
+a lui 2, respectiv putere naturala a lui 3 )
+
+   op aux : Lista Lista Nat Lista Nat -> Lista .
+***> operatie auxiliara necesara pentru scrierea lui sublconsec
+***( retine restul de lista care mai trebuie parcurs,
+sublista maxima determinata pana la momentul curent si 
+lungimea acesteia, si sublista curenta si lungimea ei ) 
+
+   vars X Y LM LC : Nat .
+   vars L M C : Lista .
+
+   eq p2(0) = false .
+   eq p2(1) = true .
+   ceq p2(X) = 2 divides X and p2(X quo 2) if X >= 2 .
+
+   eq p3(0) = false .
+   eq p3(1) = true .
+   eq p3(2) = false .
+   ceq p3(X) = 3 divides X and p3(X quo 3) if X >= 3 .
+
+***( in general, pentru a determina daca un numar natural
+X este putere naturala a unui numar natural nenul N:
+
+   op pn : NzNat Nat -> Bool .
+
+   var X : Nat .
+   var N : NzNat .
+
+   ceq pn(N,X) = X == 1 if X < N .
+   ceq pn(N,X) = N divides X and pn(N,X quo N) if X >= N .
+ )
+
+   eq altp2p3(nil) = true .
+   eq altp2p3(X) = p3(X) .
+   eq altp2p3(X Y L) = p3(X) and p2(Y) and altp2p3(L) .
+
+   eq toateconsec(nil) = true .
+   eq toateconsec(X) = true .
+   eq toateconsec(X Y L) = Y == s X and toateconsec(Y L) .
+
+   eq sublconsec(L) = aux(L,nil,0,nil,0) .
+
+   eq aux(nil,M,LM,C,LC) = M .
+   ceq aux(X L,M,LM,nil,0) = aux(L,M,LM,X,1) if 1 < LM .
+   ceq aux(X L,M,LM,nil,0) = aux(L,X,1,X,1) if 1 >= LM . 
+   ceq aux(X L,M,LM,C Y,LC) = aux(L,M,LM,C Y X,s LC) if X == s Y and s LC < LM .
+   ceq aux(X L,M,LM,C Y,LC) = aux(L,C Y X,s LC,C Y X,s LC) if X == s Y and s LC >= LM .
+   ceq aux(X L,M,LM,C Y,LC) = aux(L,M,LM,X,1) if X =/= s Y and 1 < LM .
+   ceq aux(X L,M,LM,C Y,LC) = aux(L,X,1,X,1) if X =/= s Y and 1 >= LM .
+
+endfm
+
+
+fmod SUBIECTUL2 is
+
+   extending NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil] . 
+
+   op maxesumac : Lista -> Bool .
+***( 
+maxesumac(L) = true, daca suma cifrelor tuturor 
+elementelor lui L este egala cu elementul maxim 
+din lista L, si
+maxesumac(L) = false, in caz contrar.
+ )
+   op sumacpred : Lista -> Lista .
+***( 
+sumacpred(L) = sublista S a lui L formata din toate 
+elementele din L care sunt egale cu suma cifrelor 
+tuturor elementelor care le preceda in lista L 
+(elementele lui S nu trebuie sa se afle neaparat 
+pe pozitii consecutive in lista L).
+ )
+   op noncifre : Lista -> Lista .
+***( 
+noncifre(L) = o sublista a lui L de lungime maxima 
+ale carei elemente nu sunt cifre si se afla pe pozitii 
+consecutive in lista L.
+ )
+
+***> Operatii auxiliare necesare:
+
+   op maxlist : Lista -> Nat .
+***( determina maximul dintr-o lista nevida, folosind
+operatia max din modulul predefinit NAT, operatie care
+determina maximul a doua numere naturale )
+
+   op sumacifre : Nat -> Nat .
+***> calculeaza suma cifrelor unui numar natural
+
+   op sumaclist : Lista -> Nat .
+***> suma cifrelor tuturor numerelor naturale dintr-o lista
+
+   op aux : Lista Nat -> Lista .
+***( operatie auxiliara necesara pentru scrierea lui
+sumacpred, care retine, pe langa restul de lista care mai
+trebuie parcurs, si suma cifrelor elementelor bucatii de
+lista parcurse pana la momentul curent )
+
+   op auxnc : Lista Lista Nat Lista Nat -> Lista .
+***> operatie auxiliara necesara pentru scrierea lui noncifre
+***( retine restul de lista care mai trebuie parcurs,
+sublista maxima determinata pana la momentul curent si 
+lungimea acesteia, si sublista curenta si lungimea ei ) 
+
+   vars X Y LM LC : Nat .
+   vars L M C : Lista .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(X L) = max(X,maxlist(L)) .
+
+   ceq sumacifre(X) = X if X < 10 .
+   ceq sumacifre(X) = sumacifre(X quo 10) + (X rem 10) if X >= 10 .
+
+   eq sumaclist(nil) = 0 .
+   eq sumaclist(X L) = sumacifre(X) + sumaclist(L) .
+   
+   eq maxesumac(L) = maxlist(L) == sumaclist(L) .
+
+   eq sumacpred(L) = aux(L,0) .
+
+   eq aux(nil,X) = nil .
+   eq aux(X L,X) = X aux(L,sumacifre(X) + X) .
+   ceq aux(X L,Y) = aux(L,sumacifre(X) + Y) if X =/= Y .
+
+   eq noncifre(L) = auxnc(L,nil,0,nil,0) .
+
+   eq auxnc(nil,M,LM,C,LC) = M .
+   ceq auxnc(X L,M,LM,nil,0) = auxnc(L,M,LM,nil,0) if X < 10 . 
+   ceq auxnc(X L,M,LM,nil,0) = auxnc(L,M,LM,X,1) if X >= 10 and 1 < LM .
+   ceq auxnc(X L,M,LM,nil,0) = auxnc(L,X,1,X,1) if X >= 10 and 1 >= LM . 
+   ceq auxnc(X L,M,LM,C Y,LC) = auxnc(L,M,LM,C Y X,s LC) if X >= 10 and s LC < LM .
+   ceq auxnc(X L,M,LM,C Y,LC) = auxnc(L,C Y X,s LC,C Y X,s LC) if X >= 10 and s LC >= LM .
+   ceq auxnc(X L,M,LM,C Y,LC) = auxnc(L,M,LM,nil,0) if X < 10 .
+
+endfm
+
+
+fmod SUBIECTUL3 is
+
+   extending NAT .
+
+   sorts Lista ListLista .
+   subsorts Nat < Lista < ListLista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] . 
+
+   op null : -> ListLista .
+   op _;_ : ListLista ListLista -> ListLista [assoc id: null prec 30] . 
+
+   op maxexp2 : Lista -> Nat .
+***( 
+maxexp2(L) = 1, daca L este vida, iar,
+in cazul in care L este nevida, maxexp2(L) = un element X al 
+listei L care se divide cu cea mai mare putere naturala a lui 2, 
+i. e. un element X al listei L cu proprietatea ca: oricare ar fi 
+un element Y al lui L si k un numar natural, daca 2^k divide pe Y, 
+atunci 2^k divide pe X; altfel scris:
+   fie X = 0,
+   fie X este nenul si nu exista in lista L nici elementul 0, nici 
+un element nenul Y cu proprietatea ca max{k natural | 2^k divide pe Y} 
+> max{k natural | 2^k divide pe X} (2^k = 2 la puterea k).
+ )
+
+   op llp2 : Lista -> ListLista .
+***( 
+llp2(L) = lista tuturor sublistelor S ale lui L care satisfac proprietatile: 
+elementele lui S se afla pe pozitii consecutive in lista L, toate elementele l
+ui S sunt puteri naturale ale lui 2 (i. e. sunt diferite de 0 si nu au alti 
+divizori naturali primi in afara de 2) si sublista S nu se poate prelungi cu 
+niciun element al lui L astfel incat sa se pastreze proprietatile anterioare.
+ )
+
+   op nonp2 : Lista -> Bool .
+***( 
+nonp2(L) = true, daca exista in lista L cel putin un element care nu este 
+putere naturala a lui 2, si
+nonp2(L) = false, in caz contrar, i. e. daca toate elementele listei L sunt 
+puteri naturale ale lui 2.
+ )
+
+***> Operatii auxiliare necesare:
+
+   op exp2 : NzNat -> Nat .
+***( determina exponentul maxim al unei puteri naturale a lui 2
+cu care se divide un numar natural nenul )
+
+   op mmareexp2 : Nat Nat -> Nat .
+***( determina, dintre 2 numere naturale, pe acela care se divide
+cu cea mai mare putere naturala a lui 2 )
+
+   op p2 : Nat -> Bool .
+***> determina daca un numar natural este putere naturala a lui 2
+
+   op aux : Lista Lista -> ListLista .
+***> operatie auxiliara pentru scrierea lui llp2
+***> retine si restul de lista care mai trebuie parcurs, si sublista curenta
+
+   op decide : ListLista -> ListLista .
+***> alta operatie auxiliara pentru scrierea lui llp2
+***> a se vedea mai jos definitia ei
+
+   vars X Y : Nat .
+   vars Z T : NzNat .
+   vars L C : Lista .
+   var LL : ListLista .
+
+   ceq exp2(Z) = 0 if not (2 divides Z) .
+   ceq exp2(Z) = s exp2(Z quo 2) if 2 divides Z .
+
+   eq mmareexp2(0,X) = 0 .
+   eq mmareexp2(Z,0) = 0 .
+   ceq mmareexp2(Z,T) = Z if exp2(Z) >= exp2(T) .
+   ceq mmareexp2(Z,T) = T if exp2(Z) < exp2(T) .
+
+***( Altfel, fara a apela exp2:
+
+   eq mmareexp2(0,X) = 0 .
+   eq mmareexp2(Z,0) = 0 .
+   ceq mmareexp2(Z,T) = Z if not (2 divides T) .
+   ceq mmareexp2(Z,T) = T if not (2 divides Z) and (2 divides T) .
+   ceq mmareexp2(Z,T) = mmareexp2(Z quo 2,T quo 2) if (2 divides Z) and (2 divides T) .
+)
+
+   eq maxexp2(nil) = 1 .
+   eq maxexp2(X) = X .
+   eq maxexp2(X Y L) = mmareexp2(X,maxexp2(Y L)) .
+
+   eq p2(0) = false .
+   eq p2(1) = true .
+   ceq p2(X) = 2 divides X and p2(X quo 2) if X >= 2 .
+
+   eq llp2(L) = decide(aux(L,nil)) .
+
+   eq decide(null) = nil .
+   eq decide(L ; LL) = L ; LL .
+
+   eq aux(nil,nil) = null .
+   eq aux(nil,Y C) = Y C .
+   ceq aux(X L,C) = aux(L,C X) if p2(X) .
+   ceq aux(X L,nil) = aux(L,nil) if not p2(X) .
+   ceq aux(X L,Y C) = Y C ; aux(L,nil) if not p2(X) .
+
+   eq nonp2(nil) = false .
+   eq nonp2(X L) = not p2(X) or nonp2(L) .
+
+endfm
+
+
+fmod SUBIECTUL4 is
+
+   extending NAT .
+
+   sorts Lista ListLista .
+   subsorts Nat < Lista < ListLista .
+
+   op nil : -> Lista .
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] . 
+
+   op null : -> ListLista .
+   op _;_ : ListLista ListLista -> ListLista [assoc id: null prec 30] . 
+
+   op nrparap : Lista -> Bool .
+***( 
+nrparap(L) = true, daca toate elementele listei L au numar par 
+de aparitii in lista L, si
+nrparap(L) = false, in caz contrar.
+ )
+   op maxmaxap : Lista -> Bool .
+***( 
+maxmaxap(L) = true daca maximul din lista L are cele mai multe 
+aparitii in lista L, comparativ cu celelalte elemente ale listei L, 
+si
+maxmaxap(L) = false, in caz contrar.
+ )
+   op nrapct : Lista -> ListLista .
+***( 
+nrapct(L) = lista sublistelor S ale lui L care satisfac urmatoarele 
+conditii: elementele lui S se afla pe pozitii consecutive in lista L 
+si au acelasi numar de aparitii in lista L, si sublista S nu poate fi 
+prelungita cu niciun element din lista L astfel incat sa se pastreze 
+proprietatile anterioare.
+ )
+
+***> Operatii auxiliare necesare (sau comod de folosit):
+
+   op maxlist : Lista -> Nat .
+***( determina maximul dintr-o lista nevida, folosind
+operatia max din modulul predefinit NAT, operatie care
+determina maximul a doua numere naturale )
+
+   op nrap : Nat Lista -> Nat .
+***> numara aparitiile unui element intr-o lista 
+
+   op listnrap : Lista -> Lista .
+***( inlocuieste, intr-o lista, fiecare element cu numarul aparitiilor
+sale in lista initiala, folosind operatia auxiliara aux, care retine si
+lista initiala, si restul de lista care mai trebuie parcurs )
+   op aux : Lista Lista -> Lista .
+
+   op toatepare : Lista -> Bool .
+***> testeaza daca o lista are toate elementele pare
+
+   op auxiliara : Lista Lista Lista -> ListLista .
+***> operatie auxiliara pentru scrierea lui nrapct
+***( retine lista initiala, restul de lista care mai trebuie parcurs,
+si sublista curenta )
+
+   op decide : ListLista -> ListLista .
+***> alta operatie auxiliara pentru scrierea lui nrapct
+***> a se vedea mai jos definitia ei
+
+   vars X Y : Nat .
+   vars L R C : Lista .
+   var LL : ListLista .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(X L) = max(X,maxlist(L)) .
+
+   eq nrap(X,nil) = 0 .
+   eq nrap(X,X L) = s nrap(X,L) .
+   ceq nrap(X,Y L) = nrap(X,L) if X =/= Y .
+
+   eq listnrap(L) = aux(L,L) .
+
+   eq aux(L,nil) = nil .
+   eq aux(L,X C) = nrap(X,L) aux(L,C) .
+
+   eq toatepare(nil) = true .
+   eq toatepare(X L) = 2 divides X and toatepare(L) .
+
+   eq nrparap(L) = toatepare(listnrap(L)) .
+
+   eq maxmaxap(L) = nrap(maxlist(L),L) == maxlist(listnrap(L)) .
+      
+   eq nrapct(L) = decide(auxiliara(L,L,nil)) .
+
+   eq decide(null) = nil .
+   eq decide(L ; LL) = L ; LL .
+
+   eq auxiliara(L,nil,nil) = null .
+   eq auxiliara(L,nil,C Y) = C Y .
+   eq auxiliara(L,X R,nil) = auxiliara(L,R,X) .
+   ceq auxiliara(L,X R,C Y) = auxiliara(L,R,C Y X) if nrap(X,L) == nrap(Y,L) .
+   ceq auxiliara(L,X R,C Y) = C Y ; auxiliara(L,R,X) if nrap(X,L) =/= nrap(Y,L) .
+
+endfm

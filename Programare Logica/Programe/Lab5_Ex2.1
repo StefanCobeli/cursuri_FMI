@@ -1,0 +1,17 @@
+fth TOSET is
+  protecting BOOL .
+  sort Element .
+  op _<=_ : Element Element -> Bool .
+  var Element1 Element2 Element3 .
+  
+  eq Element1 <= Element1 = true [ nonexec ] .
+  ceq Element1 <= Element3 = true if
+  	Element1 <= Element2 and
+  	Element2 <= Element3 [ nonexec ] .
+  ceq Element1 == Element2 if
+  	Element1 <= Element2 and
+  	Element2 <= Element1 [ nonexec ] .
+  ceq Element1 <= Element2 if
+  	not Element2 <= Element1  
+  	[ nonexec ] .
+endth

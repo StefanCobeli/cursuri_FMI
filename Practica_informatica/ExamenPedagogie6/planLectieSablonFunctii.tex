@@ -1,0 +1,195 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 3.1 (25/3/14)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Linux and Unix Users Group at Virginia Tech Wiki 
+% (https://vtluug.org/wiki/Example_LaTeX_chem_lab_report)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{multicol}
+\usepackage{subfigure}
+\usepackage[utf8x]{inputenc}
+\usepackage[romanian]{babel}
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+\usepackage[yyyymmdd]{datetime}
+\usepackage{enumitem}
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{Programare Procedural\u a (Func\c tii) } \\ Plan de lec\c tie \\ \textit{ Clasa a  XI -a} } % Title
+
+\author{\c Stefan \textsc{Cobeli}} % Author name
+
+%\date{\today} % Date for the report
+\def\mydate{\leavevmode\hbox{\the\year-\twodigits\month-\twodigits\day}}
+\def\twodigits#1{\ifnum#1<10 0\fi\the#1}
+\newcommand{\itl}{\textit}
+\begin{document}
+
+\maketitle % Insert the title, author and date
+
+
+% If you wish to include an abstract, uncomment the lines below
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+Timpul necesar lec\c tiei este de 3 ore ( 150 de minute ).
+\section{Organizarea}
+
+	\subsection{Organizarea administrativă:}
+		\begin{itemize}[label={-}]
+			\item Disciplina: \itl{Informatică};
+			\item Unitatea de învățământ: \textit{Colegiul Național Gheorghe Șincai};
+			\item Nivelul de învățământ: \itl{Clasa a XI-a};
+			\item Sală necesară: \itl{Laborator de Informatică};
+			\item Timpul necesar predării: \itl{150 de minute};
+				
+		\end{itemize}				
+		
+		
+		
+	\subsection{Organizarea pedagogică:}
+		\begin{itemize}[label={-}]
+			\item Subiectul abordat: \itl{Programarea Procedurală};
+			\item Organizarea sălii: Elevii vor folosii calculatoarele din laborator. 
+			\item Tipul lecției: Lecție de predare.
+		\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Planificarea lecției}
+	\subsection{Scopul general:}
+		\begin{itemize}[label={-}]
+			
+			\item Prezentare paradigmei \textit{Program\u arii procedurale} \c si amintirea unor limbaje bazate pe aceast\u a paradigm\u a.
+
+			\item Prezentarea diferen\c telor dintre aceast\u a paradigm\u a \c si alte paradigme de programare existente.
+
+			\item R\u aspunderea la \^ intrebarea: \textit{ De ce este \textbf{C} un limbaj procedural?}
+
+			\item Prezentarea Sintaxei func\c tiilor.
+
+			\item Explicarea semnifica\c tiei transmiterii parametrilor c\u atre o func\c tie\\ ( transferul prin valoare ).
+
+			\item Explicarea dezavantajelor transferului prin valoare \c si metode de solu\c tionare ale unor probleme care pot ap\u area ( transferul prin adres\u a ).
+
+			\item Prezentarea unor scurte informa\c tii despre pointeri .\\ De ce sunt utili \c si ce probleme pot rezolva.
+
+
+		\end{itemize}
+	\subsection{Obiective operaționale:}
+		\paragraph{}Elevii, după terminarea predării, ar trebui să fie capabili să recunască sintaxa unei funcții, să alcătuiască funcții simple și să 
+cunoască importanța structurării programelor în proceduri.
+
+	\subsection{Conținutul de bază:}
+		\paragraph{}Înțelegerea importanței structurării unui program în bucăți mici și simplu de înțeles, dar, de asemenea foarte importantă este înțelegerea sintaxei, care nu este complicată, dar este indispensabilă.
+	
+	\subsection{Metode și Procedee de predare:}
+	\begin{multicols}{2}
+		\subparagraph{i. Metode:}
+			\begin{itemize}[label={-}]
+				\item Conversația;
+				\item Explicația;
+				\item Învățarea prin descoperire;
+				\item Exercițiul;
+				\item Activitatea independentă.
+			\end{itemize}
+		\columnbreak
+		\subparagraph{ii. Procedee:}
+			\begin{itemize}[label={-}]
+				\item Manualul;
+				\item Materialele de pe internet;
+				\item Tutoriale;
+				\item Probleme interesante.
+				\item[]
+			\end{itemize}
+	\end{multicols}
+%%%%%%%%%%%%%%%%%%%%%
+	\subsection{Evaluarea:}
+		\begin{itemize}
+			\item[-] Inițială: Se va realiza prin conversație;
+			\item[-] Continuă: Se va realiza prin evaluarea lucrului individual;
+			\item[-] Finală: Se va realiza pe baza impresiei generale creeate de către elevi.
+		\end{itemize}
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Realizarea și cuprinsul lecției}
+	\subsection{Moment organizatoric:\\ \itl{10 minute}}
+		\paragraph{}În cadrul acestuia se vor explica pe scurt obiectivele și vor fi menționate materialele care vor servi la buna desfășurare a predării.
+		
+	\subsection{Comunicarea scopului general și a obiectivelor operaționale: \itl{5 minute}}
+		\paragraph{}Conținutul acestei secțiuni se întrepătrunde cu cel al precedentei. În plus, se mai pot preciza metodele de evaluare (e.g. rezzolvarea problemelor suplimentare). 	
+	
+	\subsection{Evaluarea inițială:}
+		\paragraph{} Deoarece este o lecție de predare, nu vom avea parte de o evaluare inițială. Dacă profesorul  dorește să recapituleze subiecte abordate în trecut, se pate gândi la o evaluare restrânsă. Lăsăm această decizie în mâinile didactului în cauză.
+	
+	\subsection{Predare, Învățare și Evaluare continuă:\\ \itl{110 minute}}
+	\paragraph{} În continuare vom prezenta câteva sugestii pentru teme și probleme ce ar trebui abordate pe parcursul orei.	
+	\begin{enumerate}
+
+		\item Dup\u a \^ indeplinirea primelor trei obiective, propunem realizarea\\ unui program simplu, fiec\u arui elev.\\ Spre exemplu, calcularea sumei numerelor p\^ an\u a la o anumit\u a valoare sau concatenarea a dou\u a \textit{String}-uri (\textit{O list\u a de probleme asem\u an\u atoare urmeaz\u a a fi realizat\u a}).
+
+		\item Dup\u a prezentarea sintaxei func\c tiilor, propunem elevilor s\u a modifice \\programul realizat anterior, astfel \^ inc\^ at cerin\c ta programului s\u a fie realizat\u a cu ajutorul unei func\c tii.
+
+		\item Realizarea unui program care interschimb\u a valorile dintre dou\u a variabile de tip \^ intreg, f\u ar\u a func\c tii.
+
+		\item Crearea unei func\c tii care s\u a realizeze cerin\c ta anterioar\u a.
+
+\end{enumerate}
+
+
+\subsection{Concluzii:\\ \itl{10 minute}}
+
+\paragraph{}
+Repetarea no\c tiunilor de \textit{Programare procedural\u  a}, \textit{func\c tie}, \textit{pointer}.\\În cadrul acestei secțiui ne vom ocupa și de partea de \itl{feedback} pe care elevii o vor avea la dispoziție.
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 4
+%----------------------------------------------------------------------------------------
+
+\subsection{Evaluarea elevilor \c si tema pentru acas\u a: \\ 10 minute }
+
+\paragraph{}
+Pe parcursul pred\u arii se vor lansa propuneri de probleme interesante \c si rezolvarea lor. Unele probleme vor fi propuse pentru studiu particular. 
+
+%----------------------------------------------------------------------------------------
+%	SECTION 5
+%----------------------------------------------------------------------------------------
+\hfill
+
+\hrulefill
+\hrule
+\hrulefill
+\begin{flushright}
+	Pe parcursul întregii predări, metoda didactică preponderent folosită va fi \itl{Comunicarea}.
+
+\end{flushright}
+\end{document}

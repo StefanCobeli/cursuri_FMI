@@ -1,0 +1,95 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head> 
+
+<style type="text/css">
+body{ background-color: yellow;
+background-image: url(Primavara.jpg);
+background-repeat: repeat-y;
+margin-left:155px;}
+
+
+
+
+</style>
+
+<meta charset="utf-8">
+<title>Titlul paginii</title>
+<link href="favi.png" type="image/png" rel="shortcut icon" />
+ </head> 
+
+
+<body>
+ <header>
+  <h1>My wonderful blog</h1>
+  <p>My tagline</p>
+ </header>
+ <aside id="baralat">
+  <!-- this aside contains two sections that are tangentially related
+  to the page, namely, links to other blogs, and links to blog posts
+  from this blog -->
+  <nav>
+   <h1>My blogroll</h1>
+   <ul>
+    <li><a href="http://blog.example.com/">Example Blog</a>
+   </ul>
+  </nav>
+  <nav>
+   <h1>Archives</h1>
+   <ol reversed>
+    <li><a href="/last-post">My last post</a>
+    <li><a href="/first-post">My first post</a>
+   </ol>
+  </nav>
+ </aside>
+<div id="continut">
+ <aside class="altceva">
+  <!-- this aside is tangentially related to the page also, it
+  contains twitter messages from the blog author -->
+  <h1>Twitter Feed</h1>
+  <blockquote cite="http://twitter.example.net/t31351234">
+   I'm on vacation, writing my blog.
+  </blockquote>
+  <blockquote cite="http://twitter.example.net/t31219752">
+   I'm going to go on vacation soon.
+  </blockquote>
+ </aside>
+ <article>
+  <!-- this is a blog post -->
+  <h1>My last post</h1>
+  <p>This is my last post.</p>
+  <p> 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempus rhoncus ante tincidunt commodo. In in nibh vitae enim interdum lobortis. Duis euismod condimentum lacus, eget hendrerit nisi semper vel. Proin tincidunt suscipit rhoncus. Nam at iaculis dolor. Proin at facilisis leo, non ullamcorper urna. Mauris auctor sagittis nibh, ac viverra nisl lobortis ut. Morbi et arcu eget purus tristique tempus. Duis ac urna leo. Maecenas sagittis enim ac suscipit porttitor. Sed turpis nunc, luctus id interdum nec, suscipit sed lectus. Nam sagittis elementum enim imperdiet ullamcorper. Fusce laoreet fermentum dui in tempor. Nam rhoncus, tellus sed rutrum porta, nisi leo euismod ante, et luctus elit sem eu mi.
+</p>
+  <footer>
+   <p><a href="/last-post" rel=bookmark>Permalink</a>
+  </footer>
+ </article>
+ <article>
+  <!-- this is also a blog post -->
+  <h1>My first post</h1>
+  <p> 
+Duis adipiscing nibh sit amet egestas dapibus. Fusce id quam purus. Quisque fringilla ante at risus tempus, in tristique nisi accumsan. Morbi vel sollicitudin sem, non placerat ligula. Ut imperdiet, libero in iaculis egestas, eros ante pharetra lacus, a cursus nibh lacus et elit. In eget orci id metus fermentum lacinia. Sed in blandit est, at vehicula tellus. Integer vulputate elit in ligula gravida bibendum. Curabitur venenatis metus in vulputate iaculis. Quisque augue nisi, bibendum vitae nulla eget, egestas facilisis sem. Morbi malesuada, dui vel molestie congue, sem dolor aliquet diam, eget iaculis mi leo quis arcu.
+</p>
+  <aside class="altceva">
+   <!-- this aside is about the blog post, since it's inside the
+   <article> element; it would be wrong, for instance, to put the
+   blogroll here, since the blogroll isn't really related to this post
+   specifically, only to the page as a whole -->
+   <h1>Posting</h1>
+   <p>While I'm thinking about it, I wanted to say something about
+   posting. Posting is fun!</p>
+  </aside>
+  <footer>
+   <p><a href="/first-post" rel=bookmark>Permalink</a>
+  </footer>
+ </article>
+
+</div>
+</body>
+
+ 
+
+
+
+ </html>

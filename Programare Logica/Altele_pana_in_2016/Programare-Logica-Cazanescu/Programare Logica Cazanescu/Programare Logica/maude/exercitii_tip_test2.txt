@@ -1,0 +1,31 @@
+Cerintele din exercitiile de mai jos au fost date la lucrari de control in anii anteriori. Unele dintre ele au fost rezolvate in modlectia9.maude si modlectia10.maude.
+
+In a doua lucrare de control pe care o veti da, veti avea un exercitiu cu arbori binari si unul cu arbori oarecare (desigur, cele doua exercitii vor avea mai putine cerinte decat exercitiile (I) si (II) de mai jos).
+
+In exercitiile de mai jos, sorturile pentru arbori binari, arbori oarecare si liste de arbori oarecare, precum si operatiile care construiesc aceste sorturi, vor fi denumite si declarate la fel ca in modlectia9.maude.
+
+(I) Sa se scrie in Maude un modul pentru arbori binari cu numere intregi ca informatii in noduri, care sa includa modulul INT predefinit si sa contina urmatoarele operatii, definite ca mai jos.
+   op maxdif : Arbbin -> Nat . 
+   op ecomplet : Arbbin -> Bool .
+   op invers : Arbbin -> Arbbin .
+	Pentru orice arbore binar A: 
+maxdif(A) = maximul modulului diferentei dintre numarul de frunze al subarborelui stang si numarul de frunze al subarborelui drept ale unui nod din arborele binar A;
+ecomplet(A) = true daca A este arbore binar complet, si false in caz contrar;
+invers(A) = arborele binar care se obtine din A prin inversarea subarborelui stang cu subarborele drept al fiecarui nod al lui A.
+
+(II) Sa se scrie in Maude un modul pentru arbori oarecare cu numere naturale ca informatii in noduri, care sa includa modulul NAT predefinit si sa contina urmatoarele operatii, definite ca mai jos.
+   ops nrmaxfii nrminfiinenul nrnodint nrfrunze nrvalpare nrcunrimparfii : Arbore -> Nat .
+   ops estebin descrescniv : Arbore -> Bool .
+   ops addist radpara infoh : Arbore -> Arbore .
+	Pentru orice arbore A: 
+nrmaxfii(A) = numarul maxim de fii ai unui nod din arborele A;
+nrminfiinenul(A) = numarul minim de fii ai unui nod intern (adica nod care nu e frunza) din arborele A, cu conventia: nrminfiinenul(null) = 0 si nrminfiinenul(F) = 0 daca F este o frunza;
+nrnodint(A) = numarul de noduri interne (adica noduri care nu sunt frunze) ale arborelui A;
+nrfrunze(A) = numarul de frunze ale arborelui A;
+nrvalpare(A) = numarul de noduri din arborele A care au informatia para;
+nrcunrimparfii(A) = numarul de noduri din arborele A care au un numar impar de fii;
+estebin(A) = true daca A este arbore binar (cu aceeasi radacina ca aceea din reprezentarea sa ca arbore oarecare), si false in caz contrar;
+descrescniv(A) = true daca informatia din fiecare nod intern (adica nod care nu e frunza) al lui A este mai mare sau egala cu informatia din fiecare fiu al sau, si false in caz contrar;
+addist(A) = arborele obtinut din A prin inlocuirea fiecarei informatii I din fiecare nod al sau cu I + D, unde D este distanta de la radacina arborelui A la acel nod, adica numarul de niveluri care despart radacina lui A de acel nod (D = 0 in cazul radacinii, D = 1 pentru fiecare fiu al radacinii etc.);
+radpara(A) = arborele obtinut din A prin eliminarea tuturor subarborilor sai cu informatia din radacina data de un numar natural impar;
+infoh(A) = arborele obtinut din A prin inlocuirea informatiei din fiecare nod cu inaltimea subarborelui lui A de radacina acel nod.

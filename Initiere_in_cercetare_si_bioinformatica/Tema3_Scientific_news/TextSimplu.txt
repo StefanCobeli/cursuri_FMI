@@ -1,0 +1,67 @@
+
+On space not on ISS
+
+ Project MERCCURI 
+ 2012 2014
+(Microbial Ecology Research Combining Citizen 
+and University Researchers on the ISS)
+
+Most Previous works 
+Escherichia coli 1997 and 2002
+Pseudomanas aeruginosa 2011 2013
+for atibiotic resistance production
+
+successfully launched April 18, 2014
+
+
+Additionally, this experiment did not provide enough time
+ to study the long-term adaptation of bacteria to the
+ environment on board the ISS.
+ 
+ 
+ 
+ 
+ https://peerj.com/articles/1842/#table-1
+ Table 1:
+Final growth (OD600) of all 48 strains as measured on Earth at
+ the end of the experiment with a high-density measurement in a Tecan platereader.
+ 
+ 
+ Researchers from University of California 
+ had the idea to collect simple bacterias from different
+ environments on Earth and compare their behaviour on normal
+ environment with their behaviour on space.
+ The starting problem was that until now the attention
+ has been focused on the microbes that have potential
+ pathogenic risk and nobody studied the ordinary bacteria on space .
+The result was surprising. Of the 48 types of bacteria
+ sent on ISS all of them had similar behaviour, with
+ one exception. Bacillus safensis grew 60% better on ISS than on Earth.
+
+To accomplish this task, it was made a nationwide
+ campain to popularise  science, named Project MERCCURI
+ (Microbial Ecology Research Combining Citizen 
+and University Researchers on the ISS). 
+The people had to collect microbes from public places
+ like museums, sports events,  schools, pools and send
+ them to researchers and the most interesting microbes
+ were selected. The bacteria winners were sent to ISS.
+ 
+ 
+ What they did After the selection, the researchers send
+ samples with the winners on Dragon spacecraft, wich was 
+ launched on April 18th 2014.
+The result was that Bacillus safensis bacteria grew 60%
+ better on the bord of ISS than on Earth. 
+ The reason for this is still a mistery. 
+Clues may be found on the genome sequencing of the bacteria,
+ that was recently determined .
+The lead author of the article Dr. David Coll said that:
+ "Understanding how microbes behave in microgravity is critically 
+ important for planning long-term manned spaceflight but also
+ has the possibility of providing new insights into how these
+ microbes behave in human constructed environments on Earth."
+Also this study engaged the public in the world of 
+science and research. The authors hopes that this article will
+ be a start of inspiration for young and adults to get involved 
+ more in science world.

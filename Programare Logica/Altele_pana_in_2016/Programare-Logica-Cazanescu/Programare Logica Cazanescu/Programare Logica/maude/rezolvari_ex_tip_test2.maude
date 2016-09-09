@@ -1,0 +1,225 @@
+fmod EXERCITIUL-I is
+
+   protecting INT .
+
+   sorts Lista Arbbin .
+   subsort Int < Lista .
+***> Lista e sortul pentru liste de numere intregi
+***> Arbbin e sortul pentru arbori binari
+
+   op nil : -> Lista . ***> lista de numere intregi vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbbin . ***> arborele binar vid
+   op _{_,_} : Int Arbbin Arbbin -> Arbbin .
+***> operatiile care construiesc sortul Arbbin
+
+   ops maxdif nrfrunze absdif h : Arbbin -> Nat . 
+   ops ecomplet : Arbbin -> Bool .
+   op invers : Arbbin -> Arbbin .
+   op plinlaniv : Arbbin Nat Nat -> Bool .
+
+   ops ex1 ex2 ex3 ex4 ex5 ex6 ex7 ex8 ex9 ex10 : -> Arbbin .
+
+   vars H L M N : Nat .
+   vars I J K : Int .
+   vars A B C D : Arbbin .
+
+   eq nrfrunze(null) = 0 .
+   eq nrfrunze(I{null,null}) = 1 .
+   eq nrfrunze(I{null,J{A,B}}) = nrfrunze(J{A,B}) .
+   eq nrfrunze(I{J{A,B},null}) = nrfrunze(J{A,B}) .
+   eq nrfrunze(I{J{A,B},K{C,D}}) = nrfrunze(J{A,B}) + nrfrunze(K{C,D}) .
+
+   eq absdif(null) = 0 .
+   eq absdif(I{A,B}) = abs(nrfrunze(B) - nrfrunze(A)) .
+
+   eq maxdif(null) = 0 .
+   eq maxdif(I{A,B}) = max(absdif(I{A,B}),max(absdif(A),absdif(B))) .
+
+***> max si abs sunt predefinite in modulul INT.
+
+   eq invers(null) = null .
+   eq invers(I{A,B}) = I{invers(B),invers(A)} .
+
+   eq h(null) = 0 .
+   eq h(I{A,B}) = s max(h(A),h(B)) .
+
+   eq ecomplet(A) = plinlaniv(A,h(A),1) .
+
+   ceq plinlaniv(I{A,null},H,L) = false if L < H .
+   ceq plinlaniv(I{null,A},H,L) = false if L < H .
+   ceq plinlaniv(I{J{A,B},K{C,D}},H,L) = plinlaniv(J{A,B},H,s L) and plinlaniv(K{C,D},H,s L) if L < H .
+   ceq plinlaniv(I{A,B},H,L) = true if L >= H .
+   eq plinlaniv(null,H,L) = true .
+
+   eq ex1 = 1{2{null,null},-3{null,4{null,null}}} .
+   eq ex2 = 1{2{null,null},3{-6{null,null},4{7{null,null},5{null,null}}}} .
+   eq ex3 = 1{null,3{6{null,null},4{7{null,null},5{null,null}}}} .
+   eq ex4 = 10{7{null,-8{null,null}},15{-12{null,null},-20{18{null,null},null}}} .
+   eq ex5 = 10{null,25{null,25{null,null}}} .
+   eq ex6 = 10{10{null,null},25{null,25{null,null}}} .
+   eq ex7 = 10{7{null,30{null,null}},15{12{null,null},20{18{null,null},null}}} .
+   eq ex8 = 1{2{null,null},3{null,4{null,null}}} .
+   eq ex9 = 1{-2{null,null},-3{6{null,null},-4{7{null,null},5{null,null}}}} .
+   eq ex10 = 1{2{4{null,null},5{null,null}},3{6{null,null},7{null,null}}} .
+
+endfm
+
+
+fmod EXERCITIUL-II is
+
+   protecting NAT .
+
+   sorts Lista Arbore ListArb .
+   subsort Nat < Lista .
+   subsort Arbore < ListArb .
+***> Lista e sortul pentru liste de numere naturale
+***> Arbore e sortul pentru arbori oarecare
+***> ListArb e sortul pentru liste de arbori oarecare 
+
+   op nil : -> Lista . ***> lista de numere naturale vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+
+   op null : -> Arbore . ***> arborele vid
+   op _{_} : Nat ListArb -> Arbore [prec 20] .
+***> operatiile care construiesc sortul Arbore
+
+   op frunza : -> ListArb . ***> lista de arbori vida
+   op _;_ : ListArb ListArb -> ListArb [assoc id: frunza prec 30] .
+***> concatenarea de liste de arbori
+
+   ops nrmaxfii nrminfiinenul nrnodint nrfrunze nrvalpare nrcunrimparfii : Arbore -> Nat .
+   ops estebin descrescniv : Arbore -> Bool .
+   ops addist radpara infoh : Arbore -> Arbore .
+
+   op lungime : ListArb -> Nat .
+   ops maxlist minlist : Lista -> Nat .
+   op listfara0 : Lista -> Lista .
+   op nrfii : Arbore -> Nat .
+   op nrfiilist : ListArb -> Lista .
+   ops nrnodintlist nrfrunzelist nrvalparelist nrcunrimparfiilist : ListArb -> Nat .
+   op descrescnivcuval : Arbore Nat -> Bool .
+   op descrescnivcuvallist : ListArb Nat -> Bool .
+   op addistcuniv : Arbore Nat -> Arbore .
+   op addistcunivlist : ListArb Nat -> ListArb .
+   ops listaradpara listainfoh : ListArb -> ListArb .
+   op h : Arbore -> Nat .
+   op listah : ListArb -> Lista .
+   ops ex1 ex2 ex3 ex4 ex5 ex6 ex7 ex8 ex9 : -> Arbore .
+
+   vars M N P : Nat .
+   var L : Lista .
+   vars A B C : Arbore .
+   var LA LA1 : ListArb .
+
+   eq maxlist(nil) = 0 .
+   eq maxlist(N L) = max(N,maxlist(L)) .
+
+   eq minlist(N) = N .
+   eq minlist(N M L) = min(N,minlist(M L)) .
+
+   eq lungime(frunza) = 0 .
+   eq lungime(A ; LA) = s lungime(LA) .
+
+   eq listfara0(nil) = nil .
+   eq listfara0(0 L) = listfara0(L) . 
+   ceq listfara0(N L) = N listfara0(L) if N =/= 0 .
+
+   eq nrfii(null) = 0 .
+   eq nrfii(N{LA}) = lungime(LA) .
+
+   eq nrfiilist(frunza) = nil .
+   eq nrfiilist(A ; LA) = nrfii(A) nrfiilist(LA) .
+
+   eq nrmaxfii(null) = 0 .
+   eq nrmaxfii(N{LA}) = max(nrfii(N{LA}),maxlist(nrfiilist(LA))) .
+
+   eq nrminfiinenul(null) = 0 .
+   eq nrminfiinenul(N{frunza}) = 0 .
+   eq nrminfiinenul(N{A ; LA}) = minlist(nrfii(N{A ; LA}) listfara0(nrfiilist(A ; LA))) .
+
+   eq nrnodint(null) = 0 .
+   eq nrnodint(N{frunza}) = 0 .
+   eq nrnodint(N{A ; LA}) = s(nrnodintlist(A ; LA)) .
+
+   eq nrnodintlist(frunza) = 0 .
+   eq nrnodintlist(A ; LA) = nrnodint(A) + nrnodintlist(LA) . 
+
+   eq nrfrunze(null) = 0 . 
+   eq nrfrunze(N{frunza}) = 1 .
+   eq nrfrunze(N{A ; LA}) = nrfrunzelist(A ; LA) .
+
+   eq nrfrunzelist(frunza) = 0 .
+   eq nrfrunzelist(A ; LA) = nrfrunze(A) + nrfrunzelist(LA) . 
+
+   eq estebin(null) = true .
+   eq estebin(N{frunza}) = true .
+   eq estebin(N{A}) = estebin(A) .
+   eq estebin(N{A ; B}) = estebin(A) and estebin(B) .
+   eq estebin(N{A ; B ; C ; LA}) = false .
+
+   eq nrvalpare(null) = 0 .
+   ceq nrvalpare(N{LA}) = nrvalparelist(LA) if not (2 divides N) .
+   ceq nrvalpare(N{LA}) = s nrvalparelist(LA) if 2 divides N .
+
+   eq nrvalparelist(frunza) = 0 .
+   eq nrvalparelist(A ; LA) = nrvalpare(A) + nrvalparelist(LA) . 
+
+   eq nrcunrimparfii(null) = 0 .
+   ceq nrcunrimparfii(N{LA}) = nrcunrimparfiilist(LA) if 2 divides lungime(LA) .
+   ceq nrcunrimparfii(N{LA}) = s nrcunrimparfiilist(LA) if not (2 divides lungime(LA)) .
+
+   eq nrcunrimparfiilist(frunza) = 0 .
+   eq nrcunrimparfiilist(A ; LA) = nrcunrimparfii(A) + nrcunrimparfiilist(LA) .
+
+   eq descrescniv(null) = true .
+   eq descrescniv(N{frunza}) = true .
+   eq descrescniv(N{A ; LA}) = descrescnivcuval(N{A ; LA},N) .
+
+   eq descrescnivcuval(null,N) = true .
+   eq descrescnivcuval(M{frunza},N) = N >= M .
+   eq descrescnivcuval(M{P{LA1} ; LA},N) = N >= M and descrescnivcuval(P{LA1},M) and descrescnivcuvallist(LA,M) .
+
+   eq descrescnivcuvallist(frunza,N) = true .
+   eq descrescnivcuvallist((A ; LA),N) = descrescnivcuval(A,N) and descrescnivcuvallist(LA,N) .
+
+   eq addist(A) = addistcuniv(A,0) .
+
+   eq addistcuniv(null,N) = null .
+   eq addistcuniv(M{LA},N) = (M + N){addistcunivlist(LA,s N)} .
+
+   eq addistcunivlist(frunza,N) = frunza .
+   eq addistcunivlist((A ; LA),N) = addistcuniv(A,N) ; addistcunivlist(LA,N) .
+
+   eq radpara(null) = null .
+   ceq radpara(N{LA}) = null if not (2 divides N) .
+   ceq radpara(N{LA}) = N{listaradpara(LA)} if 2 divides N .
+
+   eq listaradpara(frunza) = frunza .
+   ceq listaradpara(N{LA1} ; LA) = radpara(N{LA1}) ; listaradpara(LA) if 2 divides N .
+   ceq listaradpara(N{LA1} ; LA) = listaradpara(LA) if not (2 divides N) .
+
+   eq infoh(null) = null .
+   eq infoh(N{LA}) = h(N{LA}){listainfoh(LA)} .
+
+   eq listainfoh(frunza) = frunza .
+   eq listainfoh(A ; LA) = infoh(A) ; listainfoh(LA) .
+
+   eq h(null) = 0 .
+   eq h(N{LA}) = s maxlist(listah(LA)) .
+
+   eq listah(frunza) = nil .
+   eq listah(A ; LA) = h(A) listah(LA) .
+
+   eq ex1 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}} ; 7{frunza}} .
+   eq ex2 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}}} .
+   eq ex3 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza} ; 7{8{frunza} ; 9{frunza} ; 10{frunza}}}} .
+   eq ex4 = 1{2{3{frunza} ; 4{frunza}} ; 5{6{frunza}} ; 7{frunza}} .
+   eq ex5 = 10{2{1{frunza} ; 0{frunza}} ; 5{3{frunza}} ; 7{frunza}} .
+   eq ex6 = 10{2{1{frunza} ; 2{frunza}} ; 5{3{frunza}} ; 7{frunza}} .
+   eq ex7 = 3{4{frunza} ; 0{6{frunza} ; 8{2{frunza} ; 10{frunza} ; 20{frunza}}}} .
+   eq ex8 = 12{5{frunza} ; 0{13{frunza} ; 8{2{frunza} ; 7{frunza} ; 20{frunza}}} ; 22{25{frunza}}} .
+   eq ex9 = 12{5{frunza} ; 0{8{2{frunza} ; 7{frunza} ; 20{frunza}}} ; 22{25{frunza}}} .
+
+endfm

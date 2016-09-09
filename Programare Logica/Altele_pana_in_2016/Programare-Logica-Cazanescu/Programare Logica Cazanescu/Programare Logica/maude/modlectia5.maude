@@ -1,0 +1,378 @@
+fmod TEMA4 is
+
+   sorts Zero NzNat Nat Neg NzInt Int .
+   subsort Zero < Nat .
+   subsorts NzNat < Nat NzInt < Int .
+   subsort Neg < NzInt .
+
+   op 0 : -> Zero .
+
+   ops s_ p_ : Int -> Int .
+   op s_ : Nat -> NzNat .
+   op p_ : NzNat -> Nat .
+   op p_ : Zero -> Neg .
+   op p_ : Neg -> Neg .
+  
+   ops (_+_) (_*_) (_-_) : Int Int -> Int . 
+   ops (_+_) (_*_) : Nat Nat -> Nat .
+   op _+_ : NzNat Nat -> NzNat .
+   op _+_ : Nat NzNat -> NzNat .
+   op _*_ : NzInt NzInt -> NzInt .
+   op _*_ : NzNat NzNat -> NzNat .
+   op _*_ : Zero Int -> Zero .
+   op _*_ : Int Zero -> Zero .
+
+   op -_ : Int -> Int .
+   op -_ : NzNat -> Neg .
+   op -_ : Neg -> NzNat .
+
+   op abs : Int -> Nat .
+   op abs : NzInt -> NzNat .
+
+   ops (_<=_) (_<_) (_>=_) (_>_) : Int Int -> Bool .
+   
+   op _div_ : Nat NzNat -> Nat .
+   op _div_ : Int NzInt -> Int .
+   op _mod_ : Int NzInt -> Nat .
+   
+   op cmmdc : Int Int -> Nat .
+
+   vars X Y : Int .
+   vars M M1 : Nat .
+   var N : Neg .
+   var P : NzNat .
+
+   eq p s X = X .
+   eq s p X = X .
+
+   eq X + 0 = X .
+   eq X + s Y = s (X + Y) .
+   eq X + p Y = p (X + Y) .
+
+   eq - 0 = 0 .
+   eq - - X = X .
+   eq - s X = p (- X) .
+   eq - p X = s (- X) .
+
+   eq X - 0 = X .
+   eq X - s Y = p (X - Y) .
+   eq X - p Y = s (X - Y) .
+
+   eq X * 0 = 0 .
+   eq X * s Y = (X * Y) + X .
+   eq X * p Y = (X * Y) - X .
+
+   eq abs(M) = M .
+   eq abs(N) = - N .
+
+   eq 0 <= M = true .
+   eq P <= 0 = false .
+   eq - M <= - M1 = M1 <= M .
+   eq N <= M = true .
+   eq M <= N = false .
+   eq s X <= s Y = X <= Y .
+   eq p X <= p Y = X <= Y .
+
+   eq X < Y = X <= Y and X =/= Y .
+
+   eq X >= Y = Y <= X .
+
+   eq X > Y = Y < X .   
+
+   ceq M div P = 0 if M < P .
+   ceq M div P = s((M - P) div P) if P <= M .
+
+   ceq M mod P = M if M < P .
+   ceq M mod P = (M - P) mod P if P <= M .
+
+   eq cmmdc(0,M) = M .
+   eq cmmdc(P,M) = cmmdc(M mod P,P) .
+
+   ceq cmmdc(X,Y) = cmmdc(abs(X),abs(Y)) if X < 0 or Y < 0 .
+
+   eq X mod N = X mod (- N) .
+   ceq N mod P = 0 if (- N) mod P == 0 .
+   ceq N mod P = P - ((- N) mod P) if (- N) mod P =/= 0 .
+
+   eq X div N = - (X div (- N)) .
+   ceq N div P = - ((- N) div P) if (- N) mod P == 0 .
+   ceq N div P = p (- ((- N) div P)) if (- N) mod P =/= 0 .
+
+endfm
+
+
+fmod TEMA5 is
+
+   protecting NAT .
+
+   op nedivizibil : NzNat Nat -> Bool .
+***( nedivizibil(Z,X) = true daca si numai daca X nu se divide cu niciunul
+dintre numerele naturale cuprinse intre Z si X inclusiv, ceea ce este echivalent
+cu faptul ca X nu se divide cu niciunul dintre numerele naturale cuprinse intre
+Z si radacina patrata a lui X inclusiv )
+
+   op prim : Nat -> Bool .
+***> testeaza daca argumentul sau este prim
+
+   var X : Nat .
+   var Z : NzNat .
+
+   ceq nedivizibil(Z,X) = nedivizibil(s Z,X) and not (Z divides X) if Z * Z <= X .
+   ceq nedivizibil(Z,X) = true if Z * Z > X .
+
+   eq prim(0) = false .
+   eq prim(1) = false .
+   ceq prim(X) = nedivizibil(2,X) if X > 1 .
+
+endfm
+
+
+fmod LISTE3 is
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+   
+   op nil : -> Lista . ***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil] .
+***> concatenarea listelor
+
+***> operatii din modulul LISTE2:
+   op _apartine_ : Nat Lista -> Bool .
+   op inversa : Lista -> Lista .
+   op stergetot : Nat Lista -> Lista .
+   ops elimdup elimdup2 : Lista -> Lista .
+
+   ops lungpara lungimpara : Lista -> Bool .
+***( determina daca o lista are lungimea para,
+respectiv impara, fara a calcula lungimea listei )
+
+   ops simetrica sim : Lista -> Bool .
+***> fiecare determina daca o lista e simetrica
+
+   op listacifre : Nat -> Lista .
+***> lista cifrelor unui numar natural
+
+   ops palindrom pal : Nat -> Bool .
+***( fiecare determina daca un numar natural
+este palindrom, adica, citit de la coada la cap,
+ramane neschimbat )
+
+   op _sublista_ : Lista Lista -> Bool .
+***( determina daca o lista e sublista a altei
+liste - cu elementele in ordine, dar nu neaparat
+pe pozitii consecutive )
+
+   ops multime multime2 mult : Lista -> Bool .
+***( fiecare determina daca o lista e multime,
+i. e. daca lista nu contine duplicate )
+
+   vars X Y : Nat .
+   vars L M : Lista .
+
+   eq X apartine nil = false .
+   eq X apartine (X L) = true .
+   ceq X apartine (Y L) = X apartine L if X =/= Y .
+
+   eq inversa(nil) = nil .
+   eq inversa(X L) = inversa(L) X .
+
+   eq stergetot(X,nil) = nil .
+   eq stergetot(X,X L) = stergetot(X,L) .
+   ceq stergetot(X,Y L) = Y stergetot(X,L) if X =/= Y .
+
+   eq elimdup(nil) = nil .
+   ceq elimdup(X L) = X elimdup(L) if not (X apartine L) .
+   ceq elimdup(X L) = elimdup(L) if X apartine L .
+
+   eq elimdup2(nil) = nil .
+   eq elimdup2(X L) = X elimdup2(stergetot(X,L)) .
+
+   eq lungpara(nil) = true .
+   eq lungpara(X) = false .
+   eq lungpara(X Y L) = lungpara(L) .
+
+   eq lungimpara(nil) = false .
+   eq lungimpara(X L) = lungpara(L) .
+
+   eq simetrica(L) = L == inversa(L) .
+
+   eq sim(nil) = true .
+   eq sim(X) = true .
+   eq sim(X L X) = sim(L) . 
+   ceq sim(X L Y) = false if X =/= Y . 
+
+   ceq listacifre(X) = X if X < 10 .
+   ceq listacifre(X) = listacifre(X quo 10) (X rem 10) if X >= 10 .
+
+   eq palindrom(X) = simetrica(listacifre(X)) .
+
+   eq pal(X) = sim(listacifre(X)) .
+
+   eq nil sublista L = true .
+   eq (X M) sublista nil = false .
+   eq (X M) sublista (X L) = M sublista L .
+   ceq (X M) sublista (Y L) = (X M) sublista L if X =/= Y .
+
+   eq multime(L) = L == elimdup(L) .
+***> elimdup lasa lista neschimbata ddaca lista e multime
+
+   eq multime2(L) = L == elimdup2(L) .
+***> elimdup2 lasa lista neschimbata ddaca lista e multime
+
+   eq mult(nil) = true .
+   eq mult(X L) = mult(L) and not (X apartine L) .
+
+endfm
+
+
+fmod PERECHI-LISTE is
+
+   extending NAT .
+
+   sorts Lista PerNat PerLista .
+   subsort Nat < Lista .
+
+   op nil : -> Lista . ***> lista vida
+   op __ : Lista Lista -> Lista [assoc id: nil prec 20] .
+***> concatenarea listelor
+
+   op (_,_) : Nat Nat -> PerNat .
+***> operatia care construieste sortul PerNat
+
+   op {_;_} : Lista Lista -> PerLista [prec 30] .
+***> operatia care construieste sortul PerLista
+
+   op concat : PerLista PerLista -> PerLista .
+***> concatenarea de perechi de liste, pe componente
+
+   op perip : Lista -> PerLista .
+***( perip(L) = { L1 ; L2 }, unde:
+L1 = lista elementelor din L aflate pe pozitii impare in L,
+L2 = lista elementelor din L aflate pe pozitii pare in L,
+cu pozitiile numerotate incepand de la 1, si dand rezultatul
+printr-o singura parcurgere a listei L )
+
+   op eroare : -> PerNat .
+***( pentru tratarea separata a cazului listei vide in operatiile
+minpper si minuper de mai jos; daca aceste operatii sunt aplicate
+unei liste nevide, atunci recursia prin care sunt definite nu merge
+pana la lista vida, ci se termina cu lista cu un singur element )
+   
+   op succ : PerNat -> PerNat .
+***> operatie auxiliara pentru calcularea lui minppoz si minupoz
+
+   op minpper : PerNat PerNat -> PerNat .
+***> operatie auxiliara pentru calcularea lui minppoz
+
+   op minppoz : Lista -> PerNat .
+***( minppoz(L) = (minimul din lista L,prima pozitie a minimului in L),
+calculate cu o singura parcurgere a listei L, si intoarcand eroare
+atunci cand L este vida )
+
+   op minuper : PerNat PerNat -> PerNat .
+***> operatie auxiliara pentru calcularea lui minupoz
+
+   op minupoz : Lista -> PerNat .
+***( minupoz(L) = (minimul din lista L,ultima pozitie a minimului in L),
+calculate cu o singura parcurgere a listei L, si intoarcand eroare
+atunci cand L este vida )
+
+   vars X Y X1 Y1 : Nat .
+   vars L M L1 M1 : Lista .
+
+   eq concat({ L ; M },{ L1 ; M1 }) = { L L1 ; M M1 } . 
+
+   eq perip(nil) = { nil ; nil } .
+   eq perip(X) = { X ; nil } .
+   eq perip(X Y L) = concat({ X ; Y },perip(L)) .
+
+   eq succ((X,Y)) = (X,s Y) .
+
+   ceq minpper((X,Y),(X1,Y1)) = (X,Y) if X <= X1 .
+   ceq minpper((X,Y),(X1,Y1)) = (X1,Y1) if X > X1 .
+
+   eq minppoz(nil) = eroare .
+   eq minppoz(X) = (X,1) .
+   eq minppoz(X Y L) = minpper((X,1),succ(minppoz(Y L))) .
+
+   ceq minuper((X,Y),(X1,Y1)) = (X,Y) if X < X1 .
+   ceq minuper((X,Y),(X1,Y1)) = (X1,Y1) if X >= X1 .
+
+   eq minupoz(nil) = eroare .
+   eq minupoz(X) = (X,1) .
+   eq minupoz(X Y L) = minuper((X,1),succ(minupoz(Y L))) .
+
+endfm
+
+
+fmod BSORT is 
+***> bubblesortul pe liste cu elementele a, b si c 
+
+   sort Lista .
+
+   ops a b c : -> Lista .
+   op __ : Lista Lista -> Lista [assoc] .
+
+   eq b a = a b .
+   eq c a = a c .
+   eq c b = b c .
+
+endfm
+
+
+fmod BUBBLESORT is
+***> bubblesortul pe liste de numere naturale
+
+   protecting NAT .
+
+   sort Lista .
+   subsort Nat < Lista .
+
+   op __ : Lista Lista -> Lista [assoc] .
+
+   vars X Y : Nat .
+
+   ceq X Y = Y X if Y < X .
+
+endfm
+
+
+fmod TEMA6 is   ***> 50 puncte
+
+***( Scrieti un modul pentru liste de numere naturale,
+importand modulul NAT predefinit, care sa contina:
+- o operatie care sa determine daca lungimea unei liste este
+de forma 4n+3, cu n natural, fara a calcula lungimea listei;
+- o operatie care trece un numar natural din baza 10 in baza 2,
+si una care face transformarea inversa; reprezentarea unui
+numar natural in baza 2 se va face sub forma unui sir de biti;
+- o operatie care determina lista primilor X+1 multipli naturali
+de Y, cu X si Y date ca argumente;
+- o operatie care determina lista multiplilor naturali de Y mai
+mici sau egali cu X, unde X si Y sunt date ca argumente;
+- o operatie care determina daca o lista e permutare a multimii
+primelor n numere naturale nenule, pentru un n natural;
+- o operatie care determina lista tuturor pozitiilor minimului
+intr-o lista, printr-o singura parcurgere a listei. )
+
+***( Aduceti acest modul la laboratorul de
+saptamana viitoare. La fel pentru toate temele
+care vor urma. Nu se vor puncta temele aduse cu
+cel putin o saptamana intarziere. Se acorda punctaj
+numai pentru temele aduse in decurs de o saptamana
+din ziua in care au fost date. )
+
+endfm
+
+
+fmod TEMA7 is   ***> 60 puncte
+
+***( Scrieti un modul pentru definirea numerelor rationale, care
+sa foloseasca modulul pentru numere intregi din TEMA4, si sa contina
+operatiile: +, - unar si binar, *, /, precum si relatiile <=, <, >=
+si >, desigur, implementate ca operatii de sort rezultat Bool.
+Operatia / va servi la construirea sortului numerelor rationale. )
+
+endfm

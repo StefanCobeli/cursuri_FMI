@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1396389380 source:d:\c++\parcurgere in latime\main.cpp
+	<iostream>
+	<fstream>
+	<queue>
+

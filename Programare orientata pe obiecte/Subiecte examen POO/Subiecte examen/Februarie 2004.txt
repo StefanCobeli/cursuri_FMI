@@ -1,0 +1,1352 @@
+Subiecte date la examenele de
+Proiectare si programare pe obiecte,
+6 si 7 februarie 2004,
+conducator: Lect. Dr. Radu Gramatovici
+
+Compilatie si comentarii suplimentare realizate de Daniel Dragulici,
+mai 2004
+============================================================================
+
+1) Precizati care dintre cele 3 variante din functia main() a 
+programului
+ de mai jos afiasaza corect elementul a[1][1] al matricei. Justificati.
+
+#include<iostream.h>
+class matrice{
+  int a[2][3];
+public:
+  int* operator[](int i) {return a[i];}
+};
+
+void main(){
+  matrice m;
+  cout<<m[1][1];
+  cout<<m.a[1][1];
+  cout<<m.operator[](1)[1];
+}
+
+2) Se da programul:
+
+#include<iostream.h>
+#include<stdlib.h>
+class cls{
+public:
+  cls() {cout<<"Constructor";}
+};
+
+void main(){
+  cls *p;
+  p = new cls;
+  p = (cls*) malloc (sizeof(cls));
+}
+
+Descrieti instructiunile 2 si 3 din funtia "main()" si spuneti care 
+este
+ diferenta dintre ele.
+
+3) Spuneti care dintre declaratiile functiei "main()" sunt corecte in
+ programul de mai jos. Justificati.
+
+#include<iostream.h>
+
+class B1 {public: int x;};
+class B2 {public: int y;};
+class B3 {public: int z;};
+class B4 {public: int t;};
+
+class D: public B1, private B2, protected B3, B4 {public: int u;};
+
+void main(){
+  D d;
+  cout<<d.u;
+  cout<<d.x;
+  cout<<d.y;
+  cout<<d.z;
+  cout<<d.t;
+}
+
+Dar daca in clasele "B1", "B2", "B3", "B4" in loc de "public" scriam
+ "private" sau "protected" ?
+
+4) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class D;
+
+class B{
+  int x;
+  friend void f(B, D);
+public:
+  B(int i=0) {x=i;}
+};
+
+class D: public B {
+public:
+  int y;
+  D(int i=0, int j=0): B(i) {y=j;}
+};
+
+void f(B b, D d) {cout<<b.x<<" "<<d.y;}
+
+void main(){
+  B b;
+  D d;
+  f(b, d);
+}
+
+5) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class B{
+  int x;
+public:
+  B(int i=0) {x=i;}
+  int get_x() {return x;}
+};
+
+class D: public B {
+public:
+  int f() {return get_x();}
+};
+
+void main(){
+  D d;
+  cout<<d.f();
+}
+
+6) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class B
+{
+  int x;
+public:
+  B(int v) {v=x;}
+  int get_x() {return x;}
+};
+
+class D: private B
+{
+  int y;
+public:
+  D(int v): B(v) {}
+  int get_x() {return x;}
+};
+
+void main(){
+  D d(10);
+  cout<<d.get_x();
+}
+
+7) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls{
+public:
+  float sa;
+  cls(float s=0) {sa=s;}
+  operator float() {return sa;}
+  float f(float c) {return (sa*(1+c/100));}
+};
+
+void main(){
+  cls p(100);
+  cout<<p.f(p);
+}
+
+8) Se da urmatoarea clasa:
+
+class cls
+{
+  int x,y;
+public:
+  int operator==(cls a, cls b) {return a.x==b.y;}
+};
+
+Spuneti daca supraincarcarea operatorului "==" s-a realizat corect.
+In caz afirmativ spuneti ce returneaza, in caz negativ spuneti de ce nu
+ 
+este
+ corect.
+
+La fel in cazul clasei:
+
+class cls1{
+  int a,b,c;
+public:
+  int operator+(cls1 x, cls1 y) {return (x.a+y.b);}
+};
+
+9) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls{
+  int vi;
+public:
+  cls(int v=18) {vi=v;}
+  operator int() {return vi;}
+  cls operator++() {vi++; return *this;}
+  cls operator++(int);
+};
+
+cls cls::operator++(int)
+{
+  cls aux=*this;
+  vi++;
+  return aux;
+}
+
+void main(){
+  cls p(20);
+  int x=p++, y=++p;
+  cout<<"x="<<x<<", y="<<y<<endl;
+}
+
+10) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls{
+public:
+  int vi;
+  cls(int v=3) {vi=v;}
+};
+
+void f(cls &c) {cout<<c.vi;}
+
+void main(){
+  const cls d(5);
+  f(d);
+}
+
+11) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls
+{
+public:
+  int x;
+  cls() {x=3;}
+  void f(cls &c) {cout<<c.x;}
+};
+
+void main(){
+  const cls d;
+  f(d);
+}
+
+12) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls
+{
+public:
+  int x,y;
+  cls(int i=0, int j=0) {x=i; y=j;}
+};
+
+void main(){
+  cls a, b, c[3]={cls(1,1), cls(2,2), a};
+  cout<<c[2].x;
+}
+
+13) Spuneti de cate ori se apeleaza destructorul clasei "cls" in 
+programul
+ de mai jos. Justificati.
+
+#include<iostream.h>
+
+class cls
+{
+public:
+  ~cls(){cout<<"Destructor\n";}
+};
+
+cls f(cls c) {return c;}
+
+main()
+{
+  cls r;
+  f(f(r));
+}
+
+14) /*(Varianta prezentata aici este usor modificata) */Spuneti de cate
+ 
+ori
+ se apeleaza destructorul clasei "cls" in programul de mai jos. 
+Justificati.
+
+#include<iostream.h>
+
+class cls
+{
+public:
+  ~cls(){cout<<"Destructor\n";}
+};
+
+cls f(cls &p) {cls c; return c;}
+
+main()
+{
+  cls r;
+  f(r);
+}
+
+15) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class vector
+{
+  int *p, nr;
+public:
+  operator int() {return nr;}
+  vector(int);
+};
+
+vector::vector(int n)
+{
+  p=new int[n];
+  nr=n;
+  while(n--) p[n]=n;
+}
+
+void f(int i)
+{
+  while(i--) cout<<i<<endl;
+}
+
+void main()
+{
+  vector x(10);
+  f(x);
+}
+
+16) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class Y;
+
+class Z;
+
+class X{
+  int x;
+public:
+  X(int n=0) {x=n;}
+  friend Y;
+};
+
+class Y{
+  int y;
+  friend Z;
+};
+
+class Z{
+public:
+  void f(X u) {cout<<u.x;}
+};
+
+void main(){
+  X a;
+  Z b;
+  b.f(a);
+}
+
+17) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls2;
+
+class cls1
+{
+public:
+  int vi;
+  cls1(int v=30) {vi=v;}
+  cls1(cls2 p) {vi=p.vi;}
+};
+
+class cls2
+{
+public:
+  int vi;
+  cls2(int v=20) {vi=v;}
+};
+
+cls1 f(cls1 p)
+{
+  p.vi++;
+  return p;
+}
+
+void main(){
+  cls1 p; f(p); cout<<endl<<p.vi;
+  cls2 r; f(r); cout<<endl<<r.vi;
+}
+
+18) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls1{
+public:
+  int vi;
+  cls1(int v=30) {vi=v;}
+};
+
+class cls2{
+public:
+  int vi;
+  cls2(int v=20) {vi=v;}
+  operator cls1() {cls1 p; p.vi=vi; return p;}
+};
+
+cls1 f(cls1 p){
+  p.vi++;
+  return p;
+}
+
+void main(){
+  cls1 p; f(p); cout<<endl<<p.vi;
+  cls2 r; f(r); cout<<endl<<r.vi;
+}
+
+
+19) Spuneti care dintre declaratiile functiei main() sunt corecte in
+ programul de mai jos. Justificati.
+
+class B
+{
+protected:
+  int a;
+public:
+  virtual int metoda()=0;
+};
+
+
+class D: public B
+{
+public:
+  void metoda() {return a;}
+};
+
+void main(){
+  B *p;
+  B p;
+  D *p[5];
+  D p[5];
+}
+
+20) Spuneti care dintre declaratiile functiei main() sunt corecte in
+ programul de mai jos. Justificati.
+
+class cls
+{
+  int a;
+public:
+  virtual void metoda1()=0;
+};
+
+void main(){
+  cls *p;
+  cls p;
+  cls *p[5];
+  cls p[5];
+}
+
+21) Fiind date urmatoarele tipuri de clase:
+
+class B {/* instructiuni */};
+class D1: virtual B {/* instructiuni */};
+class D2: B {/* instructiuni */};
+class M1: D1, public D2 {/* instructiuni */};
+class M2: virtual D1, virtual public D2 {/* instructiuni */};
+
+spuneti de cate ori este mostenita clasa B in clasa M1. Dar in clasa M2
+ 
+?
+Justificati.
+
+22) Fiind date urmatoarele tipuri de clase:
+
+class B {/* instructiuni */};
+class D1: B {/* instructiuni */};
+class D2: B {/* instructiuni */};
+class M1: D1, public D2 {/* instructiuni */};
+class M2: virtual D1, virtual public D2 {/* instructiuni */};
+
+spuneti de cate ori este mostenita clasa B in clasa M1. Dar in clasa M2
+ 
+?
+Justificati.
+
+23) Spuneti ce afisaza programul de mai jos. Explicati de ce:
+
+#include<iostream.h>
+
+class B
+{
+protected:
+  int a;
+public:
+  B() {a=7;}
+};
+
+class D: public B
+{
+public:
+  int b;
+  D() {b=a+7;}
+};
+
+void main(){
+  D d;
+  cout<<d.b;
+}
+
+24) Se da o functie independenta declarata prietena (friend) in 
+domeniul
+ privat (private) al unei clase si care primeste ca parametru o 
+referinta
+ la un obiect al clasei respective. Spuneti la ce membri ai clasei are 
+acces
+ (la cei publici, protejati sau privati).
+
+25) Spuneti ce afisaza programul urmator:
+
+#include<iostream.h>
+
+class cls
+{
+public:
+  int x, y;
+  cls(int i=2, int j=3) {x=i+j/2; y=i-j/2;}
+};
+
+void main(){
+  cls a, b, c=a;
+  cout<<a.x;
+}
+
+26) Spuneti daca programul de mai jos este corect. In caz afirmativ, 
+spuneti
+ ce afisaza, in caz negativ spuneti ce nu este corect.
+
+#include<iostream.h>
+
+class cls
+{
+  int x;
+  friend void f(cls);
+};
+
+void f(cls c)
+{
+  cout<<c.x<<endl;
+}
+
+void f(cls c, int i){
+  cout<<c.x<<" "<<i<<endl;
+}
+
+void main(){
+  cls c;
+  f(c);
+  f(c,1);
+}
+
+27) Se da urmatoarea clasa:
+
+class v
+{
+  int v[50], nr;
+public:
+  int& operator[] (int i) {return ((i>0)&&(i<nr)?v[i]:v[nr-1]);}
+};
+
+Spuneti daca supraincarcarea operatorului [] s-a realizat corect. In 
+caz
+afirmativ, spuneti ce returneaza, in caz negativ spuneti de ce nu este
+corect.
+
+28) Fie o clasa D care mosteneste o clasa B, ambele avand cate un
+ destructor. Spuneti in cazul distrugerii unui obiect de clasa B, cati
+ destructori sunt apelati si in ce ordine. Dar in cazul distrugerii 
+unui
+ obiect de calsa D ?
+
+29) Fiind date clasele:
+
+class B {/* instructiuni */};
+
+class D: public B {/* instructiuni */};
+
+spuneti daca atribuirea p1=p2; din functia main() de mai jos este 
+posibila.
+Justificati.
+
+void main(){
+  B *p1;
+  D *p2;
+  p1=p2;
+}
+
+T1) Spuneti prin ce se caracterizeaza o variabila statica a unei clase.
+
+T2) Spuneti prin ce se caracterizeaza o metoda statica a unei clase.
+
+T3) Descrieti pe scurt diferenta dintre transferul prin valoare si
+ transferul prin referinta in cazul apelului unei functii.
+
+T4) Spuneti care este diferenta dintre incluziune de clase si mostenire
+ de clase si cand se foloseste fiecare metoda.
+
+T5) Spuneti care dintre variantele urmatoare reprezinta mecanisme prin 
+care33
+ se obtine polimorfismul unor functii: functiile friend, functiile 
+inline,
+ constructorii, functiile virtuale, destructorii.
+
+============================================================================
+Raspunsuri:
+
+1) 1 si 3 sunt corecte (ele utilizeaza operatorul "[]", apelat dupa 
+sintaxa
+     operatoriala, resp[ectiv functionala);
+   2 nu este corecta pentru ca "a" este privat.
+
+2) ambele aloca memorie pentru un obiect, recuperand adresa in "p";
+   2 apeleaza constructorul clasei, 3 nu.
+
+3) 1 si 2 sunt corecte;
+   3, 4, 5 nu sunt corecte, deoarece prin mostenire in clasa "D" "y" 
+devine
+     privat, "z" devine protejat, "t" devine privat.
+   Daca in clasele "B1", "B2", "B3", "B4" in loc de "public" scriam
+    "private" (sau nu scriam nici o specificare de acces), atunci 
+corect
+    era doar 1 ("x", "y", "z", "t" deveneau in "D" inaccesibili).
+   Daca in clasele "B1", "B2", "B3", "B4" in loc de "public" scriam
+    "protected", atunci corect era doar 1 (in "D" "x" devenea protejat,
+ 
+"y"
+    devenea privat, "z" devenea protejat, "t" devenea privat).
+
+4) Programul este corect; el afisaza: 0 0
+   Functia "f" poate accesa membrul "b.x" desi este privat, deoarece ea
+ 
+este
+    friend a clasei "B", si membrul "d.y", deoarece el este public;
+    mentionam ca friend-ii nu se mostenesc, deci "f" nu devine friend 
+si al
+    clasei "D" (nu ar putea accesa un membru declarat ca privat in 
+clasa
+    "D"); totusi ea poate accesa toti membrii clasei "D" mosteniti de
+    la clasa "B" (de exemplu poate accesa "d.x", desi intr-o metoda a 
+clasei
+    "D", cum ar fi constructorul acesteia, membrul mostenit "x" nu este
+    accesibil) !
+   Obiectele "b" si "d" din "main" sunt alocate automatic, dar membrii 
+lor
+    data nu contin valori necontrolate, deoarece la crearea acestor 
+obiecte
+    se aplica automat constructorul claselor "B", respectiv "D" (cu
+    parametrii impliciti 0), care initializeaza membrii respectivi cu 
+0.
+
+5) Programul este corect; el afisaza: 0
+
+6) Programul nu este corect, deoarece in metoda "get_x" definita in 
+clasa
+    "D" membrul mostenit "x" nu este accesibil - "x" este privat in 
+clasa de
+    baza "B", deci prin mostenire el devine (indiferent de modul de
+    mostenire, public, protected, public) inaccesibil in mod direct din
+    metodele noi adaugate la "D".
+   Pentru a face programul functional, am putea scrie metoda "get_x" a
+    clasei "D" astfel: int get_x() {return B::get_x();}, dar atentie ca
+ 
+in
+    constructorul clasei "B" se face "v=x", nu "x=v", asa ca la crearea
+    unei instante a clasei "D" membrul sau "x" ramane cu o valoarea
+    implicita rezultata din categoria din care face parte obiectul
+    (static, automatic, etc.), si nu cu valoarea data ca parametru 
+actual
+    constructorului (aici "10"); astfel, avand in vedere ca "d" din 
+"main"
+    este alocat automatic, "cout<<d.get_x();" va afisa o valoare
+    necontrolata.
+
+7) Programul este corect; el afisaza: 200
+   Prin "cls p(100);" in "main" se creaza obiectul "p" avand "p.sa"
+    initializat cu 100; acest obiect este transmis ca parametru actual
+    functiei "p.f(float c)" si este convertit automat la float folosind
+    metoda - operator de cast scrisa in clasa "cls", a.i. parametrul 
+"c"
+    al functiei "p.f(float c)" primeste valoarea 100; aceasta functie
+    calculeaza "(sa*(1+c/100))", unde "sa" este membrul obiectului
+    curent, avand valoarea 100, iar "c" este parametrul, avand valoarea
+ 
+100,
+    si returneaza valoarea obtinuta 200; aceasta valoare este afisata 
+in
+    "main".
+
+8) Nu este corect, deoarece operatorul "==" este binar, deci cand este
+ supraincarcat ca metoda a unei clase trebuie sa aibe un parametru, nu 
+doi.
+   De asememenea nu este corect nici in cazul lui "+" din "cls1", 
+deoarece
+ operatorul "+" este fie binar fie unar, deci cand este supraincarcat 
+ca
+ metoda a unei clase trebuie sa aibe fie un parametru, fie nici unul.
+   De notat ca daca in "cls1" am fi scris "int operator+(cls1 y){...}"
+ se subintelegea ca e vorba de "+" binar, deci ulterior ar fi fost 
+legal
+ sa scriem "cls1 x, y; int z; z=x+y;", iar daca am fi scris
+ "int operator+() {...}" se subintelegea ca e vorba de "+" unar, deci
+ ulterior ar fi fost legal sa scriem "cls1 x; int z; z=+x;".
+
+9) Programul este corect; el afisaza: x=20, y=22
+   Prin "cls operator++() ..." se supraincarca operatorul "++" 
+prefixat, iar
+    prin "cls operator++(int)" cel sufixat; observam ca la definirea
+    acestuia in afara clasei nu a mai fost necesar sa dam un nume
+    parametrului "int".
+   In "main" se creaza obiectul "p" pe care constructorul il 
+initializeaza
+    dand lui "p.vi" valoarea 20.
+   Apoi cu "x=p++" se incremeteaza "p" cu  operatorul "++" sufixat, 
+adica cu
+    metoda "cls::operator++(int)", si i se da lui "x" valoarea 
+returnata de
+    aceasta; astfel "p.vi" devine 21, dar lui "x" i se da valoarea 20
+    (valoarea de dinaintea incrementarii).
+   Apoi cu "y=++p" se incremeteaza "p" cu  operatorul "++" prefixat, 
+adica
+    cu metoda "cls::operator++()" si i se da lui "y" valoarea returnata
+ 
+de
+    aceasta; astfel "p.vi" devine 22, iar lui "y" i se da valoarea 22
+    (valoarea de dupa incrementare).
+
+10) Programul nu este corect, deoarece "d" e "const" iar parametrul lui
+ 
+"f"
+    nu e "const cls &" ci "cls &".
+   Totusi unele compilatoare, ca BC++ 3.1, nu dau eroare ci doar 
+warning;
+    practic, la apelul "f(d)" se creaza un obiect temporar care se 
+asigneaza
+    cu valoarea lui "d" (folosind constructorul de copiere al clasei 
+"cls")
+    si acesta este pasat prin referinta lui "f"; la fel s-ar intampla 
+daca
+    tipul parametrului formal prin referinta nu s-ar potrivi cu cel al
+    parametrului actual (se aplica insa un constructor de conversie al
+    clasei parametrului); astfel, daca functia ar modifica valoarea
+    parametrului, la iesire nu s-ar mai recupera modificarea in 
+variabila
+    data ca parametru actual. Cele de mai sus nu se aplica si in cazul
+    parametrilor prin valoare - in acest caz nu se creaza un nou obiect
+    temporar, dar parametrul prin valoare insusi se instantiaza ca un 
+obiect
+    nou, care se asigneaza cu valoarea parametrului actual, folosind un
+    constructor de copiere sau conversie).
+   Sub g++ se semnaleaza eroare la compilare.
+
+11) Programul nu este corect, deoarece "f" nu este o functie 
+independenta
+    ci o metoda nestatica a clasei "cls" - deci nu se poate apela din 
+"main"
+    decat calificata cu "obiect.".
+   Daca insa in "main" am fi scris "d.f(d)" in loc de "f(d)", atunci
+    situatia ar fi asemanatoare cu cea de la subiectul anterior:
+    sub BC++ 3.1 ar merge si ar afisa: 3
+    sub g++ se semnaleaza eroare la compilare.
+   Daca declar parametrul lui "f" "const cls &c" iar pe "d" din "main"
+    "cls d" (deci invers) (iar in "main" scriem "d.f(d)" in loc de 
+"f(d)"),
+    atunci si sub BC++ 3.1 si sub g++ va merge si va afisa: 3
+
+12) Programul este corect; el afisaza: 0
+    De notat ca c[0] si c[1] se initializeaza cu constructorul
+     "cls(int,int)" scris in clasa, iar c[2] cu constructorul de 
+copiere
+     al clasei (care este cel implicit, intrucat nu a fost scris 
+explicit
+     unul nou).
+
+13) Raspuns oficial bazat pe teorie:
+
+      De 5 ori. O data pentru "r" din "main" si de cate 2 ori pentru
+	parametrul "c" (care este prin valoare, deci se instantiaza ca
+	obiect nou) si pentru obiectul temporar creat de "return c;"
+	("f" returneaza o valoare, nu o referinta).
+    Testare sub BC++ 3.1:
+      De 3 ori. O data pentru "r" din "main" si de 2 ori pentru 
+parametrul
+	"c". Inregistrarile de apel ale celor doua apeluri "f" s-au pus in
+	acelasi loc pe stiva.
+    Testare sub g++:
+      De 6 ori.
+      Interesant este ca daca modificam programul astfel:
+
+      #include<iostream.h>
+
+      class cls{
+       int i;
+      public:
+	cls(){cout<<"Constructor: "<<this<<endl;}
+	cls(const cls& pc){cout<<"Copiere din: "<<&pc<<" in: "<<this<<endl;}
+	~cls(){cout<<"Destructor: "<<this<<endl;}
+      };
+
+      cls f(cls c) {
+	int j;
+	cout<<"Functie j: "<<&j<<endl;
+	cout<<"Functie parametru: "<<&c<<endl;
+	return c;
+      }
+
+      main(){
+	cout<<"\n--------------------\n";
+	cls r;
+	int k;
+	cout<<"Main k: "<<&k<<endl;
+	cout<<"Main: "<<&r<<endl;
+	f(f(r));
+      }
+
+      atunci compilat sub g++ afisaza la rulare:
+
+      --------------------
+      Constructor: 0xbffff838
+      Main k: 0xbffff834
+      Main: 0xbffff838
+      Copiere din: 0xbffff838 in: 0xbffff828
+      Functie j: 0xbffff7f8
+      Functie parametru: 0xbffff828
+      Copiere din: 0xbffff828 in: 0xbffff82c
+      Destructor: 0xbffff828
+      Functie j: 0xbffff7f8
+      Functie parametru: 0xbffff82c
+      Copiere din: 0xbffff82c in: 0xbffff830
+      Destructor: 0xbffff82c
+      Destructor: 0xbffff830
+      Destructor: 0xbffff838
+
+      Deci destructorul s-a apelat de 4 ori.
+      Observam ca adresele lui "j" din cele doua apeluri "f" coincid, 
+dar
+       adresele parametrilor din cele doua apeluri "f" nu; de asemenea
+       observam ca primul apel "f" executat copiaza valoarea returnata
+       direct in instanta parametrului celui de-al doiea apel "f" 
+executat,
+       astfel incat in urma celor doua apeluri "f" ramane un singur 
+obiect
+       temporar nou care trebuie distrus, cel de la adresa 
+"0xbffff830".
+      Deci destructorul s-a apelat de doua ori pentru parametrul "c", o
+ 
+data
+       pentru obiectul "r" din "main" si o data pentru un obiect 
+temporar
+       creat de "return c" in ultimul apel "f" executat.
+      Concluzie: in functie de structura programului, diversele 
+compilatoare
+       realizeaza anumite optimizari, care fac ca unele reguli sa se
+       aplice in mod diferit.
+
+14) Testare sub BC++ 3.1: de doua ori (pentru "r" din "main" si pentru
+	variabila locala "c" a lui "f").
+      Testare sub g++: de trei ori.
+      Daca insa modificam programul sub forma urmatoare (sub BC++ 3.1 
+se va
+	decomenta constructorul de copiere cu "cls &p", sub g++ cel cu
+	"const cls &p"):
+
+     #include<iostream.h>
+
+     class cls{
+     public:
+	cls(){cout<<"Constructor: "<<this<<"\n";}
+	//BC++ 3.1
+	//cls(cls &p){cout<<"Copiere din: "<<&p<<" in: "<<this<<"\n";}
+	//g++
+	//cls(const cls &p){cout<<"Copiere din: "<<&p<<" in: "<<this<<"\n";}
+       ~cls(){cout<<"Destructor: "<<this<<"\n";}
+     };
+
+     cls f(cls &p) {
+       cls c;
+       int i;
+       cout<<"Functie parametru p: "<<&p<<endl;
+       cout<<"Functie obiect local c: "<<&c<<endl;
+       cout<<"Functie i: "<<&i<<endl;
+       return c;
+     }
+
+     void main(){
+       cout<<"\n--------------------\n";
+       cls r;
+       cout<<"Main r: "<<&r<<endl;
+       f(r);
+     }
+
+       atunci sub BC++ 3.1 afisaza:
+
+       --------------------
+       Constructor: 0xfff4
+       Main r: 0xfff4
+       Constructor: 0xffe6
+       Functie parametru p: 0xfff4
+       Functie obiect local c: 0xffe6
+       Functie i: 0xffe4
+       Copiere din: 0xffe6 in: 0xfff2
+       Destructor: 0xffe6
+       Destructor: 0xfff2
+       Destructor: 0xfff4
+
+       (deci acum se aplica destructorul si pentru obiectul temporar 
+creat
+       de "return c;" in "f")
+
+       iar sub g++ afisaza:
+
+       --------------------
+       Constructor: 0xbffff898
+       Main r: 0xbffff898
+       Constructor: 0xbffff868
+       Functie parametru p: 0xbffff898
+       Functie obiect local c: 0xbffff868
+       Functie i: 0xbffff864
+       Copiere din: 0xbffff868 in: 0xbffff894
+       Destructor: 0xbffff868
+       Destructor: 0xbffff894
+       Destructor: 0xbffff898
+
+      Mentionam ca am folosit doua variante ale constructorului de 
+copiere
+      sub BC++ 3.1 si sub g++ (diferind prin faptul ca parametrul e
+      "cls &p", respectiv "const cls &p") deoarece BC++ 3.1 n-ar fi 
+permis
+      adresarea in constructorul de copiere a lui "p" daca aveam 
+"const",
+      in timp ce g++ n-ar fi permis scrierea constructorului de copiere
+      decat daca parametrul era "const cls &". Programul extins de la
+      subiectul anterior a fost testat doar sub g++ si de aceea a fost
+      suficienta varianta cu "const".
+
+15) Programul este corect; el afisaza: 9 8 7 6 5 4 3 4 2 1 0
+     (cate un numar pe o linie).
+    La pasarea lui "x" ca parametru actual pentru "f" in "main", acesta
+     a fost convertit automat la "int" folosind operatorul de cast 
+scris
+     in clasa - el a returnat valoarea lui "x.nr", adica 10; la afisare
+ 
+a
+     fost folosita doar aceasta informatie, nu au contat valorile cu 
+care
+     constructorul a initializat componentele vectorului pointat de 
+"x.p".
+
+16) Programul nu este corect, deoarece in metoda "f" a clasei "Z" este
+     accesat "u.x", dar "x" este membru privat al clasei "X" iar clasa 
+"Z"
+     nu este friend a clasei "X" - este adevarat ca "Z" este friend a 
+clasei
+     "Y", iar "Y" este friend a clasei "X", dar relatia "friend" nu 
+este
+     tranzitiva.
+    Comentariu: presupunand ca in corpul lui "f" facem doar operatii
+     permise, programul functioneaza; compilatorul va raporta insa 
+eroare
+     daca in "main"vu in loc de "b.f(a)" punem "a.f(a)" sau "a.f(b)"
+     (<'f' is not a member of 'X'>) sau "b.f(b)" (<Could not find a 
+match
+     for 'X::X(Z)'> si <Type mismatch in parameter 'u' in call to 
+'Z::f(X)'>
+     deoarece nu stie sa faca conversia de la tipul parametrului actual
+     la cel al parametrului formal) - asta arata ca prin relatiile 
+friend nu
+     se tramsmite posibilitatea de a accesa o metoda sau vreo forma de
+     polimorfism ca la mostenire.
+
+17) Raspuns oficial:
+      Programul este corect; el afisaza: 30 20
+    Testare sub BC++ 3.1:
+      La compilare, in linia 9:
+	cls1(cls2 p) {vi=p.vi;}
+      se raporteaza eroarea:
+	'vi' is not a member of 'cls2'
+    Testare sub g++ (fisierul sursa s-a numit "14.cpp"):
+      La compilare se raporteaza eroarea:
+	14.cpp: In method `cls1::cls1(cls2)':
+	14.cpp:9: parameter `p' has incomplete type
+    Comentariu:
+      Declaratia "class cls2;" din linia 3 face vizibil in continuare 
+doar
+       numele clasei "cls2", nu si numele membrilor acesteia; astfel, 
+in
+       linia 9 am putea scrie o declaratie de tipul "cls2 *p;" (in care
+       intervine doar numele clasei "cls2"), nu si instructiunea 
+"vi=p.vi;"
+       in care este accesat un membru cu numele "vi" al clasei "cls2".
+      Pentru a face vizibile si numele membrilor clasei "cls2", ar 
+trebui
+       ca in locul declaratiei "class cls2;" din linia 3 sa punem macar
+       prototipul clasei "cls2" (nu neaparat si corpul metodelor); 
+corpul
+       metodelor clasei "cls2" poate fi scris sub prototipul clasei 
+"cls1",
+       in eventualitatea ca in ele este folosit numele acestei clase 
+sau al
+       membrilor ei.
+      De exemplu o varianta functionala a programului (si sub BC++ 3.1 
+si
+       sub g++), care afisaza 30 20 (cate unul pe linie), este 
+urmatoarea:
+
+       #include<iostream.h>
+
+       class cls2{
+       public:
+	 int vi;
+	 cls2(int = 20);
+       };
+
+       class cls1{
+       public:
+	 int vi;
+	 cls1(int v=30) {vi=v;}
+	 cls1(cls2 p) {vi=p.vi;}
+       };
+
+       cls2::cls2(int v) {vi=v;}
+
+       cls1 f(cls1 p){
+	 p.vi++;
+	 return p;
+       }
+
+       void main(){
+	 cls1 p; f(p); cout<<endl<<p.vi;
+	 cls2 r; f(r); cout<<endl<<r.vi;
+       }
+
+      Observam ca in "main" la apelul "f(p)" parametrul "p" al lui "f",
+       care este prin valoare, se instantiaza ca un obiect nou, care se
+       initializeaza din parametrul actual "p", pe baza constructorului
+ 
+de
+       copiere al clasei "cls1", care este cel predefinit (el copiaza 
+bit
+       cu bit membrul "vi"); intrucat "p" din "f" este un obiect 
+diferit de
+       "p" din "main", incrementarea "p.vi++" din "f" nu-l afecteaza pe
+       acesta (iar valoarea returnata de "f" nu este recuperata in nici
+ 
+un
+       fel), astfel incat "cout<<endl<<p.vi;" afisaza 30 (valoarea 
+implicita
+       cu care constructorul clasei "cls1" a initializat "p.vi" la 
+crearea
+       lui "p" din "main").
+      La apelul "f(r)" din "main" parametrul "p" al lui "f" s-a 
+initializat
+       din parametrul actual "r" pe baza constructorului de conversie
+       "cls1(cls2 p)" care a copiat "r.vi" in "p.vi"; dar, ca mai 
+inainte,
+       "p" din "f" este alta instanta decat "p" din "main", asa ca
+       incrementarea "p.vi++" nu-l afecteaza pe acesta, iar 
+instructiunea
+       "cout<<endl<<r.vi;" afisaza 20 (valoarea implicita cu care
+       constructorul clasei "cls2" a initializat "r.vi" la crearea lui 
+"r").
+
+18) Programul este corect; el afisaza: 30 20
+  Comentariu: programul este asemanator cu cel de la subiectul 
+anterior,
+   doar ca aici la apelul "f(r)" din "main" transmiterea valorii se 
+face
+   apeland un operator de cast al clasei parametrului actual si nu un
+   constructor de conversie al clasei parametrului formal.
+
+19) Corecte sunt declaratiile 1, 3, 4; declaratia 2 (adica "B p;") nu 
+este
+     corecta deoarece "B" este o clasa abstracta (are o metoda pura) si
+     deci nu poate fi instantiata.
+    Comentarii suplimentare:
+     - s-a presupus ca din cele patru declaratii din "main" va ramane 
+in
+	program doar una; altfel apare o eroare suplimentara, intrucat
+	acelasi nume "p" este declarat de mai multe ori in mod diferit;
+     - in BC++ 3.1 se mai raporteaza urmatoarele erori in linia 10
+	(adica "void metoda() {return a;}" din clasa "D"):
+      1) Virtual function 'D::metoda()' conflicts with base class 'B'
+	Explicatie help:
+	 A virtual function has the same argument types as one in a base
+	 class, but a different return type.
+	Comentarii suplimentare:
+	 Eroarea provine din faptul ca metoda "metoda" nu a fost redeclarata
+	  cu acelsai tip "int" ci cu tipul "void"; daca ii punem tipul "int"
+	  aceasta eroare dispare.
+	 Interesant este ca daca in clasa "D" nu am fi redeclarat "metoda"
+	  ci am fi scris doar:
+
+	  class D: public B{};
+
+	  atunci BC++ 3.1 nu ar fi raportat ca eronata declaratia "D p[5];"
+	  din "main" (care incearca sa creeze 5 instante ale clasei "D"),
+	  desi clasa "D" ramane in continuare abstracta (ea mosteneste de
+	  la "B" metoda pura "metoda" si nu o redefineste), iar daca
+	  ulterior in "main" apelam "p[0].metoda();" se produce o eroare la
+	  executie, pe ecran apare mesajul "Pure virtual function called",
+	  iar executia se termina fortat.
+	Sub g++, daca pentru clasa "D" scriem doar "class D: public B{};",
+	  compilatorul constata ca in clasa "D" metoda mostenita "B::metoda"
+	  este pura si raporteaza ca eronata declaratia "D p[5];".
+      2) 'D::metoda()' cannot return a value
+	Explicatie help:
+	 A function with a return type void contains a return statement
+	 that returns a value; for example, an int.
+	Comentariu suplimentar: este evident, tipul returnat de metoda
+	 "metoda" redefinita in "D" este void, iar in corpul ei am pus
+	 "return a;" ("a" fiind membrul mostent de la "B", avand tipul int).
+	 Notam ca membrul protected "a" al lui "B" ramane in urma mostenirii
+	 publice tot protected si in "D" (in particular este accesibil din
+	 metoda "metoda" a lui "D").
+
+20) Corecte sunt declaratiile 1 si 3; declaratiile 2 (adica "cls p;") 
+si
+     4 (adica "cls p[5];") nu sunt corecte deoarece "cls" este o clasa
+     abstracta (are o metoda pura) si deci nu poate fi instantiata.
+    Comentarii suplimentare:
+     - s-a presupus ca din cele patru declaratii din "main" va ramane 
+in
+	program doar una; altfel apare o eroare suplimentara, intrucat
+	acelasi nume "p" este declarat de mai multe ori in mod diferit;
+     - sub BC++ 3.1 declaratia "cls p[5];" nu este raportata ca eronata
+	(dar daca ulterior apelam "p[0].metoda1();" se afisaza "Pure virtual
+	function called", iar executia programului se termina fortat.),
+	dar sub g++ se raporteaza eroare.
+
+21) In "M1" de doua ori, in "M2" tot de doua ori.
+    Comentarii:
+     Regula generala zice ce daca o clasa apare de mai multe ori intr-o
+      ierarhie, uneori virtual alteori nevirtual, in final se creaza o
+      singura instanta a sa pentru toate mostenirile virtuale si cate o
+      instanta a sa pentru fiecare mostenire nevirtuala; in ierarhia 
+care-l
+      defineste pe "M1" "B" apare o data virtual si o data nevirtual, 
+deci
+      se creaza doua instante ale membrilor sai; in ierarhia care-l
+      defineste pe "M2" este la fel; aici notam ca desi "M2" mosteneste
+      pe "D1" si "D2" virtual, aceste clase deja contin instante ale
+      membrilor lui "B" care acum sunt vazute ca membri ai unor clase
+      diferite - de aceea cuvantul "virtual" aplicat lui "D1" si "D2" 
+are
+      in vedere aceste clase deja construite (si care sunt distincte) 
+si
+      nu incearca sa suprapuna cumva membrii lor mosteniti de la "B".
+     Urmatorul program ne convinge de cele de mai sus; aici am 
+modificat
+      "B" a.i. sa aibe un membru obiect care are un constructor ce 
+afisaza
+      un mesaj si adresa sa; astfel, de fiecare data cand se va crea o
+      instanta a membrilor lui "B" vom vedea mesajul si adresa 
+instantei
+      membrului (pentru a vedea ca este o instanta noua):
+
+      #include<iostream.h>
+
+      class c{public: c(){cout<<"C: "<<this<<endl;}};
+
+      class B {c i; /* instructiuni */};
+      class D1: virtual B {/* instructiuni */};
+      class D2: B {/* instructiuni */};
+      class M1: D1, public D2 {/* instructiuni */};
+      class M2: virtual D1, virtual public D2 {/* instructiuni */};
+
+      void main(){
+       cout<<"\n-----\n";
+       cout<<"B x:\n";
+       B x;
+       cout<<"D1 y1:\n";
+       D1 y1;
+       cout<<"D2 y2:\n";
+       D2 y2;
+       cout<<"M1 z1:\n";
+       M1 z1;
+       cout<<"M2 z2:\n";
+       M2 z2;
+      }
+
+      rulat sub BC++ 3.1 afisaza:
+
+      -----
+      B x:
+      C: 0xfff4
+      D1 y1:
+      C: 0xfff2
+      D2 y2:
+      C: 0xffee
+      M1 z1:
+      C: 0xffed
+      C: 0xffec
+      M2 z2:
+      C: 0xffe6
+      C: 0xffe9
+
+      sub g++ functioneaza analog.
+
+22) In "M1" de doua ori, in "M2" tot de doua ori.
+     Urmatorul program, asemanator celui de la subiectul anterior, ne
+      convinge de acest lucru:
+
+      #include<iostream.h>
+
+      class c{public: c(){cout<<"C: "<<this<<endl;}};
+
+      class B {c i; /* instructiuni */};
+      class D1: B {/* instructiuni */};
+      class D2: B {/* instructiuni */};
+      class M1: D1, public D2 {/* instructiuni */};
+      class M2: virtual D1, virtual public D2 {/* instructiuni */};
+
+      void main(){
+       cout<<"\n-----\n";
+       cout<<"B x:\n";
+       B x;
+       cout<<"D1 y1:\n";
+       D1 y1;
+       cout<<"D2 y2:\n";
+       D2 y2;
+       cout<<"M1 z1:\n";
+       M1 z1;
+       cout<<"M2 z2:\n";
+       M2 z2;
+      }
+
+      rulat sub BC++ 3.1 afisaza:
+
+      -----
+      B x:
+      C: 0xfff4
+      D1 y1:
+      C: 0xfff2
+      D2 y2:
+      C: 0xfff0
+      M1 z1:
+      C: 0xffee
+      C: 0xffef
+      M2 z2:
+      C: 0xffec
+      C: 0xffed
+
+      sub g++ functioneaza analog.
+
+23) Programul afisaza: 14
+    Justificare: in "main", la crearea obiectului derivat "d", intai se
+     apeleaza constructorul clasei de baza "B" (care pune in membrul
+     mostenit "d.a" valoarea 7), apoi corpul constructorului din clasa
+     derivata "D" - deci cand aici se face "b=a+7;" deja "d.a" are 
+valoarea
+     7, astfel ca "d.b" primeste valoarea 14.
+    Observam ca nu a fost nevoie sa mentionam apelul constructorului 
+clasei
+     "B" in scrierea constructorului clasei "D" (ceva de tipul:
+     "D(): B() {b=a+7;}") deoarece implicit s-a cautat in "B" un 
+constructor
+     fara parametri sau cu toti parametrii impliciti si singurul gasit
+     este cel scris acolo.
+    Mentionam totodata ca "d.b" este public (de aceea a putut fi 
+accesat
+     din "main"),iar "d.a" este protected (in "B" este protected, iar
+     "D" il mosteneste pe "B" public), in particular inaccesibil din 
+"main".
+
+24) Are acces la toti.
+    Comentariu: mai mult, nu conteaza domeniul (private, protected, 
+public)
+     unde am declarat functia ca friend (ea are intotdeauna acces la 
+toti
+     membrii clasei respective).
+
+25) Programul afisaza: 3
+    Comentariu: "a", "b" se initializeaza cu constructorul clasei "cls"
+ 
+in
+     care parametrii se considera cu valoarea implicita; de aceea "a.x"
+     devine 2+3/2 adica 3 (notam ca 3/2 calculeaza catul intreg, nu cel
+     exact); "c" se initializeaza din "a" cu constructorul de copiere 
+al
+     clasei "cls", care este cel implicit (el copiaza bit cu bit 
+membrii
+     data ai lui "a" in cei ai lui "c").
+
+26) Programul nu este corect, deoarece functia "void f(cls c, int i)"
+     incearca sa acceseze membrul privat "c.x" si nu este metoda sau
+     friend a clasei "cls" - in clasa "cls" am declarat ca friend 
+functia
+     "void f(cls c)", care este insa o alta functie (avand acelasi 
+nume,
+     prin supraincarcare).
+
+27) Supraincarcarea s-a realizat corect; daca 0 < i < nr, operatorul
+     returneaza referinta la componenta v[i] a membrului v a obiectului
+     curent; altfel, returneaza referinta la componenta v[nr-1].
+
+28) In cazul distrugerii unui obiect de clasa "B" se apeleaza 1 
+destructor
+     - cel al clasei "B". In cazul distrugerii unui obiect de clasa "D"
+ 
+se
+     apeleaza 2 destructori - intai destructorul clasei "D", apoi cel 
+al
+     clasei "B".
+
+29) Atribuirea este corecta, deoarece un pointer la o clasa de baza 
+poate
+     pointa obiectele claselor derivate din ea (dar prin el, folosind 
+"*"
+     "->", etc., nu vom putea accesa in obiectul respectiv decat 
+instantele
+     membrilor mosteniti).
+   Atentie insa ca atribuirea inversa "p2=p1;" nu e posibila.
+
+La subiectele teoretice T1, T2, ... se raspunde pe scurt pe baza
+cunostintelor din curs.

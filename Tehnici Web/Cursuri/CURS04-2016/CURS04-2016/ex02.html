@@ -1,0 +1,33 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head> 
+
+<script type="text/javascript" >
+ window.onload = myMain;
+
+function suma(x) {
+var s = 0; 
+for (var i=1; i< x ; i++) s=s+i;
+alert(s);
+return s
+}
+
+function myMain(){
+document.getElementById('calcs').onclick = function () { suma(10);};
+}
+
+
+</script>
+<link href="mystyle.css" type="text/css" rel="stylesheet">
+<meta charset="utf-8">
+<title> JS </title>
+ </head>
+ 
+<body>
+  
+  <button id="calcs"> Trimite </button> 
+
+</body>
+</html>
+
+

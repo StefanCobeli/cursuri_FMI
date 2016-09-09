@@ -1,0 +1,114 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head> 
+<meta charset="utf-8">
+<title>SVG</title>
+
+<style type="text/css">
+article {margin-left:auto;margin-right:auto; width:35%;text-align:center;}
+#imagine {width:100%}
+ text 
+{
+	font-family: verdana, sans-serif;
+	font-size: 300%;
+	fill: #003565;
+}
+
+#stea {width:100%;
+       height:auto; }
+
+</style>
+
+<script type="text/javascript">
+window.onload= function(){
+document.getElementById("1a").onclick = function(){this.style.fill ="magenta";};
+document.getElementById("2a").onclick = function(){this.style.fill ="aqua";};
+ 
+  }  
+
+</script>
+ </head> 
+<body> 
+<article>
+<h1> Scalable Vector Graphics</h1> 
+<p> <a href="http://commons.wikimedia.org/wiki/File:Druze_star-simple.svg" target="_blank"> sursa imaginii</a> </p>
+
+ 
+<div>
+<h1> Din fisier svg</h1>
+<img src="star-svg.svg"  id="imagine" alt="stea">
+
+   
+ </div>
+ <hr>
+<div>
+
+<h1> Cod in HTML</h1>
+
+<svg  width="450" height="500"   id="stea">
+
+<!-- NAMESPACES
+<svg   
+xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+width="450" height="500" id="stea">
+-->
+
+<defs>
+    <style type="text/css"><![CDATA[
+       
+      .cb {stroke: black;}
+	  .cb:hover{opacity:0.5}
+	  
+	 
+      
+    ]]></style>
+  </defs>
+
+   <path
+     d="M 230,32 L 181,175 L 230,240 L 275,175 L 230,32  "
+     style="fill:#00ff00;stroke: black;"
+     id="1a" /> <!-- green -->
+	 <path
+     d="M 30,175 L 150,265 L 230,240 L 181,175 L 30,175  "
+     style="fill:#ececec;stroke: black;"
+     id="2a" /> <!-- grey -->
+	 
+	 <path
+     d="M 230,240 L 150,265 L 105,412 L 230,323 L 230,240 "
+     style="fill:#0000ff"
+     id="3a" class="cb" />  <!-- blue -->
+  <path
+     d="M 230,240 L 230,323 L 352,412 L 305,265 L 230,240  "
+     style="fill:#ffff00"
+     id="4a" class="cb" />  <!-- yellow -->
+  <path
+     d="M 275,175 L 230,240 L 305,265 L 426,175 L 275,175  "
+     style="fill:#ff0000"
+     id="5a" class="cb" />  <!-- red -->
+	 
+	 <text  x="150" y="400">star
+	 
+	  <animateTransform
+            attributeName="transform"
+            begin="0s"
+            dur="10s"
+            type="rotate"
+            from="0 230 250"
+            to="360 230 250"
+            repeatCount="indefinite" 
+        /> </text>
+		
+	
+	 
+	 </svg>
+	 
+	 
+   </div>
+   
+ <p> <a target="_blank" href="https://css-tricks.com/scale-svg/"> How to Scale SVG </a></p>  
+ 
+ 
+</article>
+
+</body>
+ </html>
