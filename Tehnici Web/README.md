@@ -1,2 +1,2 @@
-The final Project can be found in the "chiarFinal" folder.
+The final Project can be found in the "Proiect Final/chiarFinal" folder.
 The other files are only scratches.
